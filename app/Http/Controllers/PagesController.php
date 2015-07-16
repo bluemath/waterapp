@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Site;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -41,7 +42,14 @@ class PagesController extends Controller
     
     // Red Butte Creek
     public function redbuttecreek() {
+	    // Get RB sites that are not USGS
+	    $sites = Site::where('sitecode', 'LIKE', '%RB_%')->where('sitecode', 'NOT LIKE', '%USGS%')->get();
 	    
+	    foreach ($sites as $site) {
+		    $site->series = Series::where('sitecode', '=', $site->sitecode)->all();
+	    }
+	    
+	    return view('pages.rbc', compact('sites'));
     }
     
     // Biodiversity

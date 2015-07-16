@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Site extends Model
 {
-    protected $fillable = [
+    public $fillable = [
 		'network',
 	    'sitecode',
 	    'sitename',
 	    'latitude',
-	    'longitude',
+	    'longitude'
     ];
+    
+    public $timestamps = false;
 }

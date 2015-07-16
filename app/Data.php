@@ -15,7 +15,7 @@ class Data extends Model
     
     public $timestamps = false;
     
-    protected $dateFormat = 'Y-m-d\TH:i:s';
+    //protected $dateFormat = 'Y-m-d\TH:i:s';
     
     protected $dates = array('datetime');
 

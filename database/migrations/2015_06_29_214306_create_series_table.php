@@ -14,23 +14,21 @@ class CreateSeriesTable extends Migration
     {
         Schema::create('series', function (Blueprint $table) {
             
-            // Standard laravel
-            $table->increments('id');
-            $table->timestamps();
-            
             // These are fields that are available from the dataseries endpoint
             // http://data.iutahepscor.org/tsa/api/v1/dataseries/?limit=0
-            $table->string('sitecode')->index();
-            $table->string('variablecode')->index();
-            
+            $table->string('sitecode');
+            $table->string('variablecode');
 			$table->string('variablename');
 			$table->string('variableunitsname')->nullable();
+			$table->string('variableunitsabbreviation')->nullable();
 			$table->string('datatype')->nullable();
 			$table->string('getdataurl');
 			$table->string('methoddescription');
 			
-			// In order to support faster updates, the last update is recorded
-			$table->timestamp('lastupdate')->nullable();
+			$table->index('sitecode');
+			$table->primary(['sitecode', 'variablecode']); // likely wont be used
+            $table->unique(['sitecode', 'variablecode']);
+			
         });
     }
 

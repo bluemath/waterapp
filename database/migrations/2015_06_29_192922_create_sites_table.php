@@ -14,14 +14,13 @@ class CreateSitesTable extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             
-            // Standard laravel
-            $table->increments('id');
-            $table->timestamps();
-            
             // These are fields that are available from the sites endpoint
             // http://data.iutahepscor.org/tsa/api/v1/sites/?limit=0
             $table->string('network')->index();
             $table->string('sitecode')->index();
+            
+            $table->primary('sitecode');
+            $table->unique(['network', 'sitecode']);
             
             $table->string('sitename');
             $table->string('latitude');
