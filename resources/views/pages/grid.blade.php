@@ -6,11 +6,12 @@
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 
-		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>		
-		<script src="//openlayers.org/en/v3.7.0/build/ol.js" type="text/javascript"></script>
-		<script src="//code.highcharts.com/stock/highstock.js"></script>
-		<script src="//code.highcharts.com/stock/modules/exporting.js"></script>
+		<script src="{{ URL::asset('js/angular/angular.js') }}"></script>	
+		<script src="{{ URL::asset('js/jquery/jquery-1.11.3.js') }}"></script>
+		<script src="{{ URL::asset('js/jquery-ui/jquery-ui.js') }}"></script>
+		
+		<script src="{{ URL::asset('js/open-layers/ol.js') }}"></script>
+		<script src="{{ URL::asset('js/highstock/highstock.js') }}"></script>
 		
 		<!-- this might be the cause of issues dragging on the touchscreen -->
 		<!-- <script src="{{ URL::asset('js/fastclick.js') }}"></script> -->
@@ -18,7 +19,7 @@
 		<script src="{{ URL::asset('js/ui.js') }}"></script>
 		@yield('pageScripts')
 		
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{{ URL::asset('css/font-awesome/css/font-awesome.css') }}">
 		<link rel="stylesheet" href="{{ URL::asset('css/normalize.css') }}" type="text/css" media="screen" charset="utf-8">
 		<link rel="stylesheet" href="{{ URL::asset('css/boilerplate.css') }}" type="text/css" media="screen" charset="utf-8">
 		<link rel="stylesheet" href="{{ URL::asset('css/page.css') }}" type="text/css" media="screen" charset="utf-8">
@@ -70,9 +71,9 @@
 		
 		<div id="credits">
 		
-			<img src="{{ URL::asset('img/nhmu.svg') }}" alt="NHMU Logo" width="36" height="36">
-			<img src="{{ URL::asset('img/iutahepscor.svg') }}" alt="iUtah EPSCoR Logo" width="81" height="36">
-			<img src="{{ URL::asset('img/nsf.svg') }}" alt="NSF Logo" width="36" height="36">
+			<img src="{{ URL::asset('img/logos/nhmu.svg') }}" alt="NHMU Logo" width="36" height="36">
+			<img src="{{ URL::asset('img/logos/iutahepscor.svg') }}" alt="iUtah EPSCoR Logo" width="81" height="36">
+			<img src="{{ URL::asset('img/logos/nsf.svg') }}" alt="NSF Logo" width="36" height="36">
 			<div class="text">
 				This application was developed by the Natural History Museum of Utah with<br>
 				support from iUtah and National Science Foundation award ABC-123456789
