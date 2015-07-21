@@ -37,7 +37,7 @@
 		}
 		
 		.map {
-			height: 80%;
+			height: 100%;
 			width: 100%;
 		}
 		
@@ -78,7 +78,6 @@
 
 
 	</style>
-	<h1>Sites</h1>
 	
 	<div id="map" class="map"></div>
 	
@@ -166,7 +165,7 @@
 		
 		var maxExtent = ol.proj.transformExtent([minLon, minLat, maxLon, maxLat], 'EPSG:4326', 'EPSG:3857');
 		
-		var center = ol.proj.transform([(minLon + maxLon)/2, maxLat - (maxLat - minLat) * 4/5],'EPSG:4326','EPSG:3857');
+		var center = ol.proj.transform([(minLon + maxLon)/2, (minLat + maxLat)/2],'EPSG:4326','EPSG:3857');
 		
 		// Setup map
 		var map = new ol.Map({
@@ -174,9 +173,9 @@
 			layers: [terrainLayer, linesLayer],
 			view: new ol.View({
 				center: center,
-				minZoom: 13,
+				minZoom: 9,
 				maxZoom: 15,
-				zoom: 13,
+				zoom: 9,
 				enableRotation: false,
 				extent: maxExtent
 			})
@@ -186,8 +185,21 @@
 		@foreach ($sites as $site)
 		
 			name = '{{$site->sitename}}';
+			
+			// Remove common prefix / suffix to clean up map
+			
+			// All sites
 			name = name.replace('Basic Aquatic', '');
 			name = name.replace('Advanced Aquatic', '');
+			
+			// Provo River
+			name = name.replace('Provo River at ', '');
+			name = name.replace('Provo River near ', '');
+			name = name.replace('Provo River Below ', '');
+			
+			// Logan River
+			name = name.replace('Logan River at ', '');
+			name = name.replace('Logan River near ', '');
 		
 			map.addOverlay(new ol.Overlay({
 			  position: ol.proj.transform(

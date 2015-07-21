@@ -1,7 +1,8 @@
 <?php
 
 // Pages
-Route::get('/', 'PagesController@splash');
+Route::get('/', 'PagesController@comingsoon');
+Route::get('/splash', 'PagesController@splash');
 Route::get('/gsl', 'PagesController@greatsaltlake');
 Route::get('/gamut', 'PagesController@gamut');
 Route::get('/rbc', 'PagesController@redbuttecreek');

@@ -163,7 +163,7 @@
 					    yAxis: axis,
 					    data: data,
 					    tooltip: {
-						    valueSuffix: '{{ $s->variableunitsabbreviation }}'
+						    valueSuffix: ' {{ $s->variableunitsabbreviation }} '
 					    }
 				    }
 				    axis++;

@@ -172,20 +172,37 @@ a {
   height: 100%;
   margin: 0 auto; }
 
-.dropdown {
+#menu .dropdown {
   position: absolute;
   width: 450px;
-  display: none; }
-
-.dropdown div {
-  margin-top: 6px;
+  display: none;
+  z-index: 4;
   background-color: #42a4c4;
-  box-shadow: 1px 1px 3px #222;
-  padding: 10px 15px;
+  color: #fff;
+  box-shadow: 1px 1px 3px #222; }
+
+#menu .dropdown div {
+  border-top: 1px solid #8edded;
+  padding: 8px 15px;
   font-size: 30pt;
   font-weight: normal;
-  line-height: 30pt;
-  color: #fff; }
+  line-height: 30pt; }
+
+.topic .dropdown {
+  position: absolute;
+  width: 375px;
+  display: none;
+  z-index: 4;
+  background-color: #42a4c4;
+  color: #fff;
+  box-shadow: 1px 1px 3px #222; }
+
+.topic .dropdown div {
+  border-top: 1px solid #8edded;
+  padding: 8px 15px;
+  font-size: 18pt;
+  font-weight: normal;
+  line-height: 18pt; }
 
 .button {
   background-color: #296f99;
@@ -226,43 +243,49 @@ a {
   margin-left: 24px; }
 
 .marker {
+  vertical-align: middle;
+  display: inline-block;
   background-color: #296f99;
   color: #ffffff;
   padding: 5px 10px 5px 10px;
   overflow: hidden;
   white-space: nowrap;
   font-size: 20px;
-  line-height: 20px;
-  box-shadow: 1px 1px 3px #222;
-  border-top-right-radius: 7px;
-  border-bottom-right-radius: 7px;
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  margin-left: 14px; }
+  line-height: 20px; }
 
+.marker.on {
+  opacity: 1; }
+
+/*
 .marker:before {
-  content: '';
-  display: block;
+	content: '';
+	display:block;
+	width: 0; 
+	height: 0; 
+	border-top: 15px solid transparent;
+	border-bottom: 15px solid transparent; 
+	border-right: 15px solid $blueDarker; 
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+*/
+.marker-left {
+  vertical-align: middle;
+  display: inline-block;
   width: 0;
   height: 0;
-  border-top: 15px solid transparent;
   border-bottom: 15px solid transparent;
+  /* left arrow slant */
+  border-top: 15px solid transparent;
+  /* right arrow slant */
   border-right: 15px solid #296f99;
-  position: absolute;
-  top: 0px;
-  left: 0px; }
+  /* bottom, add background color here */
+  font-size: 0;
+  line-height: 0; }
 
 .marker i {
   font-size: 10pt;
   line-height: 12pt;
   margin-left: 6px;
   opacity: .75; }
-
-.marker.highlight {
-  background-color: #42a4c4; }
-
-.marker.highlight:before {
-  border-right: 15px solid #42a4c4; }
-
-.marker.highlight i {
-  opacity: 1.0; }

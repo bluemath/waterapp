@@ -18,7 +18,7 @@ class CreateDataTable extends Migration
             // http://data.iutahepscor.org/RedButteCreekWOF/REST/waterml_1_1.svc/datavalues?location=iutah%3ARB_RBG_BA&variable=iutah%3AODO&startDate=2015-06-29&endDate=2015-06-30
             $table->string('sitecode');
             $table->string('variablecode');
-			$table->timestamp('datetime')->index();
+			$table->timestamp('datetime')->index(); //UTC
             $table->string('value');
             
             $table->primary(['sitecode', 'variablecode', 'datetime']);

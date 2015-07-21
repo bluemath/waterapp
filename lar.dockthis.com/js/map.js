@@ -72,20 +72,6 @@ function Map(element, sites) {
 		pixelRatio: 1 // Significantly improves iPad performance
 	});
 	
-	// Add markers to the map
-	for (site in sites) {
-		site = sites[site];
-		map.addOverlay(new ol.Overlay({
-		  position: ol.proj.transform(
-		    [site.longitude, site.latitude],
-		    'EPSG:4326',
-		    'EPSG:3857'
-		  ),
-		  element: $("<div class='marker' id='" + site.code + "'>" + site.name + "</div>"),
-		  positioning: 'center-left'
-		}));
-	}
-	
 	map.updateSize();
 	
 	window.onorientationchange = function() {

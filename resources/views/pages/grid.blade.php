@@ -11,7 +11,9 @@
 		<script src="//openlayers.org/en/v3.7.0/build/ol.js" type="text/javascript"></script>
 		<script src="//code.highcharts.com/stock/highstock.js"></script>
 		<script src="//code.highcharts.com/stock/modules/exporting.js"></script>
-		<script src="{{ URL::asset('js/fastclick.js') }}"></script>
+		
+		<!-- this might be the cause of issues dragging on the touchscreen -->
+		<!-- <script src="{{ URL::asset('js/fastclick.js') }}"></script> -->
 		
 		<script src="{{ URL::asset('js/ui.js') }}"></script>
 		@yield('pageScripts')
@@ -32,10 +34,13 @@
 			</div>
 			
 			<div class="topic">
-				<div class="row">
+				<div id="detailControls" class="row">
 					<div class='chooser button'>
-						<span class="label"><!-- filled by js -->Loading...</span>
+						<span class="label">Topic</span>
 						<i class="fa fa-chevron-down pull-right"></i>
+					</div>
+					<div class="dropdown">
+
 					</div>
 					<div class="control">
 						<!-- cloned by jQuery -->
@@ -47,7 +52,6 @@
 				</div>
 				<div id="detailBlock" class="row big">
 					<div class="text block white">
-						<!-- filled by js -->
 						<p><i class="fa fa-circle-o-notch fa-spin"></i></p>
 					</div>
 					@yield('topicDetail')

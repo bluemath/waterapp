@@ -18,12 +18,7 @@ class CreateSeriesTable extends Migration
             // http://data.iutahepscor.org/tsa/api/v1/dataseries/?limit=0
             $table->string('sitecode');
             $table->string('variablecode');
-			$table->string('variablename');
-			$table->string('variableunitsname')->nullable();
-			$table->string('variableunitsabbreviation')->nullable();
-			$table->string('datatype')->nullable();
 			$table->string('getdataurl');
-			$table->string('methoddescription');
 			
 			$table->index('sitecode');
 			$table->primary(['sitecode', 'variablecode']); // likely wont be used

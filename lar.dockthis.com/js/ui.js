@@ -1,10 +1,11 @@
+var timeout = 7 * 1000;
+var longtimeout = 20 * 1000;
+var inactivity = 30 * 1000;
+
 $( document ).ready(function() {
 
-	var timeout = 7 * 1000;
-	var inactivity = 30 * 1000;
-
 	// Improve click responsiveness on iOS and Android
-	FastClick.attach(document.body);
+	// FastClick.attach(document.body);
 
 	// Menu
 	var menuTimeout;

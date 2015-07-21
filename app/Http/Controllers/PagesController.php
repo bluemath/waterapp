@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Site;
+use App\Series;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class PagesController extends Controller
 {
+	
+	// Coming Soon
+	public function comingsoon() {
+		
+		return view('comingsoon');
+		
+	}
+	
 	// Splash
     public function splash() {
 		
@@ -42,11 +51,12 @@ class PagesController extends Controller
     
     // Red Butte Creek
     public function redbuttecreek() {
-	    // Get RB sites that are not USGS
-	    $sites = Site::where('sitecode', 'LIKE', '%RB_%')->where('sitecode', 'NOT LIKE', '%USGS%')->get();
+		// Get RB sites that are not USGS
+	    // (USGS now removed in DataController sitesUpdate)
+	    $sites = Site::where('sitecode', 'LIKE', '%RB_%')->get();	    
 	    
 	    foreach ($sites as $site) {
-		    $site->series = Series::where('sitecode', '=', $site->sitecode)->all();
+		    $site->series = Series::where('sitecode', '=', $site->sitecode)->get();
 	    }
 	    
 	    return view('pages.rbc', compact('sites'));

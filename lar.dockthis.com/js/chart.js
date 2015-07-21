@@ -75,16 +75,16 @@ function Chart(element) {
                 fill: 'none',
                 stroke: 'none',
                 'stroke-width': 0,
-                r: 8,
+                r: 0,
                 style: {
-                    color: '#2f5266',
+                    color: '#296f99',
                     fontWeight: 'bold'
                 },
                 states: {
                     hover: {
                     },
                     select: {
-                        fill: '#2f5266',
+                        fill: '#296f99',
                         style: {
                             color: 'white'
                         }

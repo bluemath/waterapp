@@ -14,6 +14,7 @@ use Carbon\Carbon;
 // The models
 use App\Site;
 use App\Series;
+use App\Variable;
 use App\Data;
 
 class DataController extends Controller
@@ -35,23 +36,28 @@ class DataController extends Controller
 		// Limit the types of sites and variables loaded
 		// change these to load more or less
 
-		// Only interested in Red Butte sites
+		// Only interested in GAMUT sites
 		// ( Issues exist with USGS duplicates that break unique constraints if those sites are included )
-		$siteCodeContains = ['RB_']; 
+		$siteCodeContains = ['RB_', 'PR_', 'LR_'];
+		// Revised to focus on suffix
+		$siteCodeContains = ['_BA', '_AA'];
 
 		// Only interested in Stream data
-		$siteTypes = ['Stream']; 
+		$siteTypes = ['Stream'];
 		
 		// Only interested in common variables
 		$variableLevels = ['Common'];
 		
 		// Only interested in RAW data
+		// Can't rely on QC data
 		$qualityControlLevelCodes = [0];
 		
-		// Get Sites
+		// Get sites
 		$siteKeys = ['network' => '', 'sitecode' => '', 'sitename' => '', 'latitude' => '', 'longitude' => ''];
 		$sitesJSON = file_get_contents("http://data.iutahepscor.org/tsa/api/v1/sites/?limit=0");
 		$sites = json_decode($sitesJSON);
+		
+		// Process sites into database
 		foreach ($sites->objects as $site) {
 			// Only add desiered site types
 			if(in_array($site->sitetype, $siteTypes)) {
@@ -62,27 +68,45 @@ class DataController extends Controller
 						$site = (array) $site;
 						$site = array_intersect_key($site, $siteKeys);
 						// Add
-						Site::updateOrCreate((array) $site);
-						break;
+						try {
+							Site::firstOrCreate((array) $site);
+							break;
+						} catch (Exception $e) {
+							// Didn't add to DB because of conflict, ignore...
+						}
 					}
 				}
 			}
 		}
 		
-		// Get Dataseries
-		$seriesKeys = ['sitecode' => '', 'variablecode' => '', 'variablename' => '', 'variableunitsname' => '', 'variableunitsabbreviation' => '', 'datatype' => '', 'getdataurl' => '', 'methoddescription' => ''];
+		// Get series
+		$seriesKeys = ['sitecode' => '', 'variablecode' => '', 'getdataurl' => ''];
+		$variableKeys = ['variablecode' => '', 'variablename' => '', 'variableunitsname' => '', 'variableunitsabbreviation' => ''];
 		$seriesJSON = file_get_contents("http://data.iutahepscor.org/tsa/api/v1/dataseries/?limit=0");
 		$series = json_decode($seriesJSON);
+		
+		// Process series into database
 		foreach ($series->objects as $s) {
-			// Only add if site was added
+			// Only add series if site was added
 			if(!Site::where(['sitecode' => $s->sitecode])->get()->isempty()) {
 				// Only add desired variables
 				if (in_array($s->variablelevel, $variableLevels) && in_array($s->qualitycontrollevelcode, $qualityControlLevelCodes)) {
-					// Clean up array
+					// Strip down arrays for insert
 					$s = (array) $s;
+					$v = array_intersect_key($s, $variableKeys);
 					$s = array_intersect_key($s, $seriesKeys);
-					// Add
-					Series::updateOrCreate((array) $s);
+					// Add Series
+					try {
+						Series::firstOrCreate($s);
+					} catch (Exception $e) {
+						// Series already exists
+					}
+					// Add Variable
+					try {
+						Variable::firstOrCreate($v);
+					} catch (Exception $e) {
+						// Variable already exists, this will catch a lot!
+					}
 				}
 			}
 		}
@@ -105,7 +129,9 @@ class DataController extends Controller
 	 */
 	public function series($sitecode) {
 		$where = ['sitecode' => $sitecode];
-	    $series = Series::where($where)->get();
+	    $series = DB::table('series')->where($where)->join('variables', function($join) {
+		    	$join->on('series.variablecode', '=', 'variables.variablecode');
+		    })->get();
 	    if(count($series) > 0) {
 			return view('data.series', compact('series'));    
 	    }

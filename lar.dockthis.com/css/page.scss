@@ -216,24 +216,42 @@ a {
 	margin: 0 auto;
 }
 
-.dropdown {
+#menu .dropdown {
 	position: absolute;
-	//z-index: 4;
-	
-	width: 450px;
-	
+	width: $firstColumn * 1.2;
 	display:none;
+	z-index: 4;
+	background-color: $blue;
+	color: $white;
+	box-shadow: $shadow;
 }
 
-.dropdown div {
-	margin-top: $spacing/2;
-	background-color: $blue;
-	box-shadow: $shadow;
-	padding: 10px 15px;
+#menu .dropdown div {
+	border-top: 1px solid $water;
+	padding: 8px 15px;
+	
 	font-size: 30pt;
 	font-weight: normal;
 	line-height: 30pt;
+}
+
+.topic .dropdown {
+	position: absolute;
+	width: $firstColumn;
+	display:none;
+	z-index: 4;
+	background-color: $blue;
 	color: $white;
+	box-shadow: $shadow;
+}
+
+.topic .dropdown div {
+	border-top: 1px solid $water;
+	padding: 8px 15px;
+	
+	font-size: 18pt;
+	font-weight: normal;
+	line-height: 18pt;
 }
 
 .button {
@@ -284,6 +302,8 @@ a {
 }
 
 .marker {
+	vertical-align: middle;
+	display: inline-block;
 	background-color: $blueDarker;
 	color: #ffffff;
 	padding: 5px 10px 5px 10px;
@@ -291,14 +311,13 @@ a {
 	white-space: nowrap;
 	font-size: 20px;
 	line-height: 20px;
-	box-shadow: $shadow;
-	border-top-right-radius: 7px;
-	border-bottom-right-radius: 7px;
-	border-top-left-radius: 3px;
-	border-bottom-left-radius: 3px;
-	margin-left: 14px;
 }
 
+.marker.on {
+	opacity: 1;
+}
+
+/*
 .marker:before {
 	content: '';
 	display:block;
@@ -311,22 +330,27 @@ a {
 	top: 0px;
 	left: 0px;
 }
+*/
+
+.marker-left {
+	vertical-align: middle;
+	display: inline-block;
+	width: 0; 
+	height: 0; 
+	border-bottom: 15px solid transparent;  /* left arrow slant */
+	border-top: 15px solid transparent; /* right arrow slant */
+	border-right: 15px solid $blueDarker; /* bottom, add background color here */
+	font-size: 0;
+	line-height: 0;
+}
+
+.marker .c1 {
+	
+}
 
 .marker i {
 	font-size: 10pt;
 	line-height: 12pt;
 	margin-left: $spacing/2;
 	opacity: .75;
-}
-
-.marker.highlight {
-	background-color: $blue;
-}
-
-.marker.highlight:before {
-	border-right: 15px solid $blue; 
-}
-
-.marker.highlight i {
-	opacity: 1.0;
 }

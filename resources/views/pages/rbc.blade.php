@@ -17,13 +17,13 @@
 @section('pageMenu')
 	<div>Great Salt Lake Watershed</div>
 	<div>GAMUT Project</div>
+	<div class='current'>Red Butte Creek</div>
 	<div>Biodiversity</div>
 @endsection
 
 
 @section('pageIntro')
 	<p>Red Butte Creek is a small stream whose headwaters are found in the northeast part of Salt Lake County, Utah. It flows west through the Red Butte Garden and Arboretum, by the University of Utah, Fort Douglas and flows southwesterly through Salt Lake City’s Liberty Park before forming a confluence with the Jordan River.</p>
-	<p>Explore the data collected along the creek.</p>
 @endsection
 
 
@@ -44,7 +44,7 @@
 		// Initalize Data Structure
 		var sites = [];
 		
-		// Add sites to the map
+		// Sites with Variables
 		@foreach ($sites as $site)
 			
 			sites.push({
@@ -52,24 +52,75 @@
 				code: '{{$site->sitecode}}',
 				latitude: {{$site->latitude}},
 				longitude: {{$site->longitude}},
-				series: {
+				series: [
 					@foreach ($site->series as $series) 
-						code:{{$series->variablecode}},
-						name:{{$series->variablename}},
-						units: {
-							name:{{$series->variableunitsname}},
-							abbreviation:{{$series->variableunitsabbreviation}}
-						}
+						'{{$series->variablecode}}',
 					@endforeach
-				}
+				]
 			});
 
 		@endforeach
 		
-		// Initialize Map
-		var rbcmap = Map('rbcmap', sites);
+		var variables = [
+		    {
+			    name: 'Temperature',
+			    codes: ['WaterTemp_EXO'],
+		    },
+		    {
+			    name: 'Dissolved Oxygen',
+			    codes: ['ODO']
+		    },
+		    {
+			    name: 'pH',
+			    codes: ['pH']
+		    },
+		    {
+			    name: 'Specific Conductance',
+			    codes: ['SpCond']
+		    },
+		    {
+			    name: 'Turbitdity',
+			    codes: ['TurbMed']
+		    },
+		    {
+			    name: 'Water Level',
+			    codes: ['Stage','Level']
+		    }
+	    ];
+
+	    var topics = [];
+	    
+	    // All Varaibles, one site
+	    topics.push({
+				name: 'A Monitoring Station',
+				variables: ['WaterTemp_EXO', 'ODO', 'pH', 'SpCond', 'TurbMed', 'Stage', 'Level'],
+				mode: DE.mode.ONESITE
+		    });
+		    
+		// Curated pairs
+		topics.push({
+			name: 'Dissolved Oxygen and Temperature',
+			variables: ['ODO', 'WaterTemp_EXO'],
+			mode: DE.mode.ONESITE
+		});
+		topics.push({
+			name: 'Turbidity and Water Level',
+			variables: ['TurbMed', 'Stage', 'Level'],
+			mode: DE.mode.ONESITE
+		});
 		
+		// One variable, many sites  
+		for (index in variables) {
+			variable = variables[index];
+			topics.push({
+				name: variable.name,
+				variables: variable.codes,
+				mode: DE.mode.MANYSITES
+			});
+		}
+
 		// Initalize Data Explorer
-		var dataexplorer = DataExplorer(sites, variables);
+		var dataexplorer = DE.create(sites, variables, topics);
+		
 	</script>
 @endsection
