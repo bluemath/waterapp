@@ -21,6 +21,13 @@ class AppController extends Controller
 		
 	}
 	
+	public function test() {
+		
+		// This was used for development, and is an easy way 
+		// to try out new code at /test in a web browser
+		
+	}
+	
 	public function app() {
 		
 		return view('pages.grid');

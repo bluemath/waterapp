@@ -3,6 +3,7 @@
 // Pages
 Route::get('/', 'AppController@comingsoon');
 Route::get('app', 'AppController@app');
+Route::get('test', 'AppController@test');
 
 // App Data
 Route::get('app/pages', 'AppController@pages');
@@ -18,6 +19,3 @@ Route::get('data/sites/{sitecode}/update', 'DataController@seriesUpdate');
 // Data
 Route::get('data/sites/{sitecode}/{variablecode}/update', 'DataController@dataUpdate');
 Route::get('data/sites/{sitecode}/{variablecode}/{start?}/{end?}', 'DataController@data');
-
-// Map tiles
-// Route::get('map/{url?}', 'MapController@relay')->where('url', '(.*)');;

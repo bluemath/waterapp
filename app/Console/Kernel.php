@@ -5,6 +5,9 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+use App\Site;
+use DB;
+
 class Kernel extends ConsoleKernel
 {
     /**
@@ -24,7 +27,25 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('inspire')
-                 ->hourly();
+
+		// Every 15 minutes, ping all the update URLs for site/variable
+                 
+        // Limit to Red Butte
+		$siteCodeContains = ['RB_'];
+		
+		// Uncomment to update data for all sites
+		// $siteCodeContains = ['RB_', 'PR_', 'LR_'];
+		
+		foreach($siteCodeContains as $piece) {
+			$sites = Site::where('sitecode', 'LIKE', '%' . $piece . '%')->get();
+			foreach ($sites as $site) {
+				$series = DB::table('series')->select('variablecode')->where('sitecode', '=', $site->sitecode)->get();
+				foreach ($series as $s) {
+					$url = url('/data/sites/' . $site->sitecode. '/' . $s->variablecode . '/update');
+					// Ping
+					$schedule->cron('*/15 * * * *')->pingBefore($url);
+				}
+			}
+		}       
     }
 }
