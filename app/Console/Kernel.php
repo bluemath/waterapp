@@ -43,7 +43,7 @@ class Kernel extends ConsoleKernel
 				foreach ($series as $s) {
 					$url = url('/data/sites/' . $site->sitecode. '/' . $s->variablecode . '/update');
 					// Ping
-					$schedule->cron('*/15 * * * *')->pingBefore($url);
+					$schedule->call(function () { return; })->cron('*/15 * * * *')->pingBefore($url);
 				}
 			}
 		}       
