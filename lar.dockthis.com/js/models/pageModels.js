@@ -5,9 +5,26 @@ var Topics = Backbone.Collection.extend({
 	model: Topic
 });
 
+var Site = Backbone.Model.extend({
+});
+
+var Sites = Backbone.Collection.extend({
+	model: Site,
+	comparator: 'latitude'
+});
+
+var Variable = Backbone.Model.extend({
+});
+
+var Variables = Backbone.Collection.extend({
+	model: Variable,
+});
+
 var Page = Backbone.Model.extend({
 	model: {
-		topics: Topics
+		topics: Topics,
+		sites: Sites,
+		variables: Variables
 	},
 	initialize: function() {
 		//this.fetch();

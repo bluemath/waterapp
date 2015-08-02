@@ -93,6 +93,9 @@ $(function() {
 				// Show the splash
 				App.Splash.show();
 				
+				// Set page title
+				$(document).attr('title', 'iUtah');
+				
 			},
 			
 			page: function(id) {

@@ -263,6 +263,10 @@ a {
   line-height: 20pt;
   margin-left: 24px; }
 
+.markercontainer {
+  overflow: hidden;
+  white-space: nowrap; }
+
 .marker {
   vertical-align: middle;
   display: inline-block;

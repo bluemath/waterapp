@@ -44,11 +44,12 @@ function MapSpread(element, sites) {
 	// Using the locations of the sites, calculate center and extent for map
 	var lats = [];
 	var lons = [];
-	for (site in sites) {
-		site = sites[site];
-		lats.push(site.latitude);
-		lons.push(site.longitude);
-	}
+	
+	sites.each(function(site) {
+		lats.push(site.get('latitude'));
+		lons.push(site.get('longitude'));
+	}, this);
+	
 	var minLat = Math.min.apply(null, lats);
 	var maxLat = Math.max.apply(null, lats);
 	var minLon = Math.min.apply(null, lons);
@@ -82,6 +83,17 @@ function MapSpread(element, sites) {
 			map.updateSize();
 		}, 10);
 		
+	};
+	
+	map.recenter = function() {
+		console.log("recenter map");
+		var pan = ol.animation.pan({
+		    duration: 400,
+		    source: (map.getView().getCenter())
+		});
+		map.beforeRender(pan);
+		map.getView().setCenter(center);
+		map.getView().setZoom(13);
 	};
 	
 	return map;

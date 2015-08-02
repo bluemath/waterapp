@@ -19,14 +19,19 @@ var PageView = Backbone.View.extend({
 		$('.topic .control').empty();
 		$('.topic .detail').empty();
 		
+		// Remove exisiting Page View
+		if(App.State.pageView != undefined) {
+			App.State.pageView.remove();
+		}
+		
 		// Load the view for the appropriate page type
 		var type = this.currentPageModel.get('type');
 		switch(type) {
 			case "DataExplorer":
-				new DataPageView({ model: this.currentPageModel });
+				App.State.pageView = new DataPageView({ model: this.currentPageModel });
 				break;
 			case "Photos":
-				new PhotosPageView({ model: this.currentPageModel });
+				App.State.pageView = new PhotosPageView({ model: this.currentPageModel });
 				break;
 			default:
 				App.State.set('currentpage', undefined);
@@ -64,52 +69,42 @@ var DataPageView = Backbone.View.extend({
 		
 		debug("DataPageView Init");
 		
-		this.loadMap();
-		this.loadMapSites();
-		this.loadChart();
+		this.model.set('selectedsites', new Sites());
 		
 		this.listenTo(App.State, 'change:currenttopic', this.changeTopic);
-		this.listenTo(App.State, 'change:selectedsite', this.changeSite);
+		this.listenTo(this.model, 'change:selectedsites', this.updateSites);
+		
+		this.render();
 
 	},
 	render: function() {
-		
+		this.loadMap();
+		this.loadMapSites();
+		this.loadChart();
 	},
 	
 	loadMap: function() {
 		// Load Map
 		var spread = $('.spread');
 		var mapDiv = $("<div>").addClass('map');
-		// Pass pointer events
-		mapDiv.attr('touch-action', 'none');
 		spread.append(mapDiv);
-		this.map = new MapSpread(mapDiv[0], this.model.get('sites'));
+		this.map = MapSpread(mapDiv[0], this.model.get('sites'));
 	},
 	
 	loadMapSites: function() {
-		// Load Sites
+		// Get Sites
 		var sites = this.model.get('sites');
 		
 		// Dark to light, from colorbrewer
 		var colors = ['#021735','#08306b', '#08519c', '#2171b5', '#4292c6', '#6baed6', '#9ecae1', '#c6dbef', '#deebf7'];
-		
-		// Order sites by latitude (highest to lowest)
-		sites.sort(function(a,b) {
-			return a.latitude - b.latitude;
-		});
-		
-		for (site in sites) {
-			var site = sites[site];
-			site.color = colors.shift();
-			site.selected = false;
+
+		sites.each(function(site) {
+			site.set('color', colors.shift());
 			
-			var code = site.sitecode;
-			var name = site.sitename;
-			var latitude = site.latitude;
-			var longitude = site.longitude;
-			var color = site.color;
-			
-			var camera = (site.camera) ? '' : "<i class='fa fa-video-camera'></i>";
+			var code = site.get('sitecode');
+			var name = site.get('sitename');
+			var latitude = site.get('latitude');
+			var longitude = site.get('longitude');
 			
 			this.map.addOverlay(new ol.Overlay({
 			  position: ol.proj.transform(
@@ -117,39 +112,112 @@ var DataPageView = Backbone.View.extend({
 			    'EPSG:4326',
 			    'EPSG:3857'
 			  ),
-			  element: $("<div id='" + code + "'><div class='marker-left'></div><div class='marker'>" + name + camera + "</div></div>"),
+			  element: $("<div id='" + code + "' class='markercontainer'><div class='marker-left'></div><div class='marker'>" + name + "</div></div>"),
 			  positioning: 'center-left',
 			}));
 			
 			$("#"+code).fadeTo(200,.8);
-			//$("#"+code+" .marker").css('background-color', '');
-			//$("#"+code+" .marker-left").css('border-right-color', '');
+			
+			var that = this;
 			
 			(function(site) {
 				$("#"+code).click(function() {
-					App.State.set("selectedsite", site);
+					that.model.set("selectedsite", site);
+					that.updateSites();
 				});
 			})(site);
 			
-		}
+		}, this);
+		
 	},
 	
 	loadChart: function() {
 		// Setup Chart
 		var detail = $('.topic .detail');
 		var chartDiv = $("<div>").addClass('chart');
-		// Pass pointer events
-		chartDiv.attr('touch-action', 'none');
 		detail.append(chartDiv);
-		this.chart = new Chart(chartDiv[0]);
+		
+		sites = this.model.get("sites");
+		console.log(sites);
+		variables = this.model.get("variables");
+		console.log(variables);
+		this.chart = new Chart(chartDiv[0], sites, variables);
 	},
 	
-	changeSite: function() {
-		debug('change site to ' + App.State.get("selectedsite").sitename);
+	updateSites: function() {
+
+		var site = this.model.get("selectedsite");
+		
+		debug('clicked site ' + site.get("sitename"));
+		
+		var selectedSites = this.model.get("selectedsites");
+		
+		if(App.State.get("currenttopic").get("sites") == "ONE") {
+			// Toggle mode
+			selectedSites.reset(site);
+		} else {
+			// Set of sites mode
+			if(selectedSites.contains(site)) selectedSites.remove(site);
+			else selectedSites.add(site);
+			
+			// Must have at least one site, so add it back if empty
+			if(selectedSites.length == 0) selectedSites.add(site);
+		}
+		
+		this.updateMapAndChart();
 	},
 	
 	changeTopic: function() {
 		debug('change topic to ' + App.State.get("currenttopic").get("name"));
+		
+		var topic = App.State.get("currenttopic");
+		var selectedSite = this.model.get("selectedsite");
+		var selectedSites = this.model.get("selectedsites");
+		var allSites = this.model.get('sites');
+		
+		// Prevent too many sites from being visible
+		if(topic.get('sites') == "ONE") {
+			if(selectedSites.length == 0) {
+				// Default site
+				selectedSites.reset(allSites.first());
+			} else {
+				// Most recently selected site
+				selectedSites.reset(selectedSite);
+			}
+		}
+		
+		// Center map
+		this.map.recenter();
+		
+		this.updateMapAndChart();
+	},
+	
+	updateMapAndChart: function() {
+		
+		var allSites = this.model.get('sites');
+		var selectedSites = this.model.get("selectedsites");
+		
+		// Properly shade the sites
+		allSites.each(function(site) {
+			var code = site.get("sitecode");
+			var color = site.get("color");
+			if(selectedSites.contains(site)) {
+				// Activate
+				$("#"+code+" .marker").css('background-color', color);
+				$("#"+code+" .marker-left").css('border-right-color', color);
+				$("#"+code).fadeTo(0, 1);
+			} else {
+				// Deactivate
+				$("#"+code).fadeTo(0,.8);
+				$("#"+code+" .marker").css('background-color', '');
+				$("#"+code+" .marker-left").css('border-right-color', '');
+			}
+		});
+		
+		// Send the correct series to the chart
+		var topic = App.State.get("currenttopic");
+		this.chart.update(topic, selectedSites);
+		
 	}
 	
 });

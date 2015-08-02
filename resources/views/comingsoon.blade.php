@@ -31,7 +31,7 @@
 
 html,
 body {
-	/* cursor: none; */
+	cursor: none;
 	
 	font-family: 'reykjavikone';
     margin: 0;
@@ -44,7 +44,6 @@ body {
 	color: #ffffff;
 	
 	/* Prevent highlight on click */
-/*
 	-webkit-tap-highlight-color:  rgba(255, 255, 255, 0);  
 	-webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -52,7 +51,11 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-*/
+}
+
+#splash {
+	width: 100%;
+	height: 100%;
 }
 
 canvas {
@@ -99,13 +102,15 @@ canvas[resize] {
 </head>
 <body> 
 	
-	<canvas id="canvas" resize hidpi="off" touch-action="none" keepalive="true"></canvas>
+	<div id="splash">
+		<canvas id="canvas" resize hidpi="off" touch-action="none" keepalive="true"></canvas>
+	</div>
 	
 	<script type="text/javascript">
 
 		// Load dots
 		$(document).ready(function() {
-			var UI = new DotUI(document.getElementById('canvas'));
+			var UI = new Splash($('#splash'));
 			
 			// Reload every 5 minutes (if idle)
 			$.idleTimer(5*60*1000);
@@ -125,12 +130,12 @@ canvas[resize] {
 		
 	</script>
 	
-	<!--
+
 	<div class='banner'>
 		<p>Red Butte Creek to the Great Salt Lake</p>
 		<p class="bigger">New Exhibit Coming Soon!</p>
 	</div>
-	-->
+
 
 </body>
 </html>

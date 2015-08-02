@@ -1,9 +1,11 @@
-var chart;
+function Chart(element, sites, variables) {
 
-function Chart(element) {
+	this.baseURL = "/data/sites";
 
-    // Create the chart
-    chart = new Highcharts.StockChart({
+	this.sites = sites;
+	this.variables = variables;
+
+	this.chart = new Highcharts.StockChart({
         chart : {
             renderTo: element,
             pinchType: '',
@@ -106,37 +108,83 @@ function Chart(element) {
             text: null
         },
         series : [],
-        yAxis: [     		
-        		{
-	        		labels: {
-					  enabled: false
-					}	
-	        		
-        		}		        	 
-        ]
+        yAxis: []
     });
+    
+    this.variables.each(function(variable) {
+		var variablecode = variable.get('variablecode');
+		var axis = {
+						labels: {
+							enabled: false
+						}, 
+						id: variablecode
+					};	
+
+		this.chart.addAxis(axis);
+	}, this);
 	
-}
-
-function hcRemoveAll() {
-	var seriesLength = chart.series.length;
-	for(var i = seriesLength -1; i > -1; i--) {
-		chart.series[i].remove();
+	this.update = function(topic, selectedSites) {
+		
+		// Clear exisiting data
+		this.removeAll();
+		
+		series = topic.get('variables');
+		mode = topic.get('sites');
+		
+		selectedSites.each(function(site) {
+			for(i in series) {
+				s = series[i];
+				
+				// axis
+				axis = i;
+				
+				// color is undefined (auto picked) if only one site is shown
+				// otherwise, it's the same as the site
+				var color = (mode == 'ONE') ? undefined : site.get('color');
+				
+				// add the series if the site has it
+				if(_.contains(site.get('series'), s)) {
+					variable = variables.findWhere({variablecode: s});
+					this.addSeries(site, variable, color, axis);
+				}
+			}
+		}, this);
 	}
-}
-
-function hcAddSeries(url, sitecode, sitename, variablecode, variablename, axis, color) {
-	$.getJSON(url, function (data) {
-		 var s = {
-		    id: sitecode+variablecode,
-		    name: sitename+', '+variablename,
-		    yAxis: axis,
-		    data: data,
-		    tooltip: {
-			    valueSuffix: ''
-		    },
-		    color: color
-	    }
-	    chart.addSeries(s);
-	});
+	
+	this.removeAll = function() {
+		var seriesLength = this.chart.series.length;
+		for(var i = seriesLength -1; i > -1; i--) {
+			this.chart.series[i].remove();
+		}
+	}
+	
+	this.addSeries = function(site, variable, color) {
+		
+		sitecode = site.get('sitecode');
+		variablecode = variable.get('variablecode');
+		url = this.baseURL + "/" + sitecode + "/" + variablecode;
+		
+		sitename = site.get('sitename');
+		variablename = variable.get('variablename');
+		units = variable.get('variableunitsabbreviation');
+		
+		chart = this.chart;
+		axis = chart.get(variablecode);
+		console.log(axis);
+		
+		$.getJSON(url, function (data) {
+			
+			var s = {
+			    id: sitecode+variablecode,
+			    name: sitename+', '+variablename,
+			    yAxis: variablecode,
+			    data: data,
+			    tooltip: {
+				    valueSuffix: units
+			    },
+		    }
+		    if(color != undefined) s.color = color;
+		    chart.addSeries(s);
+		});
+	}
 }

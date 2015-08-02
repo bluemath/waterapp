@@ -19,7 +19,7 @@
 		<script src="{{ URL::asset('js/lib/backbone/backbone.js') }}"></script>	
 		
 		<script src="{{ URL::asset('js/lib/open-layers/ol-debug.js') }}"></script>
-		<script src="{{ URL::asset('js/lib/highstock/highstock.js') }}"></script>
+		<script src="{{ URL::asset('js/lib/highstock/highstock.src.js') }}"></script>
 		
 		<script src="{{ URL::asset('js/models/appModel.js') }}"></script>
 		<script src="{{ URL::asset('js/models/pageModels.js') }}"></script>
@@ -43,7 +43,7 @@
 		
 	</head>
 	
-	<body>
+	<body touch-action="none">
 
 		<div id="page"> 
 	

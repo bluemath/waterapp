@@ -338,6 +338,11 @@ a {
 	margin-left: $spacing*2;
 }
 
+.markercontainer {
+	overflow: hidden;
+	white-space: nowrap;
+}
+
 .marker {
 	vertical-align: middle;
 	display: inline-block;

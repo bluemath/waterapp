@@ -36,7 +36,8 @@ var Splash = function(container) {
 	this.canvas = container.find("canvas")[0];
 	paper.install(window);
 	paper.setup(this.canvas);
-	paper.view.viewSize = [window.innerWidth, window.innerHeight];
+	//paper.view.viewSize = [window.innerWidth, window.innerHeight];
+	paper.view.viewSize = [container.width(), container.height()];
 	
 	// chipmunk
 	this.space = new cp.Space();
@@ -60,10 +61,10 @@ var Splash = function(container) {
 		that.$container.fadeIn(400);
 	}
 	
-	// Window resize
-	paper.view.onResize = function(event) {
-
-	}
+	// Resize the canvas if the window size changes
+	$(window).resize(function() {
+		paper.view.viewSize = [container.width(), container.height()];
+	});
 
 	// Step Simulation
 	paper.view.onFrame = function (event) {
@@ -267,7 +268,7 @@ var Splash = function(container) {
 		that._bubbles.push(dot);
 		setTimeout(function() {
 			that.popDot();
-			}, 300 + Math.random()*1500);
+			}, 100 + Math.random()*1500);
 	}
 	
 	this.popDot();

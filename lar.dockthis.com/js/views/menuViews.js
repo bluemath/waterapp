@@ -113,7 +113,7 @@ var PageMenuItem = Backbone.View.extend({
     },
     itemClick: function(event) {
 	    // Goto the page, topic zero
-	    App.Router.navigate(this.model.get('id'), true);
+	    App.Router.navigate(this.model.get('id')+"/0", true);
 	    this.options.parent.closeMenus();
     }
 });
