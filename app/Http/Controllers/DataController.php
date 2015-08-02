@@ -298,16 +298,19 @@ class DataController extends Controller
 		$time_post = microtime(true);
 		$exec_time = number_format($time_post - $time_pre, 1);
 	    $this->println("$sitecode $variablecode: Inserted " . count($data) . " into database in $exec_time seconds");
-
-		// Remove the cache
-		Cache::forget("$sitecode/$variablecode");
 		
-		// Rebuild the cache
-		$time_pre = microtime(true);
-		$this->data(new Request(), $sitecode, $variablecode);
-		$time_post = microtime(true);
-		$exec_time = number_format($time_post - $time_pre, 1);
-	    $this->println("$sitecode $variablecode: Rebuilt the cache in $exec_time seconds");
+		// Rebuild the cache if more than 0 were inserted
+		if(count($data) > 0) {
+			// Remove the cache
+			Cache::forget("$sitecode/$variablecode");
+			
+			// Rebuild
+			$time_pre = microtime(true);
+			$this->data(new Request(), $sitecode, $variablecode);
+			$time_post = microtime(true);
+			$exec_time = number_format($time_post - $time_pre, 1);
+		    $this->println("$sitecode $variablecode: Rebuilt the cache in $exec_time seconds");
+		}
 	    
 		// Redirect
 	    return redirect()->back();
