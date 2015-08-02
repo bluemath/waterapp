@@ -213,7 +213,7 @@ class DataController extends Controller
 	}
 	
 	private function println ($string_message) {
-   		empty($_SERVER['SERVER_PROTOCOL']) ? print "$string_message<br />" : print "$string_message\n";
+   		empty($_SERVER['SERVER_PROTOCOL']) ? print "$string_message\n" : print "$string_message<br>";
 	}
 
 	public function dataUpdate($sitecode, $variablecode) {
