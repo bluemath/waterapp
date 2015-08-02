@@ -211,6 +211,10 @@ class DataController extends Controller
 		}
 		return $ra;
 	}
+	
+	private function println ($string_message) {
+   		$_SERVER['SERVER_PROTOCOL'] ? print "$string_message<br />" : print "$string_message\n";
+	}
 
 	public function dataUpdate($sitecode, $variablecode) {
 	    // This will get new data since the last update (via the ML endpoint)
@@ -245,7 +249,7 @@ class DataController extends Controller
 	    $parsedURL['query'] = http_build_query($query);
 	    $url = $parsedURL['scheme'] . "://" . $parsedURL['host'] . $parsedURL['path'] . "?" . $parsedURL['query'];
 	    
-	    echo $url;
+	    println("$sitecode $variablecode: $url");
 	    
 	    // TESTING
 	    // $url = 'http://lar.dockthis.com/xml/dataseries.xml';
@@ -255,8 +259,8 @@ class DataController extends Controller
 		$xml = simplexml_load_file($url);
 		$time_post = microtime(true);
 		$exec_time = number_format($time_post - $time_pre, 1);
-	    echo "<br>XML downloaded in $exec_time seconds<br>";
-	    echo "got " . count($xml->timeSeries->values->value) . " values from '" . $query['startDate'] . "' until now<br>";
+	    println("$sitecode $variablecode: XML downloaded in $exec_time seconds.");
+	    println("$sitecode $variablecode: got " . count($xml->timeSeries->values->value) . " values from '" . $query['startDate'] . "' until now.");
 
 		// Filter out bad data
 		$noValue = $xml->timeSeries->variable->noDataValue;
@@ -265,7 +269,7 @@ class DataController extends Controller
 		// Add values to the database (timed)
 		$time_pre = microtime(true);
 		$data = [];
-		echo "Not saving data with values of $noValue<br>";
+		println("$sitecode $variablecode: not saving data with values of $noValue");
 		foreach ($xml->timeSeries->values->value as $value) {
 			if((string) $value != $noValue) {
 				$data[] = [	'sitecode' => $sitecode,
@@ -276,7 +280,7 @@ class DataController extends Controller
 		}
 		$time_post = microtime(true);
 		$exec_time = number_format($time_post - $time_pre, 1);
-	    echo "Filtered down to " . count($data) . " values in $exec_time seconds<br>";
+	    println("$sitecode $variablecode: Filtered down to " . count($data) . " values in $exec_time seconds");
 		
 		// Add to the DB
 		$time_pre = microtime(true);
@@ -293,7 +297,7 @@ class DataController extends Controller
 		});
 		$time_post = microtime(true);
 		$exec_time = number_format($time_post - $time_pre, 1);
-	    echo "Inserted " . count($data) . " into database in $exec_time seconds<br>";
+	    println("$sitecode $variablecode: Inserted " . count($data) . " into database in $exec_time seconds");
 
 		// Remove the cache
 		Cache::forget("$sitecode/$variablecode");
@@ -303,7 +307,7 @@ class DataController extends Controller
 		$this->data(new Request(), $sitecode, $variablecode);
 		$time_post = microtime(true);
 		$exec_time = number_format($time_post - $time_pre, 1);
-	    echo "Rebuilt the cache in $exec_time seconds<br>";
+	    println("$sitecode $variablecode: Rebuilt the cache in $exec_time seconds");
 	    
 		// Redirect
 	    return redirect()->back();
