@@ -151,8 +151,7 @@
 
 			    var sitecode = '{{ $s->sitecode }}';
 			    var variablecode = '{{ $s->variablecode }}';
-			    var url = 'http://lar.dockthis.com/data/sites/'
-			    + sitecode + '/' + variablecode + '?callback=?';
+			    var url = URL::url(sitecode + '/' + variablecode + '?callback=?');
 			    
 			    console.log('{{ $s->variableunitsabbreviation }}');
 			    
