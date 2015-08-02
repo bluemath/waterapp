@@ -151,7 +151,7 @@
 
 			    var sitecode = '{{ $s->sitecode }}';
 			    var variablecode = '{{ $s->variablecode }}';
-			    var url = URL::url(sitecode + '/' + variablecode + '?callback=?');
+			    var url = sitecode + '/' + variablecode + '?callback=?';
 			    
 			    console.log('{{ $s->variableunitsabbreviation }}');
 			    
