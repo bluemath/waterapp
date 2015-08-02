@@ -41,9 +41,10 @@ class Kernel extends ConsoleKernel
 			foreach ($sites as $site) {
 				$series = DB::table('series')->select('variablecode')->where('sitecode', '=', $site->sitecode)->get();
 				foreach ($series as $s) {
-					$url = url('/data/sites/' . $site->sitecode. '/' . $s->variablecode . '/update');
-					// Ping
-					$schedule->call(function () { return; })->cron('*/15 * * * *')->pingBefore($url);
+					$sitecode = $site->sitecode;
+					$variablecode = $s->variablecode;
+					//$url = url('/data/sites/' . $site->sitecode. '/' . $s->variablecode . '/update');
+					$schedule->call('DataController@dataUpdate',compact('sitecode', 'variablecode'))->cron('*/15 * * * *');
 				}
 			}
 		}       
