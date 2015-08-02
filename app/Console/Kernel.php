@@ -5,6 +5,8 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+use App\Http\Controllers\DataController;
+
 use App\Site;
 use DB;
 
@@ -44,7 +46,7 @@ class Kernel extends ConsoleKernel
 					$sitecode = $site->sitecode;
 					$variablecode = $s->variablecode;
 					//$url = url('/data/sites/' . $site->sitecode. '/' . $s->variablecode . '/update');
-					$schedule->call('DataController@dataUpdate',compact('sitecode', 'variablecode'))->cron('*/15 * * * *');
+					$schedule->call('DataController@dataUpdate',compact('sitecode', 'variablecode'))->cron('* * * * *');
 				}
 			}
 		}       
