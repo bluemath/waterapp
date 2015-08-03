@@ -44,9 +44,10 @@ class Kernel extends ConsoleKernel
 					$sitecode = $site->sitecode;
 					$variablecode = $s->variablecode;
 					//$url = url('/data/sites/' . $site->sitecode. '/' . $s->variablecode . '/update');
-					$schedule->call('App\Http\Controllers\DataController@dataUpdate',compact('sitecode', 'variablecode'))->cron('30 * * * *');
+					//$schedule->call('App\Http\Controllers\DataController@dataUpdate',compact('sitecode', 'variablecode'))->cron('*/5 * * * *');
+					$schedule->exec("wget -O/dev/null $url")->cron('*/5 * * * *');
 				}
 			}
-		}       
+		}
     }
 }

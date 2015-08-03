@@ -249,7 +249,7 @@ class DataController extends Controller
 	    $parsedURL['query'] = http_build_query($query);
 	    $url = $parsedURL['scheme'] . "://" . $parsedURL['host'] . $parsedURL['path'] . "?" . $parsedURL['query'];
 	    
-	    $this->println("$sitecode $variablecode: $url");
+	    $this->println("$sitecode $variablecode");
 	    
 	    // TESTING
 	    // $url = 'http://lar.dockthis.com/xml/dataseries.xml';

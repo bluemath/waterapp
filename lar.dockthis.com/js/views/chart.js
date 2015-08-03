@@ -173,6 +173,9 @@ function Chart(element, sites, variables) {
 		
 		chart = this.chart;
 		
+		// Because this is async, changing sites quickly can cause duplicates
+		// Once the data is received, we should check to see if display is necessary
+		// However, we could also cache the data and show immediately...
 		$.getJSON(url, (function(site, variable) {
 				
 				return function(data) {
