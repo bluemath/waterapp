@@ -21,6 +21,13 @@ function Chart(element, sites, variables) {
 	        	}, 
 	        	tooltip: {
 		        	valueDecimals: 2
+	        	},
+	        	point: {
+		        	events: {
+			        	mouseOver: function() {
+				        	console.log(this.x);
+			        	}
+		        	}
 	        	}
         	}  
         },
@@ -164,27 +171,33 @@ function Chart(element, sites, variables) {
 		variablecode = variable.get('variablecode');
 		url = this.baseURL + "/" + sitecode + "/" + variablecode;
 		
-		sitename = site.get('sitename');
-		variablename = variable.get('variablename');
-		units = variable.get('variableunitsabbreviation');
-		
 		chart = this.chart;
-		axis = chart.get(variablecode);
-		console.log(axis);
 		
-		$.getJSON(url, function (data) {
-			
-			var s = {
-			    id: sitecode+variablecode,
-			    name: sitename+', '+variablename,
-			    yAxis: variablecode,
-			    data: data,
-			    tooltip: {
-				    valueSuffix: units
-			    },
-		    }
-		    if(color != undefined) s.color = color;
-		    chart.addSeries(s);
-		});
+		$.getJSON(url, (function(site, variable) {
+				
+				return function(data) {
+					var sitecode = site.get('sitecode');
+					var variablecode = variable.get('variablecode');
+					var sitename = site.get('sitename');
+					var variablename = variable.get('variablename');
+					var units = variable.get('variableunitsabbreviation');
+					
+					var s = {
+					    id: sitecode+variablecode,
+					    name: sitename+', '+variablename,
+					    yAxis: variablecode,
+					    data: data,
+					    tooltip: {
+						    valueSuffix: units
+					    },
+				    }
+				    if(color != undefined) s.color = color;
+				    
+				    //console.log(this);
+				    
+				    chart.addSeries(s);
+				}
+
+		})(site, variable));
 	}
 }
