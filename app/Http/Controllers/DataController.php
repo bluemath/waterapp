@@ -217,6 +217,10 @@ class DataController extends Controller
 	}
 
 	public function dataUpdate($sitecode, $variablecode) {
+		
+		error_reporting(E_ALL);
+		ini_set('display_errors', 1);
+		
 	    // This will get new data since the last update (via the ML endpoint)
 	    
 	    // Get URL
