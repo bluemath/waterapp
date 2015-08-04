@@ -55,6 +55,11 @@ function Chart(element, sites, variables) {
         },
         tooltip : {
         	borderColor: "#333333",
+        	formatter: function() {
+		        return ''+
+		                "" +
+		                'Time: '+ Highcharts.dateFormat('%I:%M %p', this.x);
+		    }
         	 
         },
         rangeSelector : {
@@ -122,7 +127,15 @@ function Chart(element, sites, variables) {
             text: null
         },
         series : [],
-        yAxis: []
+        yAxis: [],
+        xAxis: {
+	        type: 'datetime',
+
+		    dateTimeLabelFormats : {
+		        hour: '%I %p',
+		        minute: '%I:%M %p'
+		    }
+        }
     });
     
     this.variables.each(function(variable) {
@@ -191,6 +204,11 @@ function Chart(element, sites, variables) {
 					var sitename = site.get('sitename');
 					var variablename = variable.get('variablename');
 					var units = variable.get('variableunitsabbreviation');
+					
+					// convert degC to F
+					if (units == 'degC') {
+						units = "ºF";
+					}
 					
 					var s = {
 					    id: sitecode+variablecode,
