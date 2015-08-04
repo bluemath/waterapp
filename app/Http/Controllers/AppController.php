@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Site;
 use App\Variable;
 use DB;
+use Carbon\Carbon;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -25,6 +26,11 @@ class AppController extends Controller
 		
 		// This was used for development, and is an easy way 
 		// to try out new code at /test in a web browser
+		
+		$ts = 1438659900;
+		echo Carbon::createFromTimeStamp($ts)->toDateTimeString(), "<br>";
+		echo Carbon::createFromTimeStamp($ts, 'America/Denver')->timestamp, "<br>";
+		echo Carbon::createFromTimeStampUTC($ts)->toDateTimeString();
 		
 	}
 	

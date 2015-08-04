@@ -170,12 +170,13 @@ class DataController extends Controller
 	public function data(Request $request, $sitecode, $variablecode, $start = null, $end = null) {
 	    
 	    if ($start == null) {
-		    // Cache the full dataset
+		    // Look for a cached version
 			$array = Cache::rememberForever("$sitecode/$variablecode", function () use ($sitecode, $variablecode, $start, $end) {
+				// If not found, cache the full dataset
 				return $this->dataArray($sitecode, $variablecode, $start, $end);
 			});    
 	    } else {
-		    // Generate subsets dynamically
+		    // Generate subsets dynamically (never caches)
 		    $array = $this->dataArray($sitecode, $variablecode, $start, $end);
 	    }
 	    	    
@@ -185,14 +186,21 @@ class DataController extends Controller
     
     private function dataArray($sitecode, $variablecode, $start = null, $end = null) {
 	    
+	    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	    // start and end are always null at this point. 
+	    // should they ever need to be used (non null),
+	    // the below code should be revised and tested.
+	    
 	    $where = ['sitecode' => $sitecode, 'variablecode' => $variablecode];
 	    
 	    // Limit the results based on $start and $end times
 	    if($start == null) { 
 		    $data = Data::select('datetime', 'value')->where($where)->get();
 	    } else if($end == null) {
+		    // not used...
 		    $data = Data::select('datetime', 'value')->where($where)->where('datetime', '>', $start)->get();
 	    } else {
+		    // not used...
 		    // whereBetween not working...
 		    // $data = Data::select('datetime', 'value')->where($where)>whereBetween('datetime',  [$start, $end])->get();
 		    // so just do the same as above:
@@ -203,9 +211,12 @@ class DataController extends Controller
     }
     
     private function toArray($data) {
+	    
 		$ra = [];
 		foreach ($data as $d) {
-			$t = $d->datetime->timestamp * 1000;
+			$t = $d->datetime->timestamp;
+			
+			$t = $t * 1000; // For JS
 			$v = (float) $d->value;
 			$ra[] = [$t, $v];
 		}

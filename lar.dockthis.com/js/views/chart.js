@@ -5,7 +5,14 @@ function Chart(element, sites, variables) {
 	this.sites = sites;
 	this.variables = variables;
 
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
+        }
+    });
+
 	this.chart = new Highcharts.StockChart({
+		
         chart : {
             renderTo: element,
             pinchType: '',
