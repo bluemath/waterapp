@@ -56,13 +56,15 @@ function Chart(element, sites, variables) {
         tooltip : {
         	borderColor: "#333333",
         	dateTimeLabelFormats : {
-		        minute: '%l:%M %p',
-		        hour: '%l %p',
-		        day: '%e. %b',
-				week: '%e. %b',
-				month: '%b \'%y',
-				year: '%Y'
-		    }
+			    millisecond:"%A, %b %e, %l:%M:%S.%L %p",
+			    second:"%A, %b %e, %l:%M:%S %p",
+			    minute:"%A, %b %e, %l:%M %p",
+			    hour:"%A, %b %e, %l:%M %p",
+			    day:"%A, %b %e, %Y",
+			    week:"Week from %A, %b %e, %Y",
+			    month:"%B %Y",
+			    year:"%Y"
+			}
         },
         rangeSelector : {
             selected : 1,
