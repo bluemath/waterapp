@@ -214,6 +214,10 @@ function Chart(element, sites, variables) {
 					// convert degC to F
 					if (units == 'degC') {
 						units = "ºF";
+						data = _.map(data, function(pair) {
+							pair[1] = pair[1] * 1.8 + 32;
+							return pair;
+						});
 					}
 					
 					var s = {
