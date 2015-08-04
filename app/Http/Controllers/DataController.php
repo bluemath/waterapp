@@ -237,6 +237,11 @@ class DataController extends Controller
 	    
 	    // startDate is the date of the most recent (+1s) or empty if never updated
 	    if($data != null) {
+		    
+		    echo "<pre>";
+		    print_r($data);
+		    echo "</pre>";
+		    
 		    $lastTimestamp = $data->datetime;
 		    $lastTimestamp->addSecond();
 		    $query['startDate'] = $lastTimestamp->setTimezone('UTC')->toW3cString();
@@ -313,7 +318,7 @@ class DataController extends Controller
 		}
 	    
 		// Redirect
-	    return redirect()->back();
+	    //return redirect()->back();
     }
 
 }
