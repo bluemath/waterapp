@@ -55,12 +55,14 @@ function Chart(element, sites, variables) {
         },
         tooltip : {
         	borderColor: "#333333",
-        	formatter: function() {
-		        return ''+
-		                "" +
-		                'Time: '+ Highcharts.dateFormat('%I:%M %p', this.x);
+        	dateTimeLabelFormats : {
+		        minute: '%l:%M %p',
+		        hour: '%l %p',
+		        day: '%e. %b',
+				week: '%e. %b',
+				month: '%b \'%y',
+				year: '%Y'
 		    }
-        	 
         },
         rangeSelector : {
             selected : 1,
@@ -132,8 +134,12 @@ function Chart(element, sites, variables) {
 	        type: 'datetime',
 
 		    dateTimeLabelFormats : {
-		        hour: '%I %p',
-		        minute: '%I:%M %p'
+		        minute: '%l:%M %p',
+		        hour: '%l %p',
+		        day: '%e. %b',
+				week: '%e. %b',
+				month: '%b \'%y',
+				year: '%Y'
 		    }
         }
     });
