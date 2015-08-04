@@ -256,9 +256,6 @@ class DataController extends Controller
 	    
 	    $this->println("$sitecode $variablecode");
 	    
-	    // TESTING
-	    // $url = 'http://lar.dockthis.com/xml/dataseries.xml';
-	    
 	    // Get the XML (timed)
 	    $time_pre = microtime(true);
 		$xml = simplexml_load_file($url);
@@ -305,7 +302,7 @@ class DataController extends Controller
 	    $this->println("$sitecode $variablecode: Inserted " . count($data) . " into database in $exec_time seconds");
 		
 		// Rebuild the cache if more than 0 were inserted
-		if(count($data) > 0) {
+		//if(count($data) > 0) {
 			// Remove the cache
 			Cache::forget("$sitecode/$variablecode");
 			
@@ -315,7 +312,7 @@ class DataController extends Controller
 			$time_post = microtime(true);
 			$exec_time = number_format($time_post - $time_pre, 1);
 		    $this->println("$sitecode $variablecode: Rebuilt the cache in $exec_time seconds");
-		}
+		//}
 	    
 		// Redirect
 	    //return redirect()->back();
