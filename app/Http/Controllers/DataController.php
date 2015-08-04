@@ -308,7 +308,7 @@ class DataController extends Controller
 		// Rebuild the cache if more than 0 were inserted
 		//if(count($data) > 0) {
 			// Remove the cache
-			Cache::forget("$sitecode/$variablecode");
+			//Cache::forget("$sitecode/$variablecode");
 			
 			// Rebuild
 			$time_pre = microtime(true);
