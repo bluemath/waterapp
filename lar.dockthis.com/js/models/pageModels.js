@@ -43,7 +43,7 @@ var Page = Backbone.Model.extend({
 });
 
 var Pages = Backbone.Collection.extend({
-	url: '/app/pages',
+	url: '/pages',
 	model: Page
 })
 

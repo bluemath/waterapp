@@ -41,11 +41,9 @@ class AppController extends Controller
 	}
 	
     public function pages() {
-        // Name all the pages
-		// This could be moved to DB
-		
+        // Enumerate all the pages
 		$pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->bio()];
-		
+		// Send back as JSON
 		return response()->json($pages);
     }
     

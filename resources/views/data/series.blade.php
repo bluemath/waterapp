@@ -2,9 +2,9 @@
 
 @section('content')
 
-	<script src="//code.jquery.com/jquery-1.11.3.js"></script>
-	<script src="//code.highcharts.com/stock/highstock.js"></script>
-	<script src="//code.highcharts.com/stock/modules/exporting.js"></script>
+	<script src="{{ URL::asset('js/lib/jquery/jquery-1.11.3.js') }}"></script>
+	<script src="{{ URL::asset('js/lib/highstock/highstock.src.js') }}"></script>
+	<script src="{{ URL::asset('js/lib/backbone/underscore.js') }}"></script>
 
 	<div><a href="{{ action('DataController@sites') }}">Back to Sites</a></div>
 
@@ -15,6 +15,12 @@
 	<script>
 		var chart;
 		$(function () {
+
+			Highcharts.setOptions({
+			        global: {
+			            useUTC: false
+			        }
+			    });
 
 	        // Create the chart
 	        chart = new Highcharts.StockChart({
@@ -156,6 +162,13 @@
 			    console.log('{{ $s->variableunitsabbreviation }}');
 			    
 			    $.getJSON(url, function (data) {
+				    
+				    // Process timestamps from unix to js
+					data = _.map(data, function(pair) {
+						pair[0] = pair[0] * 1000;
+						return pair;
+					});
+				    
 				    var c = {
 					    id: '{{ $s->variablecode }}',
 					    name: '{{ $s->variablename }}',

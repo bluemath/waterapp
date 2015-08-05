@@ -1,6 +1,6 @@
 function Chart(element, sites, variables) {
 
-	this.baseURL = "/data/sites";
+	this.baseURL = "/sites";
 
 	this.sites = sites;
 	this.variables = variables;
@@ -221,6 +221,12 @@ function Chart(element, sites, variables) {
 							return pair;
 						});
 					}
+					
+					// Process timestamps from unix to js
+					data = _.map(data, function(pair) {
+							pair[0] = pair[0] * 1000;
+							return pair;
+						});
 					
 					var s = {
 					    id: sitecode+variablecode,

@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Database\QueryException;
 
 use App\Site;
 use DB;
@@ -36,17 +37,24 @@ class Kernel extends ConsoleKernel
 		// Uncomment to update data for all sites
 		// $siteCodeContains = ['RB_', 'PR_', 'LR_'];
 		
-		foreach($siteCodeContains as $piece) {
-			$sites = Site::where('sitecode', 'LIKE', '%' . $piece . '%')->get();
-			foreach ($sites as $site) {
-				$series = DB::table('series')->select('variablecode')->where('sitecode', '=', $site->sitecode)->get();
-				foreach ($series as $s) {
-					$sitecode = $site->sitecode;
-					$variablecode = $s->variablecode;
-					$url = url('/data/sites/' . $site->sitecode. '/' . $s->variablecode . '/update');
-					$schedule->exec("wget -O/dev/null $url")->cron('0,20,40 * * * *');
+		try {
+			foreach($siteCodeContains as $piece) {
+				$sites = Site::where('sitecode', 'LIKE', '%' . $piece . '%')->get();
+				foreach ($sites as $site) {
+					$series = DB::table('series')->select('variablecode')->where('sitecode', '=', $site->sitecode)->get();
+					foreach ($series as $s) {
+						$sitecode = $site->sitecode;
+						$variablecode = $s->variablecode;
+						$url = url('/sites/' . $site->sitecode. '/' . $s->variablecode . '/update');
+						$schedule->exec("wget -O/dev/null $url")->cron('0,20,40 * * * *');
+					}
 				}
 			}
 		}
+		catch(\Exception $ex) {
+			// Ignore all exceptions...
+			// this will catch if 'php artisan migration' hasn't been done yet
+		}
+	    
     }
 }

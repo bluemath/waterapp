@@ -19,6 +19,7 @@ use App\Data;
 
 class DataController extends Controller
 {
+	
 	///////////
 	// Sites //
 	///////////
@@ -156,182 +157,181 @@ class DataController extends Controller
 	//////////
 	// Data //
 	//////////
-    
-    /**
-	 * dataRange function.
-	 * 
-	 * @access public
-	 * @param mixed $sitecode
-	 * @param mixed $variablecode
-	 * @param mixed $start in YYYY-MM-DDTHH:MM:SSZ format
-	 * @param mixed $end in YYYY-MM-DDTHH:MM:SSZ format
-	 * @return void
-	 */
-	public function data(Request $request, $sitecode, $variablecode, $start = null, $end = null) {
-	    
-	    if ($start == null) {
-		    // Look for a cached version
-			$array = Cache::rememberForever("$sitecode/$variablecode", function () use ($sitecode, $variablecode, $start, $end) {
-				// If not found, cache the full dataset
-				return $this->dataArray($sitecode, $variablecode, $start, $end);
-			});    
-	    } else {
-		    // Generate subsets dynamically (never caches)
-		    $array = $this->dataArray($sitecode, $variablecode, $start, $end);
-	    }
-	    	    
-	    // Return JSON or JSONP
-	    return response()->json($array)->setCallback($request->input('callback'));
-    }
-    
-    private function dataArray($sitecode, $variablecode, $start = null, $end = null) {
-	    
-	    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	    // start and end are always null at this point. 
-	    // should they ever need to be used (non null),
-	    // the below code should be revised and tested.
-	    
-	    $where = ['sitecode' => $sitecode, 'variablecode' => $variablecode];
-	    
-	    // Limit the results based on $start and $end times
-	    if($start == null) { 
-		    $data = Data::select('datetime', 'value')->where($where)->get();
-	    } else if($end == null) {
-		    // not used...
-		    $data = Data::select('datetime', 'value')->where($where)->where('datetime', '>', $start)->get();
-	    } else {
-		    // not used...
-		    // whereBetween not working...
-		    // $data = Data::select('datetime', 'value')->where($where)>whereBetween('datetime',  [$start, $end])->get();
-		    // so just do the same as above:
-		    $data = Data::select('datetime', 'value')->where($where)->where('datetime', '>', $start)->get();
-	    }
-	    
-	    return $this->toArray($data);
-    }
-    
-    private function toArray($data) {
-	    
-		$ra = [];
-		foreach ($data as $d) {
-			$t = $d->datetime->timestamp;
-			
-			$t = $t * 1000; // For JS
-			$v = (float) $d->value;
-			$ra[] = [$t, $v];
-		}
-		return $ra;
-	}
-	
-	private function println ($string_message) {
-   		empty($_SERVER['SERVER_PROTOCOL']) ? print "$string_message\n" : print "$string_message<br>";
-	}
 
-	public function dataUpdate($sitecode, $variablecode) {
+	public function data(Request $request, $sitecode, $variablecode) {
 		
 		error_reporting(E_ALL);
 		ini_set('display_errors', 1);
 		
-	    // This will get new data since the last update (via the ML endpoint)
+		$filename = "$sitecode.$variablecode.json";
+		$filepath = storage_path("data/$filename");
+		
+		// Try to create and update on first access
+		if(!file_exists($filepath)) {
+			$this->dataUpdate($sitecode, $variablecode, true);
+		}
+		
+		// Check to see if that worked
+		if(!file_exists($filepath)) {
+			// Error
+			$file = "[error: 'not a valid site+variable combination']";
+		} else {
+			// File JSON
+			$file = "[" . file_get_contents($filepath) . "]";
+		}
+		 
+	    // Convert to JSONP if necessary
+	    if($request->has('callback')) {
+		    $file = $request->input('callback') . "($file)";
+	    }
 	    
-	    // Get URL
+	    return response("$file")->header('Content-Type', 'application/json');
+    }
+	
+	public function dataUpdate($sitecode, $variablecode, $silent = false) {
+		
+		error_reporting(E_ALL);
+		ini_set('display_errors', 1);
+		
+		$filename = "$sitecode.$variablecode.json";
+		$filepath = storage_path("data/$filename");
+		
+		// Get basic URL 
 	    $where = ['sitecode' => $sitecode, 'variablecode' => $variablecode];
 	    $series = Series::where($where)->first();
+	    
+	    if(is_null($series)) return;
+	    
 	    $getdataURL = $series->getdataurl;
 	    
 	    // Parse the URL
 	    $parsedURL = parse_url($getdataURL);
 	    
-	    // Parse the query
+	    // Parse the query portion of the url
 	    parse_str($parsedURL['query'], $query);
 	    
-	    // Add appropriate start and end times to the query
-	    // Get the most recent timestamp
-	    $where = ['sitecode' => $sitecode, 'variablecode' => $variablecode];
-	    $data = Data::where($where)->orderBy('datetime', 'desc')->first();
-	    
-	    // startDate is the date of the most recent (+1s) or empty if never updated
-	    if($data != null) {
-		    
-		    echo "<pre>";
-		    print_r($data);
-		    echo "</pre>";
-		    
-		    $lastTimestamp = $data->datetime;
+	    // startDate: the most recent timestamp+1 or empty
+	    $lastline = $this->lastJSONArray($filepath);
+	    if($lastline != '') {
+		    $json = json_decode(trim($lastline, ','));
+		    $lastTimestamp = Carbon::createFromTimeStamp($json[0], "MST");
+		    // Account for 7 hour offset + 1 second so we don't get this record again
 		    $lastTimestamp->addSecond();
-		    $query['startDate'] = $lastTimestamp->setTimezone('UTC')->toW3cString();
+		    $query['startDate'] = $lastTimestamp->format('Y-m-d\Th:i:s');
+		    $trimcomma = false;
+	    } else {
+		    // This is an empty file. Plan to remove leading comma.
+		    $this->tepln(function() {
+			    return "File is empty";
+			}, $silent);
+		    $trimcomma = true;
 	    }
 
-	    // endDate is now
-		$query['endDate'] = Carbon::now()->setTimezone('UTC')->toW3cString();
+/*
+	    // endDate: now
+		$query['endDate'] = Carbon::now()->setTimezone('UTC')->format('Y-m-dTh:i:s');
+*/
 	    
 	    // Rebuild the URL
 	    $parsedURL['query'] = http_build_query($query);
 	    $url = $parsedURL['scheme'] . "://" . $parsedURL['host'] . $parsedURL['path'] . "?" . $parsedURL['query'];
-	    
-	    $this->println("$sitecode $variablecode");
-	    
-	    // Get the XML (timed)
-	    $time_pre = microtime(true);
-		$xml = simplexml_load_file($url);
-		$time_post = microtime(true);
-		$exec_time = number_format($time_post - $time_pre, 1);
-	    $this->println("$sitecode $variablecode: XML downloaded in $exec_time seconds.");
-	    $this->println("$sitecode $variablecode: got " . count($xml->timeSeries->values->value) . " values from '" . $query['startDate'] . "' until now.");
-
-		// Filter out bad data
-		$noValue = $xml->timeSeries->variable->noDataValue;
-
-		// This section uses the Database facade to bulk insert
-		// Add values to the database (timed)
-		$time_pre = microtime(true);
-		$data = [];
-		$this->println("$sitecode $variablecode: not saving data with values of $noValue");
-		foreach ($xml->timeSeries->values->value as $value) {
-			if((string) $value != $noValue) {
-				$data[] = [	'sitecode' => $sitecode,
-						'variablecode' => $variablecode,
-						'datetime' => $value->attributes()->dateTimeUTC,
-						'value' => (string) $value ];
-			}
-		}
-		$time_post = microtime(true);
-		$exec_time = number_format($time_post - $time_pre, 1);
-	    $this->println("$sitecode $variablecode: Filtered down to " . count($data) . " values in $exec_time seconds");
+	
+		// Get the XML
+		$this->tepln(function() use (&$xml, $url, $query) {
+			$xml = simplexml_load_file($url);
+			return "downloaded XML with " . count($xml->timeSeries->values->value) . " values from '" . $query['startDate'] . "' until now";
+		}, $silent);
 		
-		// Add to the DB
-		$time_pre = microtime(true);
-		DB::transaction(function () use ($data) {
-			foreach ($data as $d) {
-				
-				// Old way, could cause key problems
-				// http://code.openark.org/blog/mysql/replace-into-think-twice
-				//DB::statement("REPLACE INTO data (sitecode, variablecode, datetime, value) VALUES (:sitecode, :variablecode, :datetime, :value)", $d);
-				
-				// Better way
-				DB::statement("INSERT INTO data (sitecode, variablecode, datetime, value) VALUES(:sitecode, :variablecode, :datetime, :value) ON DUPLICATE KEY UPDATE value = VALUES(value)", $d);
-			}
-		});
-		$time_post = microtime(true);
-		$exec_time = number_format($time_post - $time_pre, 1);
-	    $this->println("$sitecode $variablecode: Inserted " . count($data) . " into database in $exec_time seconds");
-		
-		// Rebuild the cache if more than 0 were inserted
-		//if(count($data) > 0) {
-			// Remove the cache
-			$this->println("forgetting $sitecode/$variablecode");
-			Cache::forget("$sitecode/$variablecode");
+		// Process XML
+		$newdatastring = "";
+		$this->tepln(function() use (&$newdatastring, $xml) {
+			// Bad data looks like
+			$noValue = $xml->timeSeries->variable->noDataValue;
 			
-			// Rebuild
-			$time_pre = microtime(true);
-			$this->data(new Request(), $sitecode, $variablecode);
-			$time_post = microtime(true);
-			$exec_time = number_format($time_post - $time_pre, 1);
-		    $this->println("$sitecode $variablecode: Rebuilt the cache in $exec_time seconds");
-		//}
+			// Iterate through all data, ignoring bad values
+			foreach ($xml->timeSeries->values->value as $value) {
+				if((string) $value != $noValue) {
+					$time = $value->attributes()->dateTimeUTC;
+					$time = Carbon::parse($time)->timestamp;
+					$value = (string) $value;
+					$newdatastring .= ",[$time,$value]";
+				}
+			}
+			return "processed new values";
+		}, $silent);
+
+		// Save processed data
+		$this->tepln(function() use ($filepath, $newdatastring, $trimcomma) {
+			if($trimcomma) $newdatastring = trim($newdatastring, ',');
+			file_put_contents($filepath, $newdatastring, FILE_APPEND | LOCK_EX);
+			return 'appended to existing data file';
+		}, $silent);
 	    
 		// Redirect
 	    //return redirect()->back();
-    }
-
+	    return;
+	}
+	
+	private function tepln($f, $silent = false) {
+	    $time_pre = microtime(true);
+		$result = $f();
+		$time_post = microtime(true);
+		$exec_time = number_format($time_post - $time_pre, 1);
+		if($silent) return;
+		empty($_SERVER['SERVER_PROTOCOL']) ? print "($exec_time s) $result\n" : print "($exec_time s) $result<br>";
+	}
+	
+	// Get the last array from a single level array json file
+	// Adapted from http://www.geekality.net/2011/05/28/php-tail-tackling-large-files/
+	// Alternatives at http://stackoverflow.com/questions/15025875/what-is-the-best-way-in-php-to-read-last-lines-from-a-file
+	private function lastJSONArray($filename) {
+		
+		$arrays = 1;
+		$buffer = 4096;
+		
+	    // Open the file (readable, in binary)
+	    $f = fopen($filename, "a+b");
+	
+	    // Jump to last character
+	    fseek($f, -1, SEEK_END);
+	
+	    // Read it and adjust line number if necessary
+	    // (Otherwise the result would be wrong if file doesn't end with a blank line)
+	    if(fread($f, 1) != "]") $arrays -= 1;
+	
+	    // Start reading
+	    $output = '';
+	    $chunk = '';
+	
+	    // While we would like more
+	    while(ftell($f) > 0 && $arrays >= 0)
+	    {
+	        // Figure out how far back we should jump
+	        $seek = min(ftell($f), $buffer);
+	
+	        // Do the jump (backwards, relative to where we are)
+	        fseek($f, -$seek, SEEK_CUR);
+	
+	        // Read a chunk and prepend it to our output
+	        $output = ($chunk = fread($f, $seek)).$output;
+	
+	        // Jump back to where we started reading (for the next read)
+	        fseek($f, -mb_strlen($chunk, '8bit'), SEEK_CUR);
+	
+	        // Decrease our array counter
+	        $arrays -= substr_count($chunk, "]");
+	    }
+	
+	    // While we have too many lines
+	    // (Because of buffer size we might have read too many)
+	    while($arrays++ < 0)
+	    {
+	        // Find first newline and remove all text before that
+	        $output = substr($output, strpos($output, "]") + 1);
+	    }
+	
+	    // Close file and return
+	    fclose($f); 
+	    return $output; 
+	}
 }
