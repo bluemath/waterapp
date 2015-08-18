@@ -27,7 +27,7 @@ var PageView = Backbone.View.extend({
 		// Load the view for the appropriate page type
 		var type = this.currentPageModel.get('type');
 		switch(type) {
-			case "DataExplorer":
+			case "Data":
 				App.State.pageView = new DataPageView({ model: this.currentPageModel });
 				break;
 			case "Photos":
@@ -57,9 +57,94 @@ var TextView = Backbone.View.extend({
 		this.$el.empty();
 		text = this.model.get('text');
 		if(text != undefined) {
-			this.$el.html($("<p>").html(this.model.get('text')));
+			for (i in text) {
+				this.$el.append($("<p>").html(this.model.get('text')));				
+			}
 		}
 		return this;
+	}
+});
+
+var CameraView = Backbone.View.extend({
+	initialize: function() {
+		debug("CameraView Init");
+		this.cameras = [];
+		this.listenTo(App.State, 'change:unixtimestamp', this.updateCameras);
+	},
+	render: function() {
+		var cameraArea = $('.cameras');
+		cameraArea.html("");
+		for (i in this.cameras) {
+			camera = this.cameras[i];
+			div = $("<div>").attr("id", camera.code).addClass("camera");
+			div.append($("<div>").addClass("name").html(camera.name));
+			div.append($("<div>").addClass("image").append($("<img>").hide()));
+			cameraArea.append(div);
+		}
+	},
+	remove: function() {
+		$('.cameras').empty();
+		this.stopListening();
+	},
+	loadCameras: function() {
+		debug("loadCameras");
+		// Decide what cameras to show
+		selectedSites = App.State.get("selectedsites");
+		this.cameras = [];
+		selectedSites.each(function(site) {
+			if(site.get('camera')) {
+				var camera = {
+					code: site.get('sitecode'),
+					name: site.get('sitename'),
+					timestamps: [],
+					timestamp: null,
+					newtimestamp: null
+				};
+
+				$.getJSON('/cameras/' + camera.code, function(data) {
+					camera.timestamps = data;
+				})
+				
+				this.cameras.push(camera);
+			}
+		}, this);
+		
+		this.render();
+		
+		// Null the timestamp
+		App.State.set('unixtimestamp', null);
+	},
+	updateCameras: function() {
+		tz = (new Date()).getTimezoneOffset() * 60;
+		// Adjust for timezone and add a minute
+		timestamp = App.State.get('unixtimestamp') - tz + 60;
+		for (i in this.cameras) {
+			camera = this.cameras[i];
+			index = _.sortedIndex(camera.timestamps, timestamp);
+			if(index == 0) {
+				// No camera image for this date
+				camera.newtimestamp = null;	
+			} else {
+				index--;
+				camera.newtimestamp = camera.timestamps[index];
+				if(Math.abs(camera.newtimestamp - timestamp) > 86400) {
+					// Too far away! Don't show anything...
+					camera.newtimestamp = null;
+				}
+			}
+			if(camera.newtimestamp == null) {
+				camera.timestamp = camera.newtimestamp;
+				$('#' + camera.code+ " img").hide();
+			} else if(camera.timestamp != camera.newtimestamp) {
+				camera.timestamp = camera.newtimestamp;
+				date = new Date(camera.timestamp * 1000);
+				year = date.getFullYear();
+				month = ("0" + (date.getMonth() + 1)).slice(-2);
+				url = "/img/cameras/" + camera.site + "/" + year + "/" + month + "/" + camera.timestamp + ".jpg";
+				debug(url);
+				$('#' + camera.code+ " img").attr("src", "/img/cameras/" + camera.code + "/" + year + "/" + month + "/" + camera.timestamp + ".jpg").show();
+			}
+		}
 	}
 });
 
@@ -69,18 +154,25 @@ var DataPageView = Backbone.View.extend({
 		
 		debug("DataPageView Init");
 		
-		this.model.set('selectedsites', new Sites());
+		App.State.set('selectedsites', new Sites());
 		
 		this.listenTo(App.State, 'change:currenttopic', this.changeTopic);
-		this.listenTo(this.model, 'change:selectedsites', this.updateSites);
+		//this.listenTo(App.State, 'change:selectedsites', this.updateSites);
+		
+		this.cameras = new CameraView();
 		
 		this.render();
-
 	},
 	render: function() {
+		debug("DataPageView Render");
 		this.loadMap();
 		this.loadMapSites();
 		this.loadChart();
+	},
+	
+	remove: function() {
+		this.cameras.remove();
+		this.stopListening();
 	},
 	
 	loadMap: function() {
@@ -88,7 +180,7 @@ var DataPageView = Backbone.View.extend({
 		var spread = $('.spread');
 		var mapDiv = $("<div>").addClass('map');
 		spread.append(mapDiv);
-		this.map = MapSpread(mapDiv[0], this.model.get('sites'));
+		this.map = MapSpread(mapDiv[0], this.model.get('sites'), this.model.get('zoom'));
 	},
 	
 	loadMapSites: function() {
@@ -103,6 +195,11 @@ var DataPageView = Backbone.View.extend({
 			
 			var code = site.get('sitecode');
 			var name = site.get('sitename');
+			
+			if(site.get('camera')) {
+				name = name + "<i class='fa fa-video-camera'></i>";
+			}
+			
 			var latitude = site.get('latitude');
 			var longitude = site.get('longitude');
 			
@@ -148,11 +245,9 @@ var DataPageView = Backbone.View.extend({
 
 		var site = this.model.get("selectedsite");
 		
-		debug('clicked site ' + site.get("sitename"));
+		var selectedSites = App.State.get("selectedsites");
 		
-		var selectedSites = this.model.get("selectedsites");
-		
-		if(App.State.get("currenttopic").get("sites") == "ONE") {
+		if(App.State.get("currenttopic").get("mode") == "ONE") {
 			// Toggle mode
 			selectedSites.reset(site);
 		} else {
@@ -164,38 +259,39 @@ var DataPageView = Backbone.View.extend({
 			if(selectedSites.length == 0) selectedSites.add(site);
 		}
 		
-		this.updateMapAndChart();
+		this.cameras.loadCameras();
+		
+		this.updateViews();
 	},
 	
 	changeTopic: function() {
-		debug('change topic to ' + App.State.get("currenttopic").get("name"));
 		
 		var topic = App.State.get("currenttopic");
 		var selectedSite = this.model.get("selectedsite");
-		var selectedSites = this.model.get("selectedsites");
+		var selectedSites = App.State.get("selectedsites");
 		var allSites = this.model.get('sites');
 		
 		// Prevent too many sites from being visible
-		if(topic.get('sites') == "ONE") {
+		if(topic.get('mode') == "ONE") {
 			if(selectedSites.length == 0) {
 				// Default site
-				selectedSites.reset(allSites.first());
+				this.model.set("selectedsite", allSites.first());
 			} else {
 				// Most recently selected site
-				selectedSites.reset(selectedSite);
+				selectedSites.reset();
 			}
 		}
 		
 		// Center map
 		this.map.recenter();
 		
-		this.updateMapAndChart();
+		this.updateSites();
 	},
 	
-	updateMapAndChart: function() {
+	updateViews: function() {
 		
 		var allSites = this.model.get('sites');
-		var selectedSites = this.model.get("selectedsites");
+		var selectedSites = App.State.get("selectedsites");
 		
 		// Properly shade the sites
 		allSites.each(function(site) {
@@ -224,10 +320,67 @@ var DataPageView = Backbone.View.extend({
 
 var PhotosPageView = Backbone.View.extend({
 	initialize: function() {
-		// Clear Spread
-		var spread = $('.spread').empty();
+		
+		debug("DataPageView Init");
+				
+		// Listen to changes
+		this.listenTo(App.State, 'change:currenttopic', this.changeTopic);
+		this.listenTo(this.model, 'change:currentphoto', this.updatePhoto);
+		
+		var spread = $('.spread');
+		this.background = $("<div>").addClass('image');
+		spread.empty().append(this.background);
+		
+		var detail = $('.topic .detail');
+		this.thumbnails = $("<div>").addClass('thumbnails');
+		detail.empty().append(this.thumbnails);
+		
+		this.model.set('currentphoto', new Photo());
+		
+		// Inital render happens when model is changed
 	},
 	render: function() {
+		var currentPhoto = this.model.get("currentphoto");
 		
+		// Set the splash photo
+		if(currentPhoto != null) {
+			this.background.css("background-image", "url('" + currentPhoto.get("img") + "')");	
+		}
+		
+		// Update the highlighted thumbnail
+		
+		// Show caption
+		
+	},
+	changeTopic: function() {
+
+		var currentTopic = App.State.get("currenttopic");
+
+		debug('change topic to ' + currentTopic.get("name"));
+		
+		// Show the default photo
+		var model = this.model;
+		model.set('currentphoto', currentTopic.get("photos").at(currentTopic.get("default")));
+	
+		// Load the thumbnails
+		this.thumbnails.empty();
+		currentTopic.get("photos").each(function(photo) {
+			var image = $("<img>").attr("src", photo.get("img"));
+			var thumb = $("<div>").addClass("thumbnail").append(image);
+			var a = Math.random() * 6 - 3;
+			thumb.css('transform', 'rotate('+a+'deg)');
+			thumb.css('transition', '.2s ease-out');
+			this.thumbnails.append(thumb);
+			thumb.click(function() {
+				var a = Math.random() * 10 - 5;
+				$(this).css('transform', 'rotate('+a+'deg)');
+				model.set('currentphoto', photo);
+			});
+			
+		}, this);
+		
+	},
+	updatePhoto: function() {
+		this.render();
 	}
 });

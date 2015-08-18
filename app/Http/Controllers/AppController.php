@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Cameras;
+
 class AppController extends Controller
 {	
 	
@@ -36,13 +38,13 @@ class AppController extends Controller
 	
 	public function app() {
 		
-		return view('pages.grid');
+		return view('app');
 		
 	}
 	
     public function pages() {
         // Enumerate all the pages
-		$pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->bio()];
+		$pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->lr(), $this->bio()];
 		// Send back as JSON
 		return response()->json($pages);
     }
@@ -52,21 +54,23 @@ class AppController extends Controller
 	    $page['id'] = "gsl";
 	    $page['img'] = "/img/bubbles/gsl.png";
 	    $page['bubblescale'] = .25;
-	    $page['name'] = "Great Salt Lake Watershed";
-	    $page['text'] = "Where all the water goes.";
+	    $page['name'] = "Explore the Great Salt Lake Watershed";
+	    $page['text'] = [];
+	    $page['text'][] = "The Great Salt Lake watershed is enormous—it covers nearly 35,000 square miles. Most of its water comes from three watersheds east of the Lake: Bear River, Weber River, and Jordan River watersheds.";
+	    $page['text'][] = "The Jordan River watershed includes most of Salt Lake County within its borders. Seven major tributaries feed the Jordan River as it makes its way from Utah Lake through the Salt Lake Valley. Each tributary has its own watershed—it’s a converging system of drainages all flowing to the Great Salt Lake.";
 	    $page['type'] = "Photos";
 	    $page['topics'] = [
 		    [
-			    'name' => 'Watershed',
-			    'text' => 'Water, water, everywhere.'
+			    'name' => 'Jordan River Watershed',
+			    'text' => ['']
 		    ],
 		    [
 			    'name' => 'Rivers',
-			    'text' => 'A river runs through us.'
+			    'text' => ['A river runs through us.']
 		    ],
 		    [
 			    'name' => 'Storm Drains',
-			    'text' => 'We all live downstream.'
+			    'text' => ['We all live downstream.']
 		    ]
 	    ];
 	    return $page;
@@ -78,22 +82,64 @@ class AppController extends Controller
 	    $page['img'] = "/img/bubbles/gamut.png";
 	    $page['bubblescale'] = .22;
 	    $page['name'] = "GAMUT Project";
-	    $page['text'] = "Learn about the GAMUT project.";
+	    $page['text'] = ["Learn about the GAMUT project."];
 	    $page['type'] = "Photos";
 	    $page['topics'] = [
 		    [
 			    'name' => 'Aquatic Monitoring Stations',
-			    'text' => 'Check out these sites along the river.'
+			    'text' => ['Check out these sites along the river.'],
+			    'default' => 2,
+			    'photos' => [
+				    [
+					    'img' => '/img/gamut/RB_KF_BA.jpg',
+					    'caption' => 'This is the highest monitoring station on the creek: Knowlton Fork.'
+				    ],
+				    [
+					    'img' => '/img/gamut/RB_ARBR_AA.jpg',
+					    'caption' => 'Above Red Butte Reservoir'
+				    ],
+				    [
+					    'img' => '/img/gamut/RB_RBG_BA.jpg',
+					    'caption' => 'This is the site near the gate that prevents access to the Red Butte Creek protected area.'
+				    ],
+				    [
+					    'img' => '/img/gamut/RB_CG_BA.jpg',
+					    'caption' => 'Cottams Grove.'
+				    ],
+				    [
+					    'img' => '/img/gamut/RB_FD_AA.jpg',
+					    'caption' => 'Foothill Drive.'
+				    ]
+			    ]
 		    ],
 		    [
 			    'name' => 'Sensors',
-			    'text' => 'Always on, always sensing.'
+			    'text' => ['Always on, always sensing.']
 		    ],
 		    [
 			    'name' => 'Database',
-			    'text' => 'Millions of data samples.'
+			    'text' => ['Millions of data samples.']
 		    ]
 	    ];
+	    return $page;
+    }
+
+    public function lr() {
+	    
+	    $page = [];
+	    $page['id'] = "lr";
+	    $page['img'] = "/img/bubbles/lr.png";
+	    $page['bubblescale'] = .24;
+	    $page['name'] = "Logan River";
+	    $page['text'] = ["Text explaining Logan River"];
+	    $page['type'] = "Data";
+
+	    $page['sites'] = $this->sites("LR_");
+	    $page['variables'] = $this->variables();
+	    $page['topics'] = $this->topics();
+	    
+	    $page['zoom'] = 11;
+	    
 	    return $page;
     }
     
@@ -104,12 +150,23 @@ class AppController extends Controller
 	    $page['img'] = "/img/bubbles/rbc.png";
 	    $page['bubblescale'] = .24;
 	    $page['name'] = "Red Butte Creek";
-	    $page['text'] = "Text explaining Red Butte Creek";
-	    $page['type'] = "DataExplorer";
+	    $page['text'] = ["Text explaining Red Butte Creek"];
+	    $page['type'] = "Data";
+
+	    $page['sites'] = $this->sites("RB_");
+	    $page['variables'] = $this->variables();
+	    $page['topics'] = $this->topics();
 	    
-	    //////////////
-	    // Sites
-	    $sites = Site::where('sitecode', 'LIKE', '%RB_%')->get();	    
+	    $page['zoom'] = 13;
+	    
+	    return $page;
+    }
+    
+    private function sites($like) {
+	    $sites = Site::where('sitecode', 'LIKE', "%$like%")->get();	    
+	   
+		$cameras = Cameras::sites();
+	   
 	    foreach ($sites as $site) {
 		    
 		    // Cleanup site name
@@ -122,6 +179,12 @@ class AppController extends Controller
 		    $site['latitude'] = floatval($site['latitude']);
 		    $site['longitude'] = floatval($site['longitude']);
 		    
+		    // Check to see if site has a camera
+		    $site['camera'] = false;
+		    if(in_array($site['sitecode'], $cameras)) {
+			    $site['camera'] = true;
+		    }
+		    
 		    // Append array of series at site
 		    $series = [];
 		    foreach (DB::table('series')->select('variablecode')->where('sitecode', '=', $site->sitecode)->get() as $var) {
@@ -130,77 +193,76 @@ class AppController extends Controller
 		    $site->series = $series;
 		    
 	    }
-	    $page['sites'] = $sites;
 	    
-	    //////////////
-	    // Variables
-	    $page['variables'] = Variable::get();
-	    
-	    //////////////
-	    // Topics
-	    $page['topics'] = [
+	    return $sites;
+    }
+    
+    private function variables() {
+	    return Variable::get();
+    }
+    
+    private function topics() {
+	    return [
 	    	// All Varaibles, one site
 			[ 	'name' => 'Explore the Data',
-				'text' => 'Examine all the data collected at a station.',
+				'text' => ['Examine all the data collected at a station.'],
 				'variables' => ['WaterTemp_EXO', 'ODO', 'pH', 'SpCond', 'TurbMed', 'Stage', 'Level'],
-				'sites' => 'ONE'
+				'mode' => 'ONE'
 			],
 			
 			// Curated pairs
 			[
 				'name' => 'Dissolved Oxygen and Temperature',
-				'text' => '',
+				'text' => [''],
 				'variables' => ['ODO', 'WaterTemp_EXO'],
-				'sites' => 'ONE'
+				'mode' => 'ONE'
 			],
 			[
 				'name' => 'Turbidity and Water Level',
-				'text' => '',
+				'text' => [''],
 				'variables' => ['TurbMed', 'Stage', 'Level'],
-				'sites' => 'ONE'
+				'mode' => 'ONE'
 			],
 			
 			// Single Variables
 			// These were selected because they are common among all sites
 			[
 				'name' => 'Temperature',
-				'text' => '',
+				'text' => [''],
 			    'variables' => ['WaterTemp_EXO'],
-			    'sites' => 'MANY'
+			    'mode' => 'MANY'
 		    ],
 		    [
 			    'name' => 'Dissolved Oxygen',
-			    'text' => '',
+			    'text' => [''],
 			    'variables' => ['ODO'],
-			    'sites' => 'MANY'
+			    'mode' => 'MANY'
 		    ],
 		    [
 			    'name' => 'pH',
-			    'text' => '',
+			    'text' => [''],
 			    'variables' => ['pH'],
-			    'sites' => 'MANY'
+			    'mode' => 'MANY'
 		    ],
 		    [
 			    'name' => 'Specific Conductance',
-			    'text' => '',
+			    'text' => [''],
 			    'variables' => ['SpCond'],
-			    'sites' => 'MANY'
+			    'mode' => 'MANY'
 		    ],
 		    [
 			    'name' => 'Turbitdity',
-			    'text' => '',
+			    'text' => [''],
 			    'variables' => ['TurbMed'],
-			    'sites' => 'MANY'
+			    'mode' => 'MANY'
 		    ],
 		    [
 			    'name' => 'Water Level',
-			    'text' => '',
+			    'text' => [''],
 			    'variables' => ['Stage','Level'],
-			    'sites' => 'MANY'
+			    'mode' => 'MANY'
 			]			
 	    ];
-	    
-	    return $page;
     }
     
     public function bio() {
@@ -209,40 +271,40 @@ class AppController extends Controller
 	    $page['img'] = "/img/bubbles/bio.png";
 	    $page['bubblescale'] = .21;
 	    $page['name'] = "Biodiveristy";
-	    $page['text'] = "Learn about the life in the creek.";
+	    $page['text'] = ["Learn about the life in the creek."];
 	    $page['type'] = "Photos";
 	    $page['topics'] = [
 		    [
 			    'name' => 'Fish',
-			    'text' => 'Small fish in a big pond.'
+			    'text' => ['Small fish in a big pond.']
 		    ],
 		    [
 			    'name' => 'Birds',
-			    'text' => 'Birds of a feather...'
+			    'text' => ['Birds of a feather...']
 		    ],
 		    [
 			    'name' => 'Mammals',
-			    'text' => 'Mammals Mammals Mammals!'
+			    'text' => ['Mammals Mammals Mammals!']
 		    ],
 		    [
 			    'name' => 'Amphibians',
-			    'text' => "It's not easy being green."
+			    'text' => ["It's not easy being green."]
 		    ],
 		    [
 			    'name' => 'Reptiles',
-			    'text' => "Snakes. Why'd it have to be snakes?"
+			    'text' => ["Snakes. Why'd it have to be snakes?"]
 		    ],
 		    [
 			    'name' => 'Crustaceans',
-			    'text' => 'Crusty?'
+			    'text' => ['Crusty?']
 		    ],
 		    [
 			    'name' => 'Insects',
-			    'text' => 'Lots of bugs!'
+			    'text' => ['Lots of bugs!']
 		    ],
 		    [
 			    'name' => 'Plants',
-			    'text' => 'Lots of plants.'
+			    'text' => ['Lots of plants.']
 		    ]
 	    ];
 	    return $page;

@@ -1,23 +1,20 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+	error_reporting(E_ERROR);
+	ini_set('display_errors', 1);
 
-	$site = 'LR_FB_BA';
-	$prefix = 'http://data.iutahepscor.org/gamutphotos/USU_LR_FB_BA/LR_FranklinBasin_BA_';
-	$start = 269;
-	$suffix = '.jpg';
+	$dto = "Aug 8, 2015, 2:00:10 PM";
 	
-	$tmp = '/tmp/photo.jpg';
+	$when = strtotime($dto);
+	$ts = date('U', $when);
+	echo "$ts<br>";
 	
-	while(copy("$prefix$start$suffix", $tmp)) {
-		$exif = exif_read_data($tmp);
-		$when = strtotime($exif['DateTimeOriginal']);
-		$name = date('Y-m-d-Hi', $when);
-		
-		rename($tmp, "/var/www/iutah/public/img/$site/$name$suffix");
-		
-		$start++;
-	}
+	$when = strtotime($dto." MST");
+	$ts = date('U', $when);
+	echo "$ts<br>";
+
+	$when = strtotime($dto." UTC");
+	$ts = date('U', $when);
+	echo $ts;
 	
 ?>

@@ -1,6 +1,3 @@
-@extends('app')
-
-@section('content')
 	<div><a href="{{ action('DataController@series', [$sitecode] ) }}">Back to Series List</a></div>
 
 	<h1>{{ $sitecode }} {{ $variablecode }}</h1>
@@ -10,6 +7,3 @@
 	@foreach ($data as $d)
 		<div>{{ $d->datetime }} {{ $d->value }}</div>
 	@endforeach
-	
-	
-@stop

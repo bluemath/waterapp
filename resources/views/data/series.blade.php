@@ -1,7 +1,3 @@
-@extends('app')
-
-@section('content')
-
 	<script src="{{ URL::asset('js/lib/jquery/jquery-1.11.3.js') }}"></script>
 	<script src="{{ URL::asset('js/lib/highstock/highstock.src.js') }}"></script>
 	<script src="{{ URL::asset('js/lib/backbone/underscore.js') }}"></script>
@@ -186,5 +182,3 @@
 		</script>
 		
 	@endforeach
-
-@stop

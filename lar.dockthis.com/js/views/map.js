@@ -1,4 +1,4 @@
-function MapSpread(element, sites) {
+function MapSpread(element, sites, zoom) {
 
 	function transform(extent) {
 		return ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857');
@@ -66,9 +66,9 @@ function MapSpread(element, sites) {
 		layers: [terrainLayer, linesLayer],
 		view: new ol.View({
 			center: center,
-			minZoom: 13,
+			minZoom: zoom,
 			maxZoom: 15,
-			zoom: 13,
+			zoom: zoom,
 			enableRotation: false,
 			extent: maxExtent
 		}),
@@ -86,14 +86,13 @@ function MapSpread(element, sites) {
 	};
 	
 	map.recenter = function() {
-		console.log("recenter map");
 		var pan = ol.animation.pan({
 		    duration: 400,
 		    source: (map.getView().getCenter())
 		});
 		map.beforeRender(pan);
 		map.getView().setCenter(center);
-		map.getView().setZoom(13);
+		map.getView().setZoom(zoom);
 	};
 	
 	return map;

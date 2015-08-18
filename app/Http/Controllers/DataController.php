@@ -27,6 +27,7 @@ class DataController extends Controller
 	// Get a list of all known sites
 	public function sites() {
 		$sites = Site::all();
+	    
 	    return view('data.sites', compact('sites'));
 	}
 	

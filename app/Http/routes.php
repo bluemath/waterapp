@@ -8,6 +8,10 @@ Route::get('app', 'AppController@app');
 // App Data
 Route::get('pages', 'AppController@pages');
 
+Route::get('cameras', 'CamerasController@siteslinked');
+Route::get('cameras/update', 'CamerasController@update');
+Route::get('cameras/{sitecode}', 'CamerasController@timestamps');
+
 // Data Sites
 Route::get('sites', 'DataController@sites');
 Route::get('sites/update', 'DataController@sitesUpdate');

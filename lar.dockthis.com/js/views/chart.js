@@ -32,17 +32,20 @@ function Chart(element, sites, variables) {
 	        	point: {
 		        	events: {
 			        	mouseOver: function() {
-				        	console.log(this.x);
+				        	unixtimestamp = this.x / 1000;
+							App.State.set('unixtimestamp', unixtimestamp);
 			        	}
 		        	}
-	        	}
+	        	},
+	        	lineWidth: 2
         	}  
         },
         navigator : {
-            baseSeries : 'WaterTemp_EXO'
+            baseSeries : 'WaterTemp_EXO',
+            margin: 40
         },
         legend : {
-            enabled: true,
+            enabled: false,
             align: 'right',
             backgroundColor: 'white',
             borderColor: 'black',
@@ -134,53 +137,37 @@ function Chart(element, sites, variables) {
         yAxis: [],
         xAxis: {
 	        type: 'datetime',
-
+			ordinal: false,
 		    dateTimeLabelFormats : {
 		        minute: '%l:%M %p',
 		        hour: '%l %p',
-		        day: '%e. %b',
-				week: '%e. %b',
-				month: '%b \'%y',
+		        day: '<b>%b %e</b>',
+				week: '%b %e',
+				month: '%b %Y',
 				year: '%Y'
 		    }
         }
     });
-    
-    this.variables.each(function(variable) {
-		var variablecode = variable.get('variablecode');
-		var axis = {
-						labels: {
-							enabled: false
-						}, 
-						id: variablecode
-					};	
-
-		this.chart.addAxis(axis);
-	}, this);
 	
 	this.update = function(topic, selectedSites) {
 		
-		// Clear exisiting data
+		// Remove current series
 		this.removeAll();
 		
 		series = topic.get('variables');
-		mode = topic.get('sites');
+		mode = topic.get('mode');
 		
 		selectedSites.each(function(site) {
 			for(i in series) {
 				s = series[i];
 				
-				// axis
-				axis = i;
-				
-				// color is undefined (auto picked) if only one site is shown
-				// otherwise, it's the same as the site
-				var color = (mode == 'ONE') ? undefined : site.get('color');
-				
 				// add the series if the site has it
 				if(_.contains(site.get('series'), s)) {
 					variable = variables.findWhere({variablecode: s});
-					this.addSeries(site, variable, color, axis);
+					// color is variable color if only one site is shown
+					// otherwise, it's the same as the site
+					var color = (mode == 'ONE') ? undefined : site.get('color');
+					this.addSeries(site, variable, color);
 				}
 			}
 		}, this);
@@ -191,59 +178,91 @@ function Chart(element, sites, variables) {
 		for(var i = seriesLength -1; i > -1; i--) {
 			this.chart.series[i].remove();
 		}
+		this.chart.showLoading();
 	}
 	
 	this.addSeries = function(site, variable, color) {
-		
+
+		chart = this.chart;
 		sitecode = site.get('sitecode');
 		variablecode = variable.get('variablecode');
+		sitename = site.get('sitename');
+		variablename = variable.get('variablename');
+		var units = variable.get('variableunitsabbreviation');
+		
+		// Present most units on the same axis
+		yaxis = variablecode;
+		
+		// present cm and NTU series on individual axes
+		// this is because the measurements are relative
+		if (units == 'cm' || units == 'NTU') {
+			yaxis = variablecode+sitecode;
+		}
+		
+		// Add axis if it doens't exist
+		if(chart.get(yaxis) == null) {
+			var axis = {
+				labels: { enabled: false }, 
+				title: { enabled: false },
+				id: yaxis
+			};
+			chart.addAxis(axis);
+		}
+
+		var s = {
+		    id: sitecode+variablecode,
+		    name: sitename+', '+variablename,
+		    yAxis: yaxis,
+		    tooltip: {
+			    valueSuffix: units
+		    },
+		    visible: true,
+		    color: color
+	    }
+	    
+		chart.addSeries(s);
+		
 		url = this.baseURL + "/" + sitecode + "/" + variablecode;
-		
-		chart = this.chart;
-		
-		// Because this is async, changing sites quickly can cause duplicates
-		// Once the data is received, we should check to see if display is necessary
-		// However, we could also cache the data and show immediately...
 		$.getJSON(url, (function(site, variable) {
 				
-				return function(data) {
-					var sitecode = site.get('sitecode');
-					var variablecode = variable.get('variablecode');
-					var sitename = site.get('sitename');
-					var variablename = variable.get('variablename');
-					var units = variable.get('variableunitsabbreviation');
-					
-					// convert degC to F
-					if (units == 'degC') {
-						units = "ºF";
-						data = _.map(data, function(pair) {
-							pair[1] = pair[1] * 1.8 + 32;
-							return pair;
-						});
-					}
-					
-					// Process timestamps from unix to js
+			return function(data) {
+				var sitecode = site.get('sitecode');
+				var variablecode = variable.get('variablecode');
+				var sitename = site.get('sitename');
+				var variablename = variable.get('variablename');
+				var units = variable.get('variableunitsabbreviation');
+				
+				// convert degC to ºF
+				if (units == 'degC') {
+					units = "ºF";
 					data = _.map(data, function(pair) {
-							pair[0] = pair[0] * 1000;
-							return pair;
-						});
-					
-					var s = {
-					    id: sitecode+variablecode,
-					    name: sitename+', '+variablename,
-					    yAxis: variablecode,
-					    data: data,
-					    tooltip: {
-						    valueSuffix: units
-					    },
-				    }
-				    if(color != undefined) s.color = color;
-				    
-				    //console.log(this);
-				    
-				    chart.addSeries(s);
+						pair[1] = pair[1] * 1.8 + 32;
+						return pair;
+					});
 				}
+				
+				// convert m to cm
+				if (units == 'm') {
+					units = "cm";
+					data = _.map(data, function(pair) {
+						pair[1] = pair[1] * 100;
+						return pair;
+					});
+				}
+								
+				// Process timestamps from unix to js
+				data = _.map(data, function(pair) {
+					pair[0] = pair[0] * 1000;
+					return pair;
+				});
+			    
+				if(chart.get(sitecode+variablecode) != null) {
+					chart.get(sitecode+variablecode).setData(data);
+					chart.hideLoading();
+				}
+			}
 
 		})(site, variable));
 	}
+	
 }
