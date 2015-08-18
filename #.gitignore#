@@ -1,0 +1,6 @@
+5;0c/vendor
+/node_modules
+Homestead.yaml
+.env
+/storage/data/
+/public/
