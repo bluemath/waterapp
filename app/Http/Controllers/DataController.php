@@ -248,7 +248,7 @@ class DataController extends Controller
 		
 		// Process XML
 		$newdatastring = "";
-		$startDate = $query['startDate']
+		$startDate = $query['startDate'];
 		$this->tepln(function() use (&$newdatastring, $xml, $lastTimestamp) {
 			// Bad data looks like
 			$noValue = $xml->timeSeries->variable->noDataValue;
