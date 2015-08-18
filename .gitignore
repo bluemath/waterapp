@@ -3,4 +3,5 @@
 Homestead.yaml
 .env
 /storage/data/
-/public/img/cameras
+/public/img/cameras/*/*/
+
