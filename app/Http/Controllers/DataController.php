@@ -159,6 +159,7 @@ class DataController extends Controller
 	// Data //
 	//////////
 
+	// Get the data file
 	public function data(Request $request, $sitecode, $variablecode) {
 		
 		error_reporting(E_ALL);
@@ -189,6 +190,7 @@ class DataController extends Controller
 	    return response("$file")->header('Content-Type', 'application/json');
     }
 	
+	// Update the data file
 	public function dataUpdate($sitecode, $variablecode, $silent = false) {
 		
 		error_reporting(E_ALL);
@@ -213,12 +215,13 @@ class DataController extends Controller
 	    
 	    // startDate: the most recent timestamp+1 or empty
 	    $lastline = $this->lastJSONArray($filepath);
+	    $lastTimestamp = 0;
 	    if($lastline != '') {
 		    $json = json_decode(trim($lastline, ','));
 		    $lastTimestamp = Carbon::createFromTimeStamp($json[0], "MST");
 		    // Account for 7 hour offset + 1 second so we don't get this record again
 		    $lastTimestamp->addSecond();
-		    $query['startDate'] = $lastTimestamp->format('Y-m-d\Th:i:s');
+		    $query['startDate'] = $lastTimestamp->format('Y-m-d\TH:i:s');
 		    $trimcomma = false;
 	    } else {
 		    // This is an empty file. Plan to remove leading comma.
@@ -245,17 +248,24 @@ class DataController extends Controller
 		
 		// Process XML
 		$newdatastring = "";
-		$this->tepln(function() use (&$newdatastring, $xml) {
+		$startDate = $query['startDate']
+		$this->tepln(function() use (&$newdatastring, $xml, $lastTimestamp) {
 			// Bad data looks like
 			$noValue = $xml->timeSeries->variable->noDataValue;
 			
 			// Iterate through all data, ignoring bad values
 			foreach ($xml->timeSeries->values->value as $value) {
+				// Only add 'valid' values
 				if((string) $value != $noValue) {
 					$time = $value->attributes()->dateTimeUTC;
 					$time = Carbon::parse($time)->timestamp;
-					$value = (string) $value;
-					$newdatastring .= ",[$time,$value]";
+					// Only add pairs later than the last timestamp
+					// This is needed because in case the query returns repeat data
+					// Will it?
+					if($time > $lastTimestamp) {
+						$value = (string) $value;
+						$newdatastring .= ",[$time,$value]";
+					}
 				}
 			}
 			return "processed new values";
@@ -273,6 +283,7 @@ class DataController extends Controller
 	    return;
 	}
 	
+	// Time execution and print with new line
 	private function tepln($f, $silent = false) {
 	    $time_pre = microtime(true);
 		$result = $f();
