@@ -4,18 +4,15 @@ namespace App;
 
 class Cameras {
 	
-	// private $base = '/var/www/iutah/public/img';
-	private static $base = '/home/public/public/img/cameras';
-	
 	public static function sites() {
-		$base = Cameras::$base;
+		$base = public_path() . '/img/cameras';
 		
 		return array_diff(scandir($base), array('..', '.'));;
 	}
 	
 	public static function update() {
 		
-		$base = Cameras::$base;
+		$base = public_path() . '/img/cameras';
 		
 		$sites = array_diff(scandir($base), array('..', '.'));
 		
@@ -60,7 +57,7 @@ class Cameras {
 	
 	public static function timestamps($sitecode) {
 
-		$base = Cameras::$base;
+		$base = public_path() . '/img/cameras';
 
 		$array = [];
 		    
