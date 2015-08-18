@@ -127,7 +127,8 @@ var CameraView = Backbone.View.extend({
 			} else {
 				index--;
 				camera.newtimestamp = camera.timestamps[index];
-				if(Math.abs(camera.newtimestamp - timestamp) > 86400) {
+				twohours = 2 * 60 * 60;
+				if(Math.abs(camera.newtimestamp - timestamp) >= twohours) {
 					// Too far away! Don't show anything...
 					camera.newtimestamp = null;
 				}
@@ -140,8 +141,6 @@ var CameraView = Backbone.View.extend({
 				date = new Date(camera.timestamp * 1000);
 				year = date.getFullYear();
 				month = ("0" + (date.getMonth() + 1)).slice(-2);
-				url = "/img/cameras/" + camera.site + "/" + year + "/" + month + "/" + camera.timestamp + ".jpg";
-				debug(url);
 				$('#' + camera.code+ " img").attr("src", "/img/cameras/" + camera.code + "/" + year + "/" + month + "/" + camera.timestamp + ".jpg").show();
 			}
 		}
