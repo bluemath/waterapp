@@ -29,14 +29,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 
-		// Every 15 minutes, ping all the update URLs for site/variable
-                 
-        // Limit to Red Butte
+		// :00 :20 :40 Ping all the update URLs for site/variable       
+        // Limit to Red Butte sites
 		$siteCodeContains = ['RB_'];
-		
-		// Uncomment to update data for all sites
 		// $siteCodeContains = ['RB_', 'PR_', 'LR_'];
-		
 		try {
 			foreach($siteCodeContains as $piece) {
 				$sites = Site::where('sitecode', 'LIKE', '%' . $piece . '%')->get();
@@ -52,9 +48,13 @@ class Kernel extends ConsoleKernel
 			}
 		}
 		catch(\Exception $ex) {
-			// Ignore all exceptions...
-			// this will catch if 'php artisan migration' hasn't been done yet
+			// Ignore all exceptions... this will catch if 'php artisan migration' hasn't been done yet
 		}
+		
+		
+		// :10 :30 :50 Ping the update URLs for cameras 
+		$url = url('/cameras/update');
+		$schedule->exec("wget -O/dev/null $url")->cron('10,30,50 * * * *');
 	    
     }
 }
