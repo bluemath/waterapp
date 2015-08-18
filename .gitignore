@@ -3,5 +3,5 @@
 Homestead.yaml
 .env
 /storage/data/
-/public/img/cameras/**/*.jpg
+/lar.dockthis.com/img/cameras/**/*.jpg
 
