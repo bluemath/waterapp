@@ -259,13 +259,8 @@ class DataController extends Controller
 				if((string) $value != $noValue) {
 					$time = $value->attributes()->dateTimeUTC;
 					$time = Carbon::parse($time)->timestamp;
-					// Only add pairs later than the last timestamp
-					// This is needed because in case the query returns repeat data
-					// Will it?
-					if($time > $lastTimestamp->timestamp) {
-						$value = (string) $value;
-						$newdatastring .= ",[$time,$value]";
-					}
+					$value = (string) $value;
+					$newdatastring .= ",[$time,$value]";
 				}
 			}
 			return "processed new values";
