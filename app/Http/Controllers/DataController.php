@@ -262,7 +262,7 @@ class DataController extends Controller
 					// Only add pairs later than the last timestamp
 					// This is needed because in case the query returns repeat data
 					// Will it?
-					if($time > $lastTimestamp) {
+					if($time > $lastTimestamp->timestamp) {
 						$value = (string) $value;
 						$newdatastring .= ",[$time,$value]";
 					}
