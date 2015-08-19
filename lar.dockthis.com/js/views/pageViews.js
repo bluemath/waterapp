@@ -370,10 +370,14 @@ var PhotosPageView = Backbone.View.extend({
 			this.thumbnails.append(thumb);
 			thumb.click(function() {
 				var a = Math.random() * 10 - 5;
-				$(".thumbnail").css('transform', '');
-				$(this).css('transform', 'translateY(-10px)');
+				$(".thumbnail").css('transform', 'translateY(10px)');
+				$(this).css('transform', '');
 				model.set('currentphoto', photo);
 			});
+			
+			if(model.get('currentphoto') != photo) {
+				thumb.css('transform', 'translateY(10px)');
+			}
 			
 		}, this);
 		
