@@ -366,13 +366,12 @@ var PhotosPageView = Backbone.View.extend({
 		currentTopic.get("photos").each(function(photo) {
 			var image = $("<img>").attr("src", photo.get("img"));
 			var thumb = $("<div>").addClass("thumbnail").append(image);
-			var a = Math.random() * 6 - 3;
-			thumb.css('transform', 'rotate('+a+'deg)');
 			thumb.css('transition', '.2s ease-out');
 			this.thumbnails.append(thumb);
 			thumb.click(function() {
 				var a = Math.random() * 10 - 5;
-				$(this).css('transform', 'rotate('+a+'deg)');
+				$(".thumbnail").css('transform', '');
+				$(this).css('transform', 'translateY(-10px)');
 				model.set('currentphoto', photo);
 			});
 			
