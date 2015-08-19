@@ -1,6 +1,5 @@
 /vendor
 /node_modules
 Homestead.yaml
-.env
 /public/img/cameras/**/*.jpg
 /lar.dockthis.com
