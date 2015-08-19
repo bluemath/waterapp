@@ -84,12 +84,12 @@ class AppController extends Controller
 	    $page['img'] = "/img/bubbles/gamut.png";
 	    $page['bubblescale'] = .22;
 	    $page['name'] = "GAMUT Project";
-	    $page['text'] = ["Learn about the GAMUT project."];
+	    $page['text'] = ["iUTAH researchers have developed and deployed an ecohydrologic observatory to study water in ‘Gradients Along Mountain to Urban Transitions’ (GAMUT). The GAMUT Network measures aspects of climate, hydrology, and water quality along a mountain-to-urban gradient in three watersheds that share common water sources (winter-derived precipitation) but differ in the human and biophysical nature of land-use transitions. Designing GAMUT was a 12-month process involving faculty and technicians from across Utah’s research-intensive institutions: Brigham Young University, the University of Utah, and Utah State University."];
 	    $page['type'] = "Photos";
 	    $page['topics'] = [
 		    [
 			    'name' => 'Aquatic Monitoring Stations',
-			    'text' => ['Check out these sites along the river.'],
+			    'text' => ['GAMUT includes state-of-the-art sensors at aquatic and terrestrial sites for real-time monitoring of common meteorological variables, snow accumulation and melt, soil moisture, surface water flow, and surface water quality.'],
 			    'default' => 2,
 			    'photos' => [
 				    [
