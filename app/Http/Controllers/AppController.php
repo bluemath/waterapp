@@ -46,7 +46,7 @@ class AppController extends Controller
 	
     public function pages() {
         // Enumerate all the pages
-		$pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->lr(), $this->bio()];
+		$pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->lr(), $this->pr(), $this->bio()];
 		// Send back as JSON
 		return response()->json($pages);
     }
@@ -137,6 +137,25 @@ class AppController extends Controller
 	    $page['type'] = "Data";
 
 	    $page['sites'] = $this->sites("LR_");
+	    $page['variables'] = $this->variables();
+	    $page['topics'] = $this->topics();
+	    
+	    $page['zoom'] = 11;
+	    
+	    return $page;
+    }
+
+    public function pr() {
+	    
+	    $page = [];
+	    $page['id'] = "pr";
+	    $page['img'] = "/img/bubbles/lr.png";
+	    $page['bubblescale'] = .24;
+	    $page['name'] = "Provo River";
+	    $page['text'] = ["Text explaining Provo River"];
+	    $page['type'] = "Data";
+
+	    $page['sites'] = $this->sites("PR_");
 	    $page['variables'] = $this->variables();
 	    $page['topics'] = $this->topics();
 	    
