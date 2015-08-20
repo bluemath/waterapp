@@ -58,7 +58,7 @@ var TextView = Backbone.View.extend({
 		text = this.model.get('text');
 		if(text != undefined) {
 			for (i in text) {
-				this.$el.append($("<p>").html(this.model.get('text')));				
+				this.$el.append($("<p>").html(text[i]));				
 			}
 		}
 		return this;
