@@ -58,8 +58,7 @@ class AppController extends Controller
 	    $page['bubblescale'] = .25;
 	    $page['name'] = "Explore the Great Salt Lake Watershed";
 	    $page['text'] = [];
-	    $page['text'][] = "The Great Salt Lake watershed is enormous—it covers nearly 35,000 square miles. Most of its water comes from three watersheds east of the Lake: Bear River, Weber River, and Jordan River watersheds.";
-	    $page['text'][] = "The Jordan River watershed includes most of Salt Lake County within its borders. Seven major tributaries feed the Jordan River as it makes its way from Utah Lake through the Salt Lake Valley. Each tributary has its own watershed—it’s a converging system of drainages all flowing to the Great Salt Lake.";
+	    $page['text'][] = "The Great Salt Lake watershed is enormous—it covers nearly 35,000 square miles. Most of its water comes from three watersheds east of the Lake: Bear River, Weber River, and Jordan River watersheds.<br><br>The Jordan River watershed includes most of Salt Lake County within its borders. Seven major tributaries feed the Jordan River as it makes its way from Utah Lake through the Salt Lake Valley. Each tributary has its own watershed—it’s a converging system of drainages all flowing to the Great Salt Lake.";
 	    $page['type'] = "Photos";
 	    $page['topics'] = [
 		    [
