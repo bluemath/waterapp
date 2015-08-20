@@ -191,8 +191,7 @@ var DotUI = function(canvas) {
 		}
 	}
 	
-	canvas.addEventListener('pointerdown', function(event) {
-
+	down = function(event) {
 		// Create and assign a body to the input
 		var input = that.flipPoint({x: event.clientX, y: event.clientY});
 		var shape = that.space.pointQueryFirst(input, GRABABLE_MASK_BIT, cp.NO_GROUP);
@@ -207,7 +206,9 @@ var DotUI = function(canvas) {
 				shape: shape
 			}
 		}
-	});
+	}
+	
+	canvas.addEventListener('pointerdown', down);
 	
 	canvas.addEventListener('pointermove', function(event) {
 		var pointer = that.pointers[event.pointerId];
@@ -216,7 +217,7 @@ var DotUI = function(canvas) {
 		}
 	});
 	
-	document.addEventListener('pointerup', function(event) {
+	canvas.addEventListener('pointerup', function(event) {
 
 		var pointer = that.pointers[event.pointerId];
 		if(pointer) {
@@ -268,19 +269,4 @@ var Dot = function(scale, imageURL, text) {
 	// Defaults
 	this.radius = 0;
 	
-}
-
-// Taken from http://davidwalsh.name/fullscreen
-// Use this to make fullscreen:
-// launchIntoFullscreen(document.documentElement);
-function launchIntoFullscreen(element) {
-  if(element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if(element.mozRequestFullScreen) {
-    element.mozRequestFullScreen();
-  } else if(element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen();
-  } else if(element.msRequestFullscreen) {
-    element.msRequestFullscreen();
-  }
 }

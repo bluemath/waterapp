@@ -198,7 +198,26 @@ var Splash = function(container) {
 	// Events
 	////////////////////
 	
-	this.select = function(event) {
+	this.code = "";
+	bubblecode = function(c) {
+		that.code = that.code.concat(c);
+		that.code = that.code.slice(-8);
+		switch(that.code) {
+			case 'pdpdppdd':
+				if(document.location.href.indexOf("/app") > -1) {
+					document.location.href = '/';
+				} else {
+					document.location.href = '/app';
+				}
+			break;
+			default:
+				// Ignore
+			break;
+		}
+		debug(that.code);
+	}
+	
+	select = function(event) {
 		// Create and assign a body to the input
 		var input = that.flipPoint({x: event.clientX, y: event.clientY});
 		var shape = that.space.pointQueryFirst(input, GRABABLE_MASK_BIT, cp.NO_GROUP);
@@ -222,7 +241,7 @@ var Splash = function(container) {
 		}
 	}
 	
-	this.move = function(event) {
+	move = function(event) {
 		var pointer = that.pointers[event.pointerId];
 		if(pointer) {
 			pointer.position = new Point(event.clientX, event.clientY);
@@ -235,22 +254,25 @@ var Splash = function(container) {
 		return  Math.sqrt(x*x + y*y);
 	}
 	
-	this.pop = function(event) {
+	pop = function(event) {
 		var pointer = that.pointers[event.pointerId];
 		if(pointer) {
 			var end = new Point(event.clientX, event.clientY);
 			var distance = that.distance(pointer.start, end);
 			if(pointer.shape.poppable && distance < 10) {
 				pointer.shape.body.setPos(that.offscreenRandom());
+				bubblecode('p');
+			} else {
+				bubblecode('d');
 			}
 			delete that.pointers[event.pointerId];
 		}
 	}
 	
-	canvas.addEventListener('pointerdown', this.select);
-	canvas.addEventListener('pointermove', this.move);
-	document.addEventListener('pointerup', this.pop);
-	canvas.addEventListener('pointercancel', this.pop);
+	canvas.addEventListener('pointerdown', select);
+	canvas.addEventListener('pointermove', move);
+	document.addEventListener('pointerup', pop);
+	canvas.addEventListener('pointercancel', pop);
 	
 	
 	///////////////////
