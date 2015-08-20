@@ -348,7 +348,7 @@ a {
   /* bottom, add background color here */
   font-size: 0;
   line-height: 0;
-  margin-right: 3px; }
+  margin-right: 2px; }
 
 .markercontainerR .markerArrow {
   vertical-align: middle;
@@ -363,7 +363,7 @@ a {
   /* bottom, add background color here */
   font-size: 0;
   line-height: 0;
-  margin-left: 3px; }
+  margin-left: 2px; }
 
 .markercontainerL .marker i {
   font-size: 10pt;
