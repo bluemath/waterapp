@@ -439,6 +439,7 @@ a {
 	border-right: 15px solid $markerColor; /* bottom, add background color here */
 	font-size: 0;
 	line-height: 0;
+	margin-right: 3px;
 }
 
 .markercontainerR .markerArrow {
@@ -451,6 +452,7 @@ a {
 	border-left: 15px solid $markerColor; /* bottom, add background color here */
 	font-size: 0;
 	line-height: 0;
+	margin-left: 3px;
 }
 
 .markercontainerL .marker i {
