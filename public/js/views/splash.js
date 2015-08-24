@@ -205,9 +205,9 @@ var Splash = function(container) {
 		switch(that.code) {
 			case 'pdpdppdd':
 				if(document.location.href.indexOf("/app") > -1) {
-					document.location.href = '/';
+					//document.location.href = '/';
 				} else {
-					document.location.href = '/app';
+					//document.location.href = '/app';
 				}
 			break;
 			default:
