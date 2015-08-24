@@ -1,5 +1,12 @@
 $(function() {
 
+	// Prevent secondary click
+	$(document).on({
+	    "contextmenu": function(e) {
+	        e.preventDefault();
+		}
+	});
+
 	// Credits
 	$("#credits .text").hide();
 	var creditsTimeout;
