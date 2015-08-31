@@ -6,6 +6,9 @@ $(function() {
 	        e.preventDefault();
 		}
 	});
+	
+	// Prevent dragging images
+	$(document).on('dragstart', 'img', function(e) { e.preventDefault(); });
 
 	// Credits
 	$("#credits .text").hide();

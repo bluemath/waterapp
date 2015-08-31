@@ -188,19 +188,62 @@ a {
 
 .thumbnails {
   width: 100%;
-  margin-bottom: 38px;
+  height: 300px;
   margin-left: 12px; }
 
-.thumbnails .thumbnail {
+.thumbnails .label {
+  font-size: 13pt;
+  line-height: 13pt;
+  text-align: center;
+  color: #222;
+  margin-top: 6px; }
+
+.thumbnails .polaroid {
   display: inline-block;
   margin-right: 12px;
+  border-width: 6px 6px 0 6px;
+  border-style: solid;
+  border-color: #ddd;
+  background-color: #ddd;
+  box-shadow: 1px 2px 5px #222;
+  vertical-align: bottom;
+  width: 130px;
+  overflow-x: hidden; }
+
+.thumbnails .polaroid img {
+  height: 130px;
+  width: auto;
+  background-color: #ddd; }
+
+.thumbnails .polaroid .label {
+  height: 40px;
+  width: 130px;
+  font-weight: bold; }
+
+.thumbnails .photo {
+  display: inline-block;
+  margin-right: 12px; }
+
+.thumbnails .photo img {
+  width: 192px;
+  height: 108px;
   border: 4px solid #ddd;
-  background-color: #222;
+  background-color: #ddd;
   box-shadow: 1px 1px 3px #222; }
 
-.thumbnails .thumbnail img {
-  width: 192px;
+.thumbnails .photo .label {
+  color: #ddd; }
+
+.thumbnails .icon {
+  display: inline-block;
+  margin-right: 12px; }
+
+.thumbnails .icon img {
+  width: 108px;
   height: 108px; }
+
+.thumbnails .icon .label {
+  color: #ddd; }
 
 .cameras {
   position: fixed;

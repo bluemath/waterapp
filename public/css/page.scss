@@ -24,6 +24,7 @@ $highlight:		#ffe495;
 $pageMargin: 38px;
 $spacing: 12px;
 $shadow: 1px 1px 3px $black;
+$shadowExtra: 1px 2px 5px $black;
 $firstColumn: 375px;
 $menuWidth: 650px;
 $chartHeight: 380px;
@@ -251,21 +252,73 @@ a {
 
 .thumbnails {
 	width: 100%;
-	margin-bottom: $pageMargin;
+	height: 300px;
+	//margin-bottom: $pageMargin;
 	margin-left: $spacing;
 }
 
-.thumbnails .thumbnail {
+.thumbnails .label {
+	font-size: 13pt;
+	line-height: 13pt;
+	text-align: center;
+	color: $black;
+	margin-top: $spacing / 2;
+}
+
+.thumbnails .polaroid {
 	display: inline-block;
 	margin-right: $spacing;
+	border-width: 6px 6px 0 6px; 
+	border-style: solid;
+	border-color: #ddd;
+	background-color: #ddd;
+	box-shadow: $shadowExtra;
+	vertical-align: bottom;
+	width: 130px;
+	overflow-x: hidden;
+}
+
+.thumbnails .polaroid img {
+	height: 130px;
+	width: auto;
+	background-color: #ddd;
+}
+
+.thumbnails .polaroid .label {
+	height: 40px;
+	width: 130px;
+	font-weight: bold;
+}
+
+.thumbnails .photo {
+	display: inline-block;
+	margin-right: $spacing;
+}
+
+.thumbnails .photo img {
+	width: 192px;
+	height: 108px;
 	border: 4px solid #ddd;
-	background-color: $black;
+	background-color: #ddd;
 	box-shadow: $shadow;
 }
 
-.thumbnails .thumbnail img {
-	width: 192px;
+.thumbnails .photo .label {
+	color: #ddd;
+}
+
+.thumbnails .icon {
+	display: inline-block;
+	margin-right: $spacing;
+}
+
+.thumbnails .icon img {
+	width: 108px;
 	height: 108px;
+}
+
+.thumbnails .icon .label {
+	color: #ddd;
 }
 
 .cameras {

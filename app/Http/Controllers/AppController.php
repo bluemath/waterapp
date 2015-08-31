@@ -58,20 +58,28 @@ class AppController extends Controller
 	    $page['bubblescale'] = .25;
 	    $page['name'] = "Explore the Great Salt Lake Watershed";
 	    $page['text'] = [];
-	    $page['text'][] = "The Great Salt Lake watershed is enormous—it covers nearly 35,000 square miles. Most of its water comes from three watersheds east of the Lake: Bear River, Weber River, and Jordan River watersheds.<br><br>The Jordan River watershed includes most of Salt Lake County within its borders. Seven major tributaries feed the Jordan River as it makes its way from Utah Lake through the Salt Lake Valley. Each tributary has its own watershed—it’s a converging system of drainages all flowing to the Great Salt Lake.";
+	    $page['text'][] = "The Great Salt Lake watershed is enormous&mdash;it covers nearly 35,000 square miles. Most of its water comes from three watersheds east of the Lake: Bear River, Weber River, and Jordan River watersheds. Smaller watersheds feed each of these watersheds. It’s a converging system of drainages all flowing to the Great Salt Lake.";
 	    $page['type'] = "Photos";
 	    $page['topics'] = [
 		    [
-			    'name' => 'Jordan River Watershed',
-			    'text' => ['']
+			    'name' => 'What is a watershed?',
+			    'text' => ['A watershed is an area of land that drains into a particular stream, river, lake, or even an ocean. Wherever you are, you are in a watershed. Some watersheds are hilly; some are flat. Some are wild, while others are developed. Some watersheds are quite small, and some are huge. Large bodies of water are typically fed by many tributaries, and each tributary has its own watershed.']
 		    ],
 		    [
-			    'name' => 'Rivers',
-			    'text' => ['A river runs through us.']
+			    'name' => 'Watersheds are dynamic',
+			    'text' => ['Every watershed is unique and change is ever present. Watershed boundaries and characteristics depend on interactions among the geology and topography of the region, climate, vegetation cover, habitats available for animals and other organisms, human impacts, and of course, the water cycle.']
 		    ],
 		    [
-			    'name' => 'Storm Drains',
-			    'text' => ['We all live downstream.']
+			    'name' => 'Jordan River watershed',
+			    'text' => ['Most of Salt Lake County falls within the boundaries of the Jordan River watershed, a 3,805 square mile basin. From its outlet at Utah Lake, the Jordan River flows north for 51 miles to the Great Salt Lake. Bounded by the Wasatch and Oquirrh Mountains, it meanders along the Salt Lake valley floor and is fed by seven tributary streams originating in the Wasatch Mountains.']
+		    ],
+		    [
+			    'name' => 'Jordan River Tributaries',
+			    'text' => ['Seven major tributaries feed the Jordan River in Salt Lake County: Little Cottonwood Creek, Big Cottonwood Creek, Mill Creek, Parley’s Creek, Emigration Creek, Red Butte Creek, and City Creek. The high elevation watersheds of these seven tributaries are primarily uninhabited forest lands. In the valley bottoms, the watersheds are primarily private lands that include industrial and agricultural areas. This means that each of the tributaries is impacted by a variety of both natural and human impacts.']
+		    ],
+		    [
+			    'name' => 'Red Butte Creek',
+			    'text' => ['Look out the window and you’ll see the Bonneville Shoreline trail just in front of the Museum. Take a stroll heading north, and you’ll arrive at Red Butte Creek as it leaves Red Butte Garden and enters the built environment of Salt Lake City. Like the other Jordan River Tributaries, Red Butte Creek is a very different creek once it flows into the city.']
 		    ]
 	    ];
 	    return $page;
@@ -89,37 +97,43 @@ class AppController extends Controller
 		    [
 			    'name' => 'Aquatic Monitoring Stations',
 			    'text' => ['GAMUT includes state-of-the-art sensors at aquatic and terrestrial sites for real-time monitoring of common meteorological variables, snow accumulation and melt, soil moisture, surface water flow, and surface water quality.'],
-			    'default' => 2,
+			    'default' => 0,
 			    'photos' => [
 				    [
 					    'img' => '/img/gamut/RB_KF_BA.jpg',
-					    'caption' => 'This is the highest monitoring station on the creek: Knowlton Fork.'
+					    'label' => "Knowlton Fork",
+					    'caption' => 'This is the highest monitoring station on the creek: Knowlton Fork.',
+					    'type' => 'polaroid'
 				    ],
 				    [
 					    'img' => '/img/gamut/RB_ARBR_AA.jpg',
-					    'caption' => 'Above Red Butte Reservoir'
+					    'label' => "Above Red Butte Reservoir",
+					    'caption' => 'Above Red Butte Reservoir',
+					    'type' => 'polaroid'
 				    ],
 				    [
 					    'img' => '/img/gamut/RB_RBG_BA.jpg',
-					    'caption' => 'This is the site near the gate that prevents access to the Red Butte Creek protected area.'
+					    'label' => "Red Butte Gate",
+					    'caption' => 'This is the site near the gate that prevents access to the Red Butte Creek protected area.',
+					    'type' => 'polaroid'
 				    ],
 				    [
 					    'img' => '/img/gamut/RB_CG_BA.jpg',
-					    'caption' => 'Cottams Grove.'
+					    'label' => "Cottams Grove",
+					    'caption' => 'Cottams Grove.',
+					    'type' => 'polaroid'
 				    ],
 				    [
 					    'img' => '/img/gamut/RB_FD_AA.jpg',
-					    'caption' => 'Foothill Drive.'
+					    'label' => "Foothill Drive",
+					    'caption' => 'Foothill Drive.',
+					    'type' => 'polaroid'
 				    ]
 			    ]
 		    ],
 		    [
 			    'name' => 'Sensors',
 			    'text' => ['Always on, always sensing.']
-		    ],
-		    [
-			    'name' => 'Database',
-			    'text' => ['Millions of data samples.']
 		    ]
 	    ];
 	    return $page;
@@ -291,9 +305,46 @@ class AppController extends Controller
 	    $page['img'] = "/img/bubbles/bio.png";
 	    $page['bubblescale'] = .21;
 	    $page['name'] = "Biodiveristy";
-	    $page['text'] = ["Learn about the life in the creek."];
+	    $page['text'] = ["Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek.  Learn about the life in the creek.  Learn about the life in the creek.  Learn about the life in the creek. "];
 	    $page['type'] = "Photos";
 	    $page['topics'] = [
+			[
+				'name' => 'River',
+				'text' => ['Explore the life along Red Butte Creek. Explore the life along Red Butte Creek. Explore the life along Red Butte Creek. Explore the life along Red Butte Creek. Explore the life along Red Butte Creek. Explore the life along Red Butte Creek.'],
+				'default' => '0',
+			    'photos' => [
+				    [
+					 	'type' => 'photo',
+					 	'img' => '/img/bio/bio.jpg',
+					 	'label' => 'The Creek',
+				    ],
+				    [
+					    'img' => '/img/bio/icons/fish.png',
+					    'label' => 'Certain Trout',
+					    'type' => 'icon'
+				    ],
+				    [
+					    'img' => '/img/bio/icons/grass.png',
+					    'label' => 'Particular Grass',
+					    'type' => 'icon'
+				    ],
+				    [
+					    'img' => '/img/bio/icons/flies.png',
+					    'label' => 'Type of Fly',
+					    'type' => 'icon'
+				    ],
+				    [
+					    'img' => '/img/bio/icons/rodent.png',
+					    'label' => 'Breed of Mouse',
+					    'type' => 'icon'
+				    ],
+				    [
+					    'img' => '/img/bio/icons/snakes.png',
+					    'label' => 'Specific Snake',
+					    'type' => 'icon'
+				    ]
+			    ]	
+			],
 		    [
 			    'name' => 'Fish',
 			    'text' => ['Small fish in a big pond.']
