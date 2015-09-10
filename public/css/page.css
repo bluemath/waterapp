@@ -3,6 +3,7 @@ $blue:			#518eaa;
 $blueDarker:	#2f5266;
 $blueDarkest:	#264151;
 */
+/* even is best */
 /* Fonts */
 @font-face {
   font-family: "reykjavikone";
@@ -364,8 +365,13 @@ a {
   overflow: hidden;
   white-space: nowrap; }
 
-.marker.on {
-  opacity: 1; }
+.markercontainerL .dot, .markercontainerR .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: red;
+  vertical-align: middle; }
 
 .marker {
   vertical-align: middle;
@@ -378,46 +384,42 @@ a {
   font-size: 20px;
   line-height: 20px; }
 
-.markercontainerL .markerArrow {
-  vertical-align: middle;
-  display: inline-block;
-  width: 0;
-  height: 0;
-  border-bottom: 15px solid transparent;
-  /* left arrow slant */
-  border-top: 15px solid transparent;
-  /* right arrow slant */
-  border-right: 15px solid #555;
-  /* bottom, add background color here */
-  font-size: 0;
-  line-height: 0;
-  margin-right: 2px; }
+.markercontainerL .marker {
+  padding-left: 5px; }
 
-.markercontainerR .markerArrow {
-  vertical-align: middle;
-  display: inline-block;
-  width: 0;
-  height: 0;
-  border-bottom: 15px solid transparent;
-  /* left arrow slant */
-  border-top: 15px solid transparent;
-  /* right arrow slant */
-  border-left: 15px solid #555;
-  /* bottom, add background color here */
-  font-size: 0;
-  line-height: 0;
-  margin-left: 2px; }
+.markercontainerR .marker {
+  padding-right: 5px; }
 
-.markercontainerL .marker i {
+.marker.on {
+  opacity: 1; }
+
+.marker i {
   font-size: 10pt;
   line-height: 12pt;
   margin-left: 6px;
   opacity: .75; }
 
-.markercontainerR .marker i {
-  font-size: 10pt;
-  line-height: 12pt;
-  margin-right: 6px;
-  opacity: .75; }
+.markerArrow {
+  vertical-align: middle;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-bottom: 15px solid transparent;
+  /* left arrow slant */
+  border-top: 15px solid transparent;
+  /* right arrow slant */
+  font-size: 0;
+  line-height: 0;
+  margin-right: 0px; }
+
+.markercontainerL .markerArrow {
+  border-right: 15px solid #555;
+  /* bottom, add background color here */
+  margin-left: 2px; }
+
+.markercontainerR .markerArrow {
+  border-left: 15px solid #555;
+  /* bottom, add background color here */
+  margin-right: 2px; }
 
 /*# sourceMappingURL=page.css.map */

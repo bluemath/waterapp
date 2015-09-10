@@ -208,16 +208,16 @@ var DataPageView = Backbone.View.extend({
 			debug(Math.abs(pLatitude - latitude) + " from the previous marker");
 			
 			// Compute div of marker
-			if(pLatitude != null && Math.abs(pLatitude - latitude) < .007) {
+			if(pLatitude != null && Math.abs(pLatitude - latitude) < .002) {
 				// Arrow Right
 				positioning = 'center-right';
 				if(site.get('camera')) name = "<i class='fa fa-video-camera'></i>" + name;
-				div = "<div id='" + code + "' class='markercontainerR'><div class='marker'>" + name + "</div><div class='markerArrow'></div></div>"
+				div = "<div id='" + code + "' class='markercontainerR'><div class='marker'>" + name + "</div><div class='markerArrow'></div><div class='dot'></div></div>"
 			} else {
 				// Arrow Left
 				positioning = 'center-left';
 				if(site.get('camera')) name = name + "<i class='fa fa-video-camera'></i>";
-				div = "<div id='" + code + "' class='markercontainerL'><div class='markerArrow'></div><div class='marker'>" + name + "</div></div>"
+				div = "<div id='" + code + "' class='markercontainerL'><div class='dot'></div><div class='markerArrow'></div><div class='marker'>" + name + "</div></div>"
 			}
 			
 			// Add marker

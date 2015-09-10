@@ -122,6 +122,7 @@ var Splash = function(container) {
 			var circleClipped = new Group(circle, this);
 			circleClipped.clipped = true;
 			
+/*
 			var label = this.label = new PointText({
 			    point: bubble.position,
 			    content: text,
@@ -134,8 +135,10 @@ var Splash = function(container) {
 				shadowBlur: 3,
 				shadowOffset: new Point(1,1)
 			});
+*/
 	    
-			bubble.circle = new Group(circleClipped, label);
+			//bubble.circle = new Group(circleClipped, label);
+			bubble.circle = circleClipped;
 			
 			that._addWithPhysics(bubble, 400, 400);
 		}

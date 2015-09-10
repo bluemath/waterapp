@@ -46,7 +46,8 @@ class AppController extends Controller
 	
     public function pages() {
         // Enumerate all the pages
-		$pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->lr(), $this->pr(), $this->bio()];
+		// $pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->lr(), $this->pr(), $this->bio()];
+		$pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->bio()];
 		// Send back as JSON
 		return response()->json($pages);
     }
@@ -54,8 +55,9 @@ class AppController extends Controller
     public function gsl() {
 	    $page = [];
 	    $page['id'] = "gsl";
-	    $page['img'] = "/img/bubbles/gsl.png";
+	    $page['img'] = "/img/bubbles/gsl.jpg";
 	    $page['bubblescale'] = .25;
+	    $page['px'] = 270;
 	    $page['name'] = "Explore the Great Salt Lake Watershed";
 	    $page['text'] = [];
 	    $page['text'][] = "The Great Salt Lake watershed is enormous&mdash;it covers nearly 35,000 square miles. Most of its water comes from three watersheds east of the Lake: Bear River, Weber River, and Jordan River watersheds. Smaller watersheds feed each of these watersheds. It’s a converging system of drainages all flowing to the Great Salt Lake.";
@@ -88,7 +90,7 @@ class AppController extends Controller
     public function gamut() {
 	    $page = [];
 	    $page['id'] = "gamut";
-	    $page['img'] = "/img/bubbles/gamut.png";
+	    $page['img'] = "/img/bubbles/gamut.jpg";
 	    $page['bubblescale'] = .22;
 	    $page['name'] = "GAMUT Project";
 	    $page['text'] = ["iUTAH researchers have developed and deployed an ecohydrologic observatory to study water in ‘Gradients Along Mountain to Urban Transitions’ (GAMUT). The GAMUT Network measures aspects of climate, hydrology, and water quality along a mountain-to-urban gradient in three watersheds that share common water sources (winter-derived precipitation) but differ in the human and biophysical nature of land-use transitions. Designing GAMUT was a 12-month process involving faculty and technicians from across Utah’s research-intensive institutions: Brigham Young University, the University of Utah, and Utah State University."];
@@ -181,7 +183,7 @@ class AppController extends Controller
 	    
 	    $page = [];
 	    $page['id'] = "rbc";
-	    $page['img'] = "/img/bubbles/rbc.png";
+	    $page['img'] = "/img/bubbles/rbc.jpg";
 	    $page['bubblescale'] = .24;
 	    $page['name'] = "Red Butte Creek";
 	    $page['text'] = ["Text explaining Red Butte Creek"];
@@ -302,7 +304,7 @@ class AppController extends Controller
     public function bio() {
 		$page = [];
 	    $page['id'] = "bio";
-	    $page['img'] = "/img/bubbles/bio.png";
+	    $page['img'] = "/img/bubbles/bio.jpg";
 	    $page['bubblescale'] = .21;
 	    $page['name'] = "Biodiveristy";
 	    $page['text'] = ["Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek.  Learn about the life in the creek.  Learn about the life in the creek.  Learn about the life in the creek. "];
