@@ -1,6 +1,6 @@
 
-	<script src="{{ URL::asset('js/lib/jquery/jquery-1.11.3.js') }}"></script>
-	<script src="{{ URL::asset('js/lib/open-layers/ol-debug.js') }}"></script>
+	<script src="{{ URL::asset('js/lib/jquery/jquery-1.11.3.min.js') }}"></script>
+	<script src="{{ URL::asset('js/lib/open-layers/ol.js') }}"></script>
 	<style>
 		@font-face {
 			font-family: "reykjavikone";
