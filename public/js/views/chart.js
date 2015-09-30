@@ -190,6 +190,16 @@ function Chart(element, sites, variables) {
 		variablename = variable.get('variablename');
 		var units = variable.get('variableunitsabbreviation');
 		
+		// convert degC to ºF
+		if (units == 'degC') {
+			units = "ºF";
+		}
+		
+		// convert m to cm
+		if (units == 'm') {
+			units = "cm";
+		}
+		
 		// Present most units on the same axis
 		yaxis = variablecode;
 		
@@ -234,7 +244,6 @@ function Chart(element, sites, variables) {
 				
 				// convert degC to ºF
 				if (units == 'degC') {
-					units = "ºF";
 					data = _.map(data, function(pair) {
 						pair[1] = pair[1] * 1.8 + 32;
 						return pair;
@@ -243,7 +252,6 @@ function Chart(element, sites, variables) {
 				
 				// convert m to cm
 				if (units == 'm') {
-					units = "cm";
 					data = _.map(data, function(pair) {
 						pair[1] = pair[1] * 100;
 						return pair;

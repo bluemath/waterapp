@@ -1,6 +1,6 @@
 
-	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script src="http://openlayers.org/en/v3.7.0/build/ol.js" type="text/javascript"></script>
+	<script src="{{ URL::asset('js/lib/jquery/jquery-1.11.3.js') }}"></script>
+	<script src="{{ URL::asset('js/lib/open-layers/ol-debug.js') }}"></script>
 	<style>
 		@font-face {
 			font-family: "reykjavikone";

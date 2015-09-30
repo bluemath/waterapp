@@ -27,9 +27,9 @@ $pageMargin: 38px;
 $spacing: 12px;
 $shadow: 1px 1px 3px $black;
 $shadowExtra: 1px 2px 5px $black;
-$firstColumn: 375px;
+$firstColumn: 350px;
 $menuWidth: 650px;
-$chartHeight: 380px;
+$chartHeight: 430px;
 $dot: 8px; /* even is best */
 
 
@@ -96,7 +96,16 @@ a {
 }
 
 .spread { 
-	background-color: #cacaca;
+
+background: rgb(255,255,255); /* Old browsers */
+background: -moz-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 44%, rgba(209,209,209,1) 87%); /* FF3.6+ */
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(44%,rgba(255,255,255,1)), color-stop(87%,rgba(209,209,209,1))); /* Chrome,Safari4+ */
+background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 44%,rgba(209,209,209,1) 87%); /* Chrome10+,Safari5.1+ */
+background: -o-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 44%,rgba(209,209,209,1) 87%); /* Opera 12+ */
+background: -ms-radial-gradient(center, ellipse cover, rgba(255,255,255,1) 44%,rgba(209,209,209,1) 87%); /* IE10+ */
+background: radial-gradient(ellipse at center, rgba(255,255,255,1) 44%,rgba(209,209,209,1) 87%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#d1d1d1',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
 	width: 100%;
 	height: 100%;
 	position: fixed; /* so that it doesn't scroll */
@@ -109,11 +118,10 @@ a {
 }
 
 .spread .image {
-
 	width: 100%;
 	height: 100%;
 	position: fixed;
-	background-color: $black;
+	//background-color: $black;
 	background-repeat: no-repeat;
 	background-position: left center;
 	background-attachment: fixed;
@@ -160,15 +168,17 @@ a {
 	left: $pageMargin;
 	top: $pageMargin * 3;
 	width: $firstColumn;
-}
-
-#page .intro p {
-	font-size: 16pt;
+	font-size: 14pt;
 	margin: 0 0 $spacing 0;
 	background-color: $white;
 	color: $black;
 	box-shadow: $shadow;
-	padding: 15px;
+	padding: 0 $spacing 0 $spacing;
+}
+
+#page .intro p {
+	margin: $spacing 0 $spacing 0;
+	padding: 0;
 }
 
 .topic {
@@ -191,36 +201,32 @@ a {
 	//height: $chartHeight;
 }
 
-.topic .chooser {
-	width: $firstColumn;
-	left: 0;
-}
-
-.topic .control {
-	position: absolute;
-	top: 0;
-	margin-left: $firstColumn + $spacing + 2; /* 2 is the shadow */
-	white-space: nowrap;
-}
-
-.topic .detail {
-	position: relative;
-	margin-left: $firstColumn + $spacing + 2; /* 2 is the shadow */
-}
-
-.topic .text {
+.topic .controls {
+	width: $firstColumn + 2 * $spacing;
 	float: left;
-	width: $firstColumn;
-	margin-bottom: $pageMargin;
+	margin: 0 0 $spacing 0;
 }
 
-.topic .text p {
-	margin: 0 0 $spacing 0;
-	font-size: 16pt;
+.topic .controls .chooser {
+
+}
+
+.topic .controls .text {
+	margin-top: $spacing;
+	font-size: 14pt;
 	background-color: $white;
 	color: $black;
 	box-shadow: $shadow;
-	padding: 15px;
+	padding: 1px $spacing 1px $spacing;
+}
+
+.topic .controls .text p {
+	margin: $spacing 0 $spacing 0;
+	padding: 0;
+}
+
+.topic .detail {
+	margin-left: $firstColumn + 3 * $spacing + 2; /* 2 is the shadow */
 }
 
 .block {
@@ -246,7 +252,7 @@ a {
 
 .chart {
 	width: 100%;
-	height: 400px;
+	height: $chartHeight;
 	background-color: $white;
 	color: $black;
 	box-shadow: $shadow;
@@ -254,9 +260,22 @@ a {
 
 .thumbnails {
 	width: 100%;
-	height: 300px;
-	//margin-bottom: $pageMargin;
+	min-height: 200px;
+	margin-bottom: $pageMargin;
 	margin-left: $spacing;
+	position: relative;
+	overflow-x: hidden;
+	white-space: nowrap;
+}
+
+.thumbnails .image {
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-attachment: local;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
 .thumbnails .label {
@@ -265,9 +284,11 @@ a {
 	text-align: center;
 	color: $black;
 	margin-top: $spacing / 2;
+	white-space: normal;
 }
 
 .thumbnails .polaroid {
+	//position: relative;
 	display: inline-block;
 	margin-right: $spacing;
 	border-width: 6px 6px 0 6px; 
@@ -280,9 +301,10 @@ a {
 	overflow-x: hidden;
 }
 
-.thumbnails .polaroid img {
+.thumbnails .polaroid .image {
+	display: inline-block;
 	height: 130px;
-	width: auto;
+	width: 130px;
 	background-color: #ddd;
 }
 
@@ -297,7 +319,7 @@ a {
 	margin-right: $spacing;
 }
 
-.thumbnails .photo img {
+.thumbnails .photo .image {
 	width: 192px;
 	height: 108px;
 	border: 4px solid #ddd;
@@ -314,13 +336,30 @@ a {
 	margin-right: $spacing;
 }
 
-.thumbnails .icon img {
+.thumbnails .icon .image {
 	width: 108px;
 	height: 108px;
 }
 
 .thumbnails .icon .label {
 	color: #ddd;
+}
+
+.thumbnails .cutout {
+	display: inline-block;
+	width: 150px;
+	height: auto;
+	vertical-align: top;
+}
+
+.thumbnails .cutout .image {
+	width: 150px;
+	height: 150px;
+}
+
+.thumbnails .cutout .label {
+	color: $black;
+	font-weight: bold;
 }
 
 .cameras {
@@ -391,12 +430,12 @@ a {
 
 
 .topic .button {
-	font-size: 18pt;
+	font-size: 16pt;
 }
 
 .topic .dropdown {
 	position: absolute;
-	width: $firstColumn;
+	width: $firstColumn + 2 * $spacing;
 	display:none;
 	z-index: 4;
 	background-color: $blue;
@@ -411,9 +450,9 @@ a {
 	padding: 8px 15px;
 	margin: 0;
 	
-	font-size: 18pt;
+	font-size: 16pt;
 	font-weight: normal;
-	line-height: 18pt;
+	line-height: 16pt;
 }
 
 .button {

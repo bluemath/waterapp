@@ -53,22 +53,12 @@
 			<div class="topic">
 				
 				<div class="row" id="topicmenu">
-					<!-- Left -->
-					<div class='chooser button'><span>&nbsp;</span><i class="fa fa-chevron-down pull-right"></i></div>
-					<div class="dropdown"></div>
-					<!-- Right -->
-					<div class="control">
-						<div class="inline button">
-							<span class="label"></span>
-							<i class="fa fa-times pull-right"></i>
-						</div> 
+
+					<div class='controls'>
+						<div class='chooser button'><span>&nbsp;</span><i class="fa fa-chevron-down pull-right"></i></div>
+						<div class="dropdown"></div>
+						<div class="text"></div>
 					</div>
-				</div>
-				
-				<div class="row">
-					<!-- Left -->
-					<div class="text block"></div>
-					<!-- Right -->
 					<div class="detail block"></div>
 				</div>
 				

@@ -34,6 +34,15 @@ var Sites = Backbone.Collection.extend({
 	}
 });
 
+var POI = Backbone.Model.extend({
+});
+var POIs = Backbone.Collection.extend({
+	model: POI,
+	comparator: function(poi) {
+		return -poi.get("latitude");
+	}
+});
+
 var Variable = Backbone.Model.extend({
 });
 var Variables = Backbone.Collection.extend({
@@ -44,6 +53,7 @@ var Page = Backbone.Model.extend({
 	model: {
 		topics: Topics,
 		sites: Sites,
+		poi: POIs,
 		variables: Variables
 	},
 	initialize: function() {

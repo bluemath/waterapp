@@ -166,6 +166,7 @@ var DataPageView = Backbone.View.extend({
 		debug("DataPageView Render");
 		this.loadMap();
 		this.loadMapSites();
+		this.loadPOI();
 		this.loadChart();
 	},
 	
@@ -220,6 +221,8 @@ var DataPageView = Backbone.View.extend({
 				div = "<div id='" + code + "' class='markercontainerL'><div class='dot'></div><div class='markerArrow'></div><div class='marker'>" + name + "</div></div>"
 			}
 			
+			this.addToMap(latitude, longitude, $(div), positioning);
+/*
 			// Add marker
 			this.map.addOverlay(new ol.Overlay({
 			  position: ol.proj.transform(
@@ -230,6 +233,7 @@ var DataPageView = Backbone.View.extend({
 			  element: $(div),
 			  positioning: positioning,
 			}));
+*/
 			
 			// Dim 
 			$("#"+code).fadeTo(200,.8);
@@ -246,6 +250,29 @@ var DataPageView = Backbone.View.extend({
 			
 		}, this);
 		
+	},
+	
+	loadPOI: function() {
+		var poi = this.model.get('poi');
+		poi.each(function(p) {
+			var name = p.get('name');
+			var latitude = p.get('latitude');
+			var longitude = p.get('longitude');
+			var div = "<div class='markercontainerL'><div class='markerArrow'></div><div class='marker'>" + name + "</div></div>"
+			this.addToMap(latitude, longitude, $(div), 'center-left');
+		}, this);
+	},
+	
+	addToMap: function(lat, lon, JQE, position) {
+		this.map.addOverlay(new ol.Overlay({
+		  position: ol.proj.transform(
+		    [lon, lat],
+		    'EPSG:4326',
+		    'EPSG:3857'
+		  ),
+		  element: $(JQE),
+		  positioning: position,
+		}));
 	},
 	
 	loadChart: function() {
@@ -389,7 +416,8 @@ var PhotosPageView = Backbone.View.extend({
 		currentTopic.get("photos").each(function(photo) {
 			
 			// Setup the thumbnail
-			var image = $("<img>").attr("src", photo.get("img"));
+			//var image = $("<div>").attr("src", photo.get("img"));
+			var image = $("<div>").addClass("image").css("background-image", "url('" + photo.get("img") + "')");
 			var text = $("<div>").addClass("label").html(photo.get("label"));
 			var thumb = $("<div>").addClass(photo.get("type"));
 			thumb.append(image).append(text);
@@ -406,7 +434,7 @@ var PhotosPageView = Backbone.View.extend({
 				$(this).css('transform', '');
 */
 				deg = (Math.random() < .5 ? -1 : 1) * ((Math.random() * 3) + 3);
-				$(this).css('transform', 'rotate(' + deg + 'deg)');
+				//$(this).css('transform', 'rotate(' + deg + 'deg)');
 
 				model.set('currentphoto', photo);
 			});
