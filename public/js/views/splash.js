@@ -101,7 +101,7 @@ var Splash = function(container) {
 		bubble.poppable = true;
 		
 		bubble.circle = new Path.Circle(bubble.position, bubble.radius);
-		bubble.circle.fillColor = '#2d7baa';
+		bubble.circle.fillColor = '#5BA0BF'; //#2d7baa';
 		
 		that._addWithPhysics(bubble, 50, 500);
 	}

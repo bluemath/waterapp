@@ -34,12 +34,31 @@ class AppController extends Controller
 	// to try out new code / test in a web browser
 	// The route /test runs this.
 	public function test() {
+/*
+		// This is a test of manipulating timestamps in UTC v TZ mode
 		$ts = 1439581500;
 		echo Carbon::createFromTimeStamp($ts)->toDateTimeString(), "<br>";
 		echo Carbon::createFromTimeStamp($ts)->timestamp, "<br>";
 		echo Carbon::createFromTimeStamp($ts, 'America/Denver')->timestamp, "<br>";
 		echo Carbon::createFromTimeStampUTC($ts)->toDateTimeString(), "<br>";
 		echo Carbon::createFromTimeStampUTC($ts)->format('Y-m-d\TH:i:s'), "<br>";
+*/
+
+		// This is a test of parsing a remote file listing...
+		// Get the remote directory listing
+		$url = "http://data.iutahepscor.org/gamutphotos/UU_RB_KF_BA/";
+		$html = file_get_contents($url);
+		preg_match_all('/\/([^\/"]+\.jpg)/', $html, $uu);
+		//preg_match_all('/\/(([0-9_]+)([A-Z_]+)([0-9]+)_([0-9]+)_([0-9]+)_([0-9]+)_([0-9]+)_([0-9]+).jpg)/', $html, $uu);
+		$files = $uu[1];
+		print_r($files);
+		
+		if(!($li = array_search("1902_RB_KF_BA_2015_10_16_04_00_12.jpg", $files))) $li = -1;
+		$li++;
+		
+		for(;$li < count($files); $li++) {
+					echo "<br>" . $files[$li];
+				}
 	}
 	
 	// This is the JSON data source the server provides for the 
@@ -48,7 +67,7 @@ class AppController extends Controller
     public function pages() {
         // Enumerate all the pages
 		// $pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->lr(), $this->pr(), $this->bio()];
-		$pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->bio(), $this->lr()];
+		$pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->bio()];
 		// Send back as JSON
 		return response()->json($pages);
     }
@@ -61,27 +80,144 @@ class AppController extends Controller
 	    $page['bubblescale'] = .25;
 	    $page['name'] = "Explore the Great Salt Lake Watershed";
 	    $page['text'] = [];
-	    $page['text'][] = "The Great Salt Lake watershed is enormous&mdash;it covers nearly 35,000 square miles. Most of its water comes from three watersheds east of the Lake: Bear River, Weber River, and Jordan River watersheds. Smaller watersheds feed each of these watersheds. It’s a converging system of drainages all flowing to the Great Salt Lake.";
+	    $page['text'][] = "The Great Salt Lake watershed is enormous&mdash;it covers nearly 35,000 square miles. Most of its water comes from three watersheds east of the Lake: Bear River, Weber River, and Jordan River watersheds. Each of these watersheds is fed by smaller watersheds. It’s a converging system of drainages all flowing to the Great Salt Lake.";
 	    $page['topics'] = [
 		    [
 			    'name' => 'What is a watershed?',
-			    'text' => ['A watershed is an area of land that drains into a particular stream, river, lake, or even an ocean. Wherever you are, you are in a watershed. Some watersheds are hilly; some are flat. Some are wild, while others are developed. Some watersheds are quite small, and some are huge. Large bodies of water are typically fed by many tributaries, and each tributary has its own watershed.']
+			    'text' => ['A watershed is an area of land that drains into a particular stream, river, lake, or even an ocean. Wherever you are, you are in a watershed. Some watersheds are hilly; some are flat. Some are wild, while others are developed. Some watersheds are quite small, and some are huge. Large bodies of water are typically fed by many tributaries, and each tributary has its own watershed.'],
+			    'default' => 0,
+			    'photos' => [
+				    [
+					    'img' => '/img/gsl/1Watershed_0_GSL_v11_Roads.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ]
+				]
 		    ],
 		    [
 			    'name' => 'Watersheds are dynamic',
-			    'text' => ['Every watershed is unique and change is ever present. Watershed boundaries and characteristics depend on interactions among the geology and topography of the region, climate, vegetation cover, habitats available for animals and other organisms, human impacts, and of course, the water cycle.']
+			    'text' => ['Every watershed is unique and change is ever present. Watershed boundaries and characteristics depend on interactions among the geology and topography of the region, climate, vegetation cover, habitats available for animals and other organisms, human impacts, and of course, the water cycle.'],
+			    'default' => 0,
+			    'photos' => [
+				    [
+					    'img' => '/img/gsl/3LUCC_v2_SL_Ogden.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				    [
+					    'img' => '/img/gsl/3LUCC_v2_SL_UT_Heber.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				    [
+					    'img' => '/img/gsl/3LUCC_v2_SLValley.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				    [
+					    'img' => '/img/gsl/3LUCC_v2_TooeleValley.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				    [
+					    'img' => '/img/gsl/3LUCC_v2_WasatchBack.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				    [
+					    'img' => '/img/gsl/3LUCC_v2_WasatchFront.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				]
 		    ],
 		    [
 			    'name' => 'Jordan River watershed',
-			    'text' => ['Most of Salt Lake County falls within the boundaries of the Jordan River watershed, a 3,805 square mile basin. From its outlet at Utah Lake, the Jordan River flows north for 51 miles to the Great Salt Lake. Bounded by the Wasatch and Oquirrh Mountains, it meanders along the Salt Lake valley floor and is fed by seven tributary streams originating in the Wasatch Mountains.']
+			    'text' => ['Most of Salt Lake County falls within the boundaries of the Jordan River watershed, a 3,805 square mile basin. From its outlet at Utah Lake, the Jordan River flows north for 51 miles to the Great Salt Lake. Bounded by the Wasatch and Oquirrh Mountains, it meanders along the Salt Lake valley floor and is fed by seven tributary streams originating in the Wasatch Mountains.'],
+			    'default' => 0,
+			    'photos' => [
+				    [
+					    'img' => '/img/gsl/1Watershed_1c_Jordan_v12_Roads.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ]
+				]
 		    ],
 		    [
 			    'name' => 'Jordan River Tributaries',
-			    'text' => ['Seven major tributaries feed the Jordan River in Salt Lake County: Little Cottonwood Creek, Big Cottonwood Creek, Mill Creek, Parley’s Creek, Emigration Creek, Red Butte Creek, and City Creek. The high elevation watersheds of these seven tributaries are primarily uninhabited forest lands. In the valley bottoms, the watersheds are primarily private lands that include industrial and agricultural areas. This means that each of the tributaries is impacted by a variety of both natural and human impacts.']
+			    'text' => ['Seven major tributaries feed the Jordan River in Salt Lake County: City Creek, Red Butte Creek, Emigration Creek, Parley’s Creek, Mill Creek, Big Cottonwood Creek and Little Cottonwood Creek. The high elevation watersheds of these seven tributaries are primarily uninhabited forest. In the Salt Lake Valley, the water passes through private land where residential, commercial, and industrial development have replaced vegetation and agriculture. Each of the tributaries is impacted by a variety of both natural and human impacts.'],
+			    'default' => 0,
+			    'photos' => [
+				    [
+					    'img' => '/img/gsl/1Watershed_2_SLValley_v12_LUCC.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				    [
+					    'img' => '/img/gsl/1Watershed_2_SLValley_v12_MajorRoads.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				    [
+					    'img' => '/img/gsl/1Watershed_2_SLValley_v12_Streams.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				    [
+					    'img' => '/img/gsl/1Watershed_2_SLValley_v13_Hwys.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ]
+				]
 		    ],
 		    [
 			    'name' => 'Red Butte Creek',
-			    'text' => ['Look out the window and you’ll see the Bonneville Shoreline trail just in front of the Museum. Take a stroll heading north, and you’ll arrive at Red Butte Creek as it leaves Red Butte Garden and enters the built environment of Salt Lake City. Like the other Jordan River Tributaries, Red Butte Creek is a very different creek once it flows into the city.']
+			    'text' => ['Look out the window and you’ll see the Bonneville Shoreline trail just in front of the Museum. Take a stroll heading north, and you’ll arrive at Red Butte Creek as it leaves Red Butte Garden and enters the built environment of Salt Lake City. Like the other Jordan River Tributaries, Red Butte Creek is a very different creek once it flows into the city.'],
+			    'default' => 0,
+			    'photos' => [
+				    [
+					    'img' => '/img/gsl/1Watershed_3_RBC_Oblique_v1.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				    [
+					    'img' => '/img/gsl/1Watershed_3_RBC_Oblique_v2.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				    [
+					    'img' => '/img/gsl/1Watershed_3_RBC_Oblique_v3.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				    [
+					    'img' => '/img/gsl/1950s.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ],
+				    [
+					    'img' => '/img/gsl/1950sleveled.png',
+					    'label' => "",
+					    'caption' => '',
+					    'type' => 'imagefile'
+				    ]
+				]
 		    ]
 	    ];
 	    return $page;
@@ -93,13 +229,12 @@ class AppController extends Controller
 	    $page['img'] = "/img/bubbles/gamut.jpg";
 	    $page['bubblescale'] = .22;
 	    $page['name'] = "The Whole GAMUT";
-	    $page['text'] = ["iUTAH Scientists and technicians have designed and installed a network of aquatic and climate monitoring stations along the Wasatch Front. Built to study water in “Gradients Along Mountain-to-Urban Transitions” (<strong>GAMUT</strong>) the network measures climate, hydrology, and water quality in three watersheds: Red Butte Creek, Logan River, and Provo River watersheds. Although alike in their primary source of water&mdash;winter snow&mdash;these three watersheds are very different in terms of human use of the land. GAMUT is providing baseline data to inform research about a wide range of issues related to water quality <i>and</i> quantity along the Wasatch Front. 
-"];
+	    $page['text'] = ["iUTAH Scientists and technicians have designed and installed a network of aquatic and climate monitoring stations along the Wasatch Front. Built to study water in “<strong>G</strong>radients <strong>A</strong>long <strong>M</strong>ountain-to-<strong>U</strong>rban <strong>T</strong>ransitions” (<strong>GAMUT</strong>) the network measures climate, hydrology, and water quality in three watersheds: Red Butte Creek, Logan River, and Provo River watersheds. Although alike in their primary source of water—winter snow—these three watersheds are very different in terms of human use of the land. GAMUT is providing baseline data to inform research about a wide range of issues related to water quality and quantity along the Wasatch Front."];
 	    $page['type'] = "Photos";
 	    $page['topics'] = [
 		    [
 			    'name' => 'Instruments',
-			    'text' => ['Five aquatic stations along Red Butte Creek use state-of-the-art sensors to carry out real-time monitoring and reporting day in and day out.  Each station is solar powered and self-contained. '],
+			    'text' => ['Six aquatic stations along Red Butte Creek use state-of-the-art sensors to carry out real-time monitoring and reporting day in and day out.  Each station is solar powered and self-contained.'],
 			    'default' => 0,
 			    'photos' => [
 				    [
@@ -164,6 +299,7 @@ class AppController extends Controller
 			    'name' => 'Multiparameter Water Quality Sonde',
 			    'text' => ['This multi-port probe provides a state-of-the-art platform for the sensors used at each of the GAMUT water monitoring stations.  It is rugged, corrosion-resistant, and has a built in wiper to clear the sensors.'],
 			    'default' => 0,
+			    'background' => '/img/gamut/blur.png',
 			    'photos' => [
 				    [
 					    'img' => '/img/gamut/sensors/sonde.png',
@@ -198,25 +334,25 @@ class AppController extends Controller
 				    [
 					    'img' => '/img/gamut/sensors/p.png',
 					    'label' => 'Pressure Transducer',
-					    'caption' => 'The pressure transducer calculates how deep the water is based on how much pressure the water places on the sensor. Water level is measured every five minutes. These data are then averaged every half hour and reported to the datalogger.',
+					    'caption' => 'The pressure transducer calculates how deep the water is based on how much pressure the water places on the sensor. Every 15 minutes the pressure transducer outputs an average of 25 measurements made in rapid succession.',
 					    'type' => 'cutout'
 				    ],
 				    [
 					    'img' => '/img/gamut/sensors/turb.png',
 					    'label' => 'Turbidity Sensor',
-					    'caption' => 'This sensor calculates turbidity by emitting light into the water and measuring how much is reflected back. Suspended soil, algae, and other particles make water murky and decrease the passage of light through it.',
+					    'caption' => 'This sensor calculates turbidity by emitting light into the water and measuring how much is reflected back. Suspended soil, algae, and other particles make water murky and decrease the passage of light through it. ',
 					    'type' => 'cutout'
 				    ],
 				    [
 					    'img' => '/img/gamut/sensors/n.png',
 					    'label' => 'Nitrate Sensor',
-					    'caption' => 'Measuring nitrites is important for monitoring water quality. Although nitrites are essential plant nutrients, high concentrations can cause significant problems including excessive aquatic plant growth and changes in the types of plants and animals that live in the stream. These impacts can affect dissolved oxygen levels and temperature, and cause major changes to river and stream ecosystems. Excessive nitrites in drinking water pose serious health hazards.',
+					    'caption' => 'Measuring Nitrate is important for monitoring water quality. Although Nitrate is an essential plant nutrient, high concentrations can cause significant problems including excessive aquatic plant growth and changes in the types of plants and animals that live in the stream. These impacts can affect dissolved oxygen levels and temperature, and cause major changes to river and stream ecosystems. Excessive Nitrate in drinking water pose serious health hazards.',
 					    'type' => 'cutout'
 				    ],
 				    [
 					    'img' => '/img/gamut/sensors/cdom.png',
 					    'label' => 'CDOM Sensor',
-					    'caption' => 'he effects of colored dissolved organic matter can be seen in both the color and clarity of water. Known as yellow substances, CDOM is the result of deteriorating organic materials and the tannins they release. Too CDOM can impact biological activity by limiting light penetration into the water, limiting photosynthesis and negatively impacting plants and other organisms.',
+					    'caption' => 'The effects of colored dissolved organic matter can be seen in both the color and clarity of water. Known as yellow substances, CDOM is the result of deteriorating organic materials and the tannins they release. Too much CDOM can impact biological activity by limiting light penetration into the water, limiting photosynthesis and negatively impacting plants and other organisms.',
 					    'type' => 'cutout'
 				    ]
 				]
@@ -279,6 +415,7 @@ class AppController extends Controller
 	    $page['poi'] = [
 		    [
 			    "name" => "Natural History Museum of Utah",
+			    "icon" => "img/logos/nhmu.svg",
 			    "latitude" => 40.764131,
 			    "longitude" => -111.82279
 		    ]
@@ -332,7 +469,7 @@ class AppController extends Controller
 	    return [
 	    	// All Varaibles, one site
 			[ 	'name' => 'Explore the Data',
-				'text' => ["Explore what’s happening in Red Butte Creek’s aquatic system by sliding your finger across the data stream to the right.  Choose a monitoring station from the map to see all the data feeds from that location, or compare data from different locations. You can also look at individual variables to see how they change over time and across stations."],
+				'text' => ["Explore what’s happening in Red Butte Creek’s aquatic system by sliding your finger across the data stream below.  Choose a monitoring station from the map to see all the data feeds from that location, or compare data from different locations. You can also look at individual or paired variables to see how they change over time and across stations."],
 				'variables' => ['WaterTemp_EXO', 'ODO', 'pH', 'SpCond', 'TurbMed', 'Stage', 'Level'],
 				'mode' => 'ONE'
 			],
@@ -357,31 +494,28 @@ class AppController extends Controller
 			// These were selected because they are common among all sites
 			[
 				'name' => 'Water Temperature',
-				'text' => ['Streams warm up from direct sunlight and conditions in the surrounding land and air. Vegetation along stream banks can provide shade, and a buffer from extreme temperatures.',
-'Temperature determines the kinds of organisms that can live in streams and rivers. Fish, insects and other aquatic organisms have a preferred temperature range. When temperatures get too far above or below this range, populations can decrease or crash.',
-'Temperature also influences water chemistry.  The rate of chemical reactions typically increases at higher temperatures, so specific conductance can increase with warmer water and dissolved oxygen levels can drop, reducing the water quality for its inhabitants.'],
+				'text' => ['Temperature impacts the kinds of organisms that can live in streams and rivers. Different species of fish, insects and other aquatic organisms have a preferred temperature range. When temperatures get too far above or below the acceptable range for a given species, their populations will decrease or be eliminated from the ecosystem.'],
 			    'variables' => ['WaterTemp_EXO'],
 			    'mode' => 'MANY'
 		    ],
 		    [
 			    'name' => 'Dissolved Oxygen',
 			    'text' => ['The concentration of oxygen gas incorporated in water is called dissolved Oxygen (DO). Oxygen is absorbed into water from the atmosphere; turbulence in the water increases this aeration.<br><br>
-Water also absorbs oxygen released by aquatic plants as they photosynthesize. Dissolved oxygen is necessary for aquatic life, but too much can be a stressor for many organisms.
-'],
+Water also absorbs oxygen released by aquatic plants as they photosynthesize. Dissolved oxygen is necessary for aquatic life, but too much can be a stressor for many organisms.'],
 			    'variables' => ['ODO'],
 			    'mode' => 'MANY'
 		    ],
 		    [
 			    'name' => 'pH',
-			    'text' => ['pH measurement indicates how acidic water is based on the number of hydrogen atoms present. Measured on a scale from 0 (acidic) to 14 (basic) with 7 neutral, a change of one unit equals a tenfold change in acidity.<br><br>
-Most aquatic animals and plants have adapted a specific pH range, so a small change can cause big problems. Very acidic water will kill most fish and insects.
+			    'text' => ['pH is a measure of how acidic or basic water is. Measured on a scale from 0 (acidic) to 14 (basic), a change of one unit corresponds to a tenfold change in acidity. Neutral water has a pH of 7. Stream water in the Red Butted Creek Watershed ranges between 7 and 9pH units.
+<br><br>Most aquatic animals and plants have adapted a specific pH range, so a small change can cause big problems. Very acidic water will kill most fish and insects.
 '],
 			    'variables' => ['pH'],
 			    'mode' => 'MANY'
 		    ],
 		    [
 			    'name' => 'Specific Conductance',
-			    'text' => ['The amount of dissolved solids, such as salt, determines the water’s specific conductance&mdash;a measure of the ability of water to conduct an electrical current. As water drains through soil, it dissolves salts and minerals increasing its specific conductance. Municipal and industrial uses may also introduce salts to water.<br><br>
+			    'text' => ['The amount of dissolved solids, such as salt, determines the water’s specific conductance—a measure of the ability of water to conduct an electrical current. As water drains through soil, it dissolves salts and minerals increasing its specific conductance. Municipal and industrial uses may also introduce salts to water.<br><br>
 The level of saltiness in water impacts cellular functions in aquatic plants and animals. This is an important water quality measure because high levels of salts can negatively impact the suitability of water for consumption by humans and animals, for agricultural use, and for industry. 
 '],
 			    'variables' => ['SpCond'],
@@ -389,16 +523,15 @@ The level of saltiness in water impacts cellular functions in aquatic plants and
 		    ],
 		    [
 			    'name' => 'Turbitdity',
-			    'text' => ['Turbidity is the amount of particulate matter suspended in water, which makes it cloudy. Clay, silt, plant material, microorganisms, and industrial waste can all contribute to turbidity.<br><br>
-Turbidity levels vary in streams as conditions change, and turbidity in turn can cause stream conditions to change. High stream flow can cause erosion, which brings more particulate matter into the water. High turbidity increases water temperature because the suspended solid particles absorb more heat than clear water. 
-'],
+			    'text' => ['Turbidity is a measure of water clarity. Clear water has low turbidity and muddy water has high turbidity. Clay, silt, plant material, microorganisms, and industrial waste can all contribute to turbidity.<br><br>
+Turbidity levels vary in streams as conditions change, and turbidity in turn can cause stream conditions to change. High stream flow can cause erosion, which brings more particulate matter into the water.'],
 			    'variables' => ['TurbMed'],
 			    'mode' => 'MANY'
 		    ],
 		    [
 			    'name' => 'Gauge Height',
 			    'text' => ['Water depth is measured with a pressure transducer. It measures the weight of the water above it, which increases with water depth. Together, water depth and stream velocity help us to determine stream flow.<br><br>
-When stream flow is high, water can overflow into the stream’s floodplain. This can help to maintain a healthy riparian plant community while also filtering the water as it makes its way through the soil and back to the stream. '],
+When stream flow is high, water can overflow into the stream’s floodplain. This can help to maintain a healthy riparian plant community while also filtering the water as it makes its way through the soil and back to the stream.'],
 			    'variables' => ['Stage','Level'],
 			    'mode' => 'MANY'
 			]			

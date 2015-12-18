@@ -45,7 +45,7 @@ a {
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: #296f99;
+  background-color: #518eaa;
   display: none; }
 
 #mask {
@@ -55,7 +55,7 @@ a {
   /* so that it doesn't scroll */
   top: 0px;
   left: 0px;
-  background-color: #296f99;
+  background-color: #2f5266;
   opacity: .9;
   display: none; }
 
@@ -181,7 +181,7 @@ a {
   box-shadow: 1px 1px 3px #222; }
 
 .block.blue {
-  background-color: #42a4c4;
+  background-color: #518eaa;
   color: #fff; }
 
 .block p {
@@ -273,15 +273,46 @@ a {
   display: inline-block;
   width: 150px;
   height: auto;
-  vertical-align: top; }
+  vertical-align: bottom; }
 
 .thumbnails .cutout .image {
   width: 150px;
   height: 150px; }
 
 .thumbnails .cutout .label {
-  color: #222;
-  font-weight: bold; }
+  color: #fff;
+  font-weight: normal;
+  height: 40px;
+  text-align: center;
+  margin-top: -15px; }
+
+.thumbnails .cutout .label span {
+  color: #fff;
+  font-weight: normal;
+  padding: 1px 5px 1px 5px; }
+
+.thumbnails .imagefile {
+  display: inline-block;
+  margin-right: 12px;
+  border-width: 6px 6px 0 6px;
+  border-style: solid;
+  border-color: #ddd;
+  background-color: #ddd;
+  box-shadow: 1px 2px 5px #222;
+  vertical-align: bottom;
+  width: 100px;
+  overflow-x: hidden; }
+
+.thumbnails .imagefile .image {
+  display: inline-block;
+  height: 100px;
+  width: 100px;
+  background-color: #ddd; }
+
+.thumbnails .imagefile .label {
+  height: 20px;
+  width: 100px;
+  font-size: 8px; }
 
 .cameras {
   position: fixed;
@@ -297,7 +328,7 @@ a {
   box-shadow: 1px 1px 3px #222; }
 
 .cameras .camera .name {
-  background-color: #42a4c4;
+  background-color: #518eaa;
   color: #fff;
   padding: 12px;
   text-align: left;
@@ -330,8 +361,8 @@ a {
 
 #pagemenu .dropdown span {
   display: block;
-  border-top: 1px solid #8edded;
-  background-color: #42a4c4;
+  border-top: 1px solid #5BA0BF;
+  background-color: #518eaa;
   padding: 8px 15px;
   margin: 0;
   font-size: 30pt;
@@ -346,14 +377,14 @@ a {
   width: 374px;
   display: none;
   z-index: 4;
-  background-color: #42a4c4;
+  background-color: #518eaa;
   color: #fff;
   box-shadow: 1px 1px 3px #222; }
 
 .topic .dropdown span {
   display: block;
-  border-top: 1px solid #8edded;
-  background-color: #42a4c4;
+  border-top: 1px solid #5BA0BF;
+  background-color: #518eaa;
   padding: 8px 15px;
   margin: 0;
   font-size: 16pt;
@@ -361,7 +392,7 @@ a {
   line-height: 16pt; }
 
 .button {
-  background-color: #296f99;
+  background-color: #2f5266;
   color: #fff;
   cursor: pointer;
   padding: 0;
@@ -376,7 +407,7 @@ a {
 
 .inline.button {
   display: inline-block;
-  background-color: #296f99;
+  background-color: #2f5266;
   margin-right: 12px; }
 
 .big.button {
@@ -421,6 +452,12 @@ a {
   font-size: 20px;
   line-height: 20px; }
 
+.markericon img {
+  width: 50px;
+  height: 50px;
+  background-color: #fff;
+  padding: 5px; }
+
 .markercontainerL .marker {
   padding-left: 5px; }
 
@@ -430,7 +467,13 @@ a {
 .marker.on {
   opacity: 1; }
 
-.marker i {
+.markercontainerL .marker i {
+  font-size: 10pt;
+  line-height: 12pt;
+  margin-right: 6px;
+  opacity: .75; }
+
+.markercontainerR .marker i {
   font-size: 10pt;
   line-height: 12pt;
   margin-left: 6px;
@@ -448,6 +491,22 @@ a {
   font-size: 0;
   line-height: 0;
   margin-right: 0px; }
+
+.iconArrow {
+  vertical-align: middle;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-bottom: 30px solid transparent;
+  /* left arrow slant */
+  border-top: 30px solid transparent;
+  /* right arrow slant */
+  font-size: 0;
+  line-height: 0;
+  margin-right: 0px;
+  border-right: 30px solid #fff;
+  /* bottom, add background color here */
+  margin-left: 2px; }
 
 .markercontainerL .markerArrow {
   border-right: 15px solid #555;

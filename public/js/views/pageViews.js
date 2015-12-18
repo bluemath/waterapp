@@ -210,15 +210,16 @@ var DataPageView = Backbone.View.extend({
 			
 			// Compute div of marker
 			if(pLatitude != null && Math.abs(pLatitude - latitude) < .002) {
-				// Arrow Right
-				positioning = 'center-right';
-				if(site.get('camera')) name = "<i class='fa fa-video-camera'></i>" + name;
-				div = "<div id='" + code + "' class='markercontainerR'><div class='marker'>" + name + "</div><div class='markerArrow'></div><div class='dot'></div></div>"
-			} else {
 				// Arrow Left
 				positioning = 'center-left';
-				if(site.get('camera')) name = name + "<i class='fa fa-video-camera'></i>";
+				if(site.get('camera')) name = "<i class='fa fa-video-camera fa-flip-horizontal'></i>" + name;
 				div = "<div id='" + code + "' class='markercontainerL'><div class='dot'></div><div class='markerArrow'></div><div class='marker'>" + name + "</div></div>"
+			} else {
+								// Arrow Right
+				positioning = 'center-right';
+				if(site.get('camera')) name = name + "<i class='fa fa-video-camera'></i>";
+				div = "<div id='" + code + "' class='markercontainerR'><div class='marker'>" + name + "</div><div class='markerArrow'></div><div class='dot'></div></div>"
+
 			}
 			
 			this.addToMap(latitude, longitude, $(div), positioning);
@@ -258,7 +259,11 @@ var DataPageView = Backbone.View.extend({
 			var name = p.get('name');
 			var latitude = p.get('latitude');
 			var longitude = p.get('longitude');
-			var div = "<div class='markercontainerL'><div class='markerArrow'></div><div class='marker'>" + name + "</div></div>"
+			var icon = p.get('icon');
+			var div = "<div class='markercontainerL'><div class='markerArrow'></div><div class='marker'>" + name + "</div></div>";
+			
+			var div = "<div class='markericon'><div class='iconArrow'></div><img src=\"" + icon + "\"></div>";
+			
 			this.addToMap(latitude, longitude, $(div), 'center-left');
 		}, this);
 	},
@@ -376,9 +381,9 @@ var PhotosPageView = Backbone.View.extend({
 		this.listenTo(App.State, 'change:currenttopic', this.changeTopic);
 		this.listenTo(this.model, 'change:currentphoto', this.updatePhoto);
 		
-		var spread = $('.spread');
+		this.spread = $('.spread');
 		this.background = $("<div>").addClass('image');
-		spread.empty().append(this.background);
+		this.spread.empty().append(this.background);
 		
 		var detail = $('.topic .detail');
 		this.thumbnails = $("<div>").addClass('thumbnails');
@@ -407,6 +412,9 @@ var PhotosPageView = Backbone.View.extend({
 
 		debug('change topic to ' + currentTopic.get("name"));
 		
+		// Set the topic background
+		this.spread.css("background-image", "url('" + currentTopic.get("background") +"')");
+		
 		// Show the default photo
 		var model = this.model;
 		model.set('currentphoto', currentTopic.get("photos").at(currentTopic.get("default")));
@@ -418,7 +426,15 @@ var PhotosPageView = Backbone.View.extend({
 			// Setup the thumbnail
 			//var image = $("<div>").attr("src", photo.get("img"));
 			var image = $("<div>").addClass("image").css("background-image", "url('" + photo.get("img") + "')");
-			var text = $("<div>").addClass("label").html(photo.get("label"));
+			
+			if(photo.get("type") == "imagefile") {
+				// For debugging images, show the filename
+				name = photo.get("img").split("/")[3].split(".")[0];
+				var text = $("<div>").addClass("label").html(name);	
+			} else {
+				var text = $("<div>").addClass("label").html("<span>" + photo.get("label") + "</span>");	
+			}
+			
 			var thumb = $("<div>").addClass(photo.get("type"));
 			thumb.append(image).append(text);
 			thumb.css('transition', '.2s ease-out');

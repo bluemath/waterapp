@@ -10,6 +10,10 @@ class Cameras {
 		return array_diff(scandir($base), array('..', '.'));;
 	}
 	
+	// Updates depend on a sequential directory listing.
+	// Currently (10/2015), the files are formatted like
+	// Prefix_YYYY_MM_DD_HH_MM_SS.jpg and sorted oldest to newest
+	// THIS DEPENDS ON THE DIRECTORY LISTIING BEING OLDEST TO NEWEST!!
 	public static function update() {
 		
 		$base = public_path() . '/img/cameras';
@@ -20,16 +24,34 @@ class Cameras {
 			
 			// Get specifics
 			$url = file_get_contents("$base/$site/url");
-			$start = intval(file_get_contents("$base/$site/seq"));
-			$suffix = 'jpg';
-			$tmp = "$base/$site/temp.$suffix";
+			$last = file_get_contents("$base/$site/last");
+			$tmp = "$base/$site/temp.jpg";
 			
-			// Copy all images with sequence numbers >= the starting number
+			// HTML Directory Listing -> Array
+			// download all elements in the array after
+			// the last elelment we know of.
+			
+			// Get listing
+			$html = file_get_contents($url);
+			preg_match_all('/\/([^\/"]+\.jpg)/', $html, $matches);
+			$imgs = $matches[1];
+			if(!($li = array_search($last, $imgs))) $li = -1;
+			$li++;
+			
+			// Copy all images added after the last known image
+			$got = 0;
 			try {
-				while(copy("$url$start.$suffix", $tmp)) {
+				for(;$li < count($imgs); $li++) {
+					
+					// Set a new last image
+					$last = $imgs[$li];
+					copy("$url/$last", $tmp);
+					
+					// Read EXIF
 					$exif = exif_read_data($tmp);
 					$when = strtotime($exif['DateTimeOriginal']);
 					
+					// Configure path and name
 					$year = date('Y', $when);
 					$month = date('m', $when);
 					$name = date('U', $when);
@@ -40,17 +62,20 @@ class Cameras {
 					}
 					
 					// Move the file
-					rename($tmp, "$base/$site/$year/$month/$name.$suffix");
+					rename($tmp, "$base/$site/$year/$month/$name.jpg");
 					
-					$start++;
+					$got++;
 				}
 			} catch(\Exception $ex) { 
 				// Do nothing
 			}
 			
-			// Update the file to the sequence number to start with next time
-			file_put_contents("$base/$site/seq", $start);
+			// Update the last file
+			file_put_contents("$base/$site/last", $last);
+			
 		}
+		
+		echo "Got $got new images.";
 		
 		return true;
 	}
@@ -62,7 +87,7 @@ class Cameras {
 		$array = [];
 		    
 	    // Create a list of all timestamps for a given site
-	 	$years = array_diff(scandir("$base/$sitecode"), array('..', '.', 'seq', 'url'));
+	 	$years = array_diff(scandir("$base/$sitecode"), array('..', '.', 'last', 'url'));
 	 	foreach ($years as $year) {
 		 	$months = array_diff(scandir("$base/$sitecode/$year"), array('..', '.'));
 		 	foreach ($months as $month) {
