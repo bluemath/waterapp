@@ -77,9 +77,9 @@ var CameraView = Backbone.View.extend({
 		for (i in this.cameras) {
 			camera = this.cameras[i];
 			div = $("<div>").attr("id", camera.code).addClass("camera");
-			div.append($("<div>").addClass("name").html(camera.name));
+			div.append($("<div>").addClass("name").html(camera.name + " <i class='fa fa-video-camera'></i>").css('background-color', camera.color));
 			div.append($("<div>").addClass("image").append($("<img>").hide()));
-			cameraArea.append(div);
+			cameraArea.prepend(div);
 		}
 	},
 	remove: function() {
@@ -96,6 +96,7 @@ var CameraView = Backbone.View.extend({
 				var camera = {
 					code: site.get('sitecode'),
 					name: site.get('sitename'),
+					color: site.get('color'),
 					timestamps: [],
 					timestamp: null,
 					newtimestamp: null
@@ -115,24 +116,33 @@ var CameraView = Backbone.View.extend({
 		App.State.set('unixtimestamp', null);
 	},
 	updateCameras: function() {
-		tz = (new Date()).getTimezoneOffset() * 60;
-		// Adjust for timezone and add a minute
-		timestamp = App.State.get('unixtimestamp') - tz + 60;
+		tzh = (new Date()).getTimezoneOffset() / 60;
+		tz =  tzh * 60 * 60;
+		
+		unix = App.State.get('unixtimestamp');
+		// Adjust for timezone and add a minute (so we hit after...)
+		timestamp = unix - tz + 60;
+		
 		for (i in this.cameras) {
 			camera = this.cameras[i];
 			index = _.sortedIndex(camera.timestamps, timestamp);
+			
+			// Find the image
 			if(index == 0) {
 				// No camera image for this date
 				camera.newtimestamp = null;	
 			} else {
+				// Get the closest previous image...
 				index--;
 				camera.newtimestamp = camera.timestamps[index];
-				twohours = 2 * 60 * 60;
-				if(Math.abs(camera.newtimestamp - timestamp) >= twohours) {
+				halfday = 13 * 60 * 60;
+				if(Math.abs(camera.newtimestamp - timestamp) >= halfday) {
 					// Too far away! Don't show anything...
 					camera.newtimestamp = null;
 				}
 			}
+			
+			// Update the view
 			if(camera.newtimestamp == null) {
 				camera.timestamp = camera.newtimestamp;
 				$('#' + camera.code+ " img").hide();
@@ -141,7 +151,16 @@ var CameraView = Backbone.View.extend({
 				date = new Date(camera.timestamp * 1000);
 				year = date.getFullYear();
 				month = ("0" + (date.getMonth() + 1)).slice(-2);
-				$('#' + camera.code+ " img").attr("src", "/img/cameras/" + camera.code + "/" + year + "/" + month + "/" + camera.timestamp + ".jpg").show();
+				src = "/img/cameras/" + camera.code + "/" + year + "/" + month + "/" + camera.timestamp + ".jpg";
+				$("<img>").attr("src", src);
+
+				image = $('#' + camera.code+ " img").attr("src", src).show();
+				twohours = 2 * 60 * 60;
+				if(Math.abs(camera.newtimestamp - timestamp) >= twohours) {
+					// Show moon
+				} else {
+					// Hide moon
+				}
 			}
 		}
 	}
@@ -262,7 +281,7 @@ var DataPageView = Backbone.View.extend({
 			var icon = p.get('icon');
 			var div = "<div class='markercontainerL'><div class='markerArrow'></div><div class='marker'>" + name + "</div></div>";
 			
-			var div = "<div class='markericon'><div class='iconArrow'></div><img src=\"" + icon + "\"></div>";
+			var div = "<div class='markericon'><div class='dot'></div><div class='iconArrow'></div><img src=\"" + icon + "\"></div>";
 			
 			this.addToMap(latitude, longitude, $(div), 'center-left');
 		}, this);

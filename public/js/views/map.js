@@ -56,7 +56,7 @@ function MapSpread(element, sites, zoom) {
 	var maxLon = Math.max.apply(null, lons);
 	
 	var maxExtent = ol.proj.transformExtent([minLon, minLat, maxLon, maxLat], 'EPSG:4326', 'EPSG:3857');
-	var center = ol.proj.transform([(minLon + maxLon)/2, maxLat - (maxLat - minLat) * .95],'EPSG:4326','EPSG:3857');
+	var center = ol.proj.transform([maxLon - (maxLon - minLon) * .3, maxLat - (maxLat - minLat) * .95],'EPSG:4326','EPSG:3857');
 	
 	// If sites was empty, this will fail because center and extent will be invalid
 	

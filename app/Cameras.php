@@ -18,7 +18,7 @@ class Cameras {
 		
 		$base = public_path() . '/img/cameras';
 		
-		$sites = array_diff(scandir($base), array('..', '.'));
+		$sites = array_diff(scandir($base), array('..', '.', '.htaccess'));
 		
 		foreach ($sites as $site) {
 			
@@ -38,10 +38,13 @@ class Cameras {
 			if(!($li = array_search($last, $imgs))) $li = -1;
 			$li++;
 			
+			
+			
 			// Copy all images added after the last known image
 			$got = 0;
-			try {
-				for(;$li < count($imgs); $li++) {
+			for(;$li < count($imgs); $li++) {
+				try {
+					echo "have $li of " . count($imgs) . "<br>";
 					
 					// Set a new last image
 					$last = $imgs[$li];
@@ -64,14 +67,16 @@ class Cameras {
 					// Move the file
 					rename($tmp, "$base/$site/$year/$month/$name.jpg");
 					
+					// Update the last file
+					// This used to be after, but somethimes the script takes too long and errors.
+					// Moved here to at least get credit for images downloaded...
+					file_put_contents("$base/$site/last", $last);
+					
 					$got++;
+				} catch(\Exception $ex) { 
+					// Bad image... do nothing
 				}
-			} catch(\Exception $ex) { 
-				// Do nothing
 			}
-			
-			// Update the last file
-			file_put_contents("$base/$site/last", $last);
 			
 		}
 		
@@ -87,7 +92,7 @@ class Cameras {
 		$array = [];
 		    
 	    // Create a list of all timestamps for a given site
-	 	$years = array_diff(scandir("$base/$sitecode"), array('..', '.', 'last', 'url'));
+	 	$years = array_diff(scandir("$base/$sitecode"), array('..', '.', 'last', 'url', 'temp.jpg'));
 	 	foreach ($years as $year) {
 		 	$months = array_diff(scandir("$base/$sitecode/$year"), array('..', '.'));
 		 	foreach ($months as $month) {

@@ -67,7 +67,7 @@ class AppController extends Controller
     public function pages() {
         // Enumerate all the pages
 		// $pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->lr(), $this->pr(), $this->bio()];
-		$pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->bio()];
+		$pages = [$this->gsl(), $this->gamut(), $this->rbc()]; //, $this->bio()
 		// Send back as JSON
 		return response()->json($pages);
     }
@@ -91,7 +91,7 @@ class AppController extends Controller
 					    'img' => '/img/gsl/1Watershed_0_GSL_v11_Roads.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'imagefile'
+					    'type' => 'hidden'
 				    ]
 				]
 		    ],
@@ -101,40 +101,10 @@ class AppController extends Controller
 			    'default' => 0,
 			    'photos' => [
 				    [
-					    'img' => '/img/gsl/3LUCC_v2_SL_Ogden.png',
+					    'img' => '/img/gsl/wasatchback.jpg',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'imagefile'
-				    ],
-				    [
-					    'img' => '/img/gsl/3LUCC_v2_SL_UT_Heber.png',
-					    'label' => "",
-					    'caption' => '',
-					    'type' => 'imagefile'
-				    ],
-				    [
-					    'img' => '/img/gsl/3LUCC_v2_SLValley.png',
-					    'label' => "",
-					    'caption' => '',
-					    'type' => 'imagefile'
-				    ],
-				    [
-					    'img' => '/img/gsl/3LUCC_v2_TooeleValley.png',
-					    'label' => "",
-					    'caption' => '',
-					    'type' => 'imagefile'
-				    ],
-				    [
-					    'img' => '/img/gsl/3LUCC_v2_WasatchBack.png',
-					    'label' => "",
-					    'caption' => '',
-					    'type' => 'imagefile'
-				    ],
-				    [
-					    'img' => '/img/gsl/3LUCC_v2_WasatchFront.png',
-					    'label' => "",
-					    'caption' => '',
-					    'type' => 'imagefile'
+					    'type' => 'hidden'
 				    ],
 				]
 		    ],
@@ -147,7 +117,7 @@ class AppController extends Controller
 					    'img' => '/img/gsl/1Watershed_1c_Jordan_v12_Roads.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'imagefile'
+					    'type' => 'hidden'
 				    ]
 				]
 		    ],
@@ -160,25 +130,25 @@ class AppController extends Controller
 					    'img' => '/img/gsl/1Watershed_2_SLValley_v12_LUCC.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'imagefile'
+					    'type' => 'hidden'
 				    ],
 				    [
 					    'img' => '/img/gsl/1Watershed_2_SLValley_v12_MajorRoads.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'imagefile'
+					    'type' => 'hidden'
 				    ],
 				    [
 					    'img' => '/img/gsl/1Watershed_2_SLValley_v12_Streams.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'imagefile'
+					    'type' => 'hidden'
 				    ],
 				    [
 					    'img' => '/img/gsl/1Watershed_2_SLValley_v13_Hwys.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'imagefile'
+					    'type' => 'hidden'
 				    ]
 				]
 		    ],
@@ -191,31 +161,31 @@ class AppController extends Controller
 					    'img' => '/img/gsl/1Watershed_3_RBC_Oblique_v1.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'imagefile'
+					    'type' => 'hidden'
 				    ],
 				    [
 					    'img' => '/img/gsl/1Watershed_3_RBC_Oblique_v2.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'imagefile'
+					    'type' => 'hidden'
 				    ],
 				    [
 					    'img' => '/img/gsl/1Watershed_3_RBC_Oblique_v3.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'imagefile'
+					    'type' => 'hidden'
 				    ],
 				    [
 					    'img' => '/img/gsl/1950s.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'imagefile'
+					    'type' => 'hidden'
 				    ],
 				    [
 					    'img' => '/img/gsl/1950sleveled.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'imagefile'
+					    'type' => 'hidden'
 				    ]
 				]
 		    ]
@@ -344,12 +314,6 @@ class AppController extends Controller
 					    'type' => 'cutout'
 				    ],
 				    [
-					    'img' => '/img/gamut/sensors/n.png',
-					    'label' => 'Nitrate Sensor',
-					    'caption' => 'Measuring Nitrate is important for monitoring water quality. Although Nitrate is an essential plant nutrient, high concentrations can cause significant problems including excessive aquatic plant growth and changes in the types of plants and animals that live in the stream. These impacts can affect dissolved oxygen levels and temperature, and cause major changes to river and stream ecosystems. Excessive Nitrate in drinking water pose serious health hazards.',
-					    'type' => 'cutout'
-				    ],
-				    [
 					    'img' => '/img/gamut/sensors/cdom.png',
 					    'label' => 'CDOM Sensor',
 					    'caption' => 'The effects of colored dissolved organic matter can be seen in both the color and clarity of water. Known as yellow substances, CDOM is the result of deteriorating organic materials and the tannins they release. Too much CDOM can impact biological activity by limiting light penetration into the water, limiting photosynthesis and negatively impacting plants and other organisms.',
@@ -469,7 +433,7 @@ class AppController extends Controller
 	    return [
 	    	// All Varaibles, one site
 			[ 	'name' => 'Explore the Data',
-				'text' => ["Explore what’s happening in Red Butte Creek’s aquatic system by sliding your finger across the data stream below.  Choose a monitoring station from the map to see all the data feeds from that location, or compare data from different locations. You can also look at individual or paired variables to see how they change over time and across stations."],
+				'text' => ["Explore what’s happening in Red Butte Creek’s aquatic system by sliding your finger across the data stream to the right.  Choose a monitoring station from the map to see all the data feeds from that location, or compare data from different locations. You can also look at individual or paired variables to see how they change over time and across stations."],
 				'variables' => ['WaterTemp_EXO', 'ODO', 'pH', 'SpCond', 'TurbMed', 'Stage', 'Level'],
 				'mode' => 'ONE'
 			],

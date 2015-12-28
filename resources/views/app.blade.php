@@ -76,7 +76,7 @@
 			<img src="{{ URL::asset('img/logos/nsf.svg') }}" alt="NSF Logo" width="36" height="36">
 			<div class="text">
 				This application was developed by the Natural History Museum of Utah with<br>
-				support from iUtah and The National Science Foundation
+				support from iUTAH and The National Science Foundation
 			</div>
 		</div>
 		

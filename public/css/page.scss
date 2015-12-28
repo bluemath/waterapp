@@ -11,9 +11,15 @@ $blueDarker:	#2f5266;
 $blueDarkest:	#264151;
 */
 
+$blueLighter:	#6a94b0;
+$blue: 			#618aa3;
+$blueDarker: 	#436d86;
+
+/* old #608495
 $blueLighter:	#5BA0BF;
 $blue: 			#518eaa;
 $blueDarker: 	#2f5266;
+*/
 
 $tan:			#decba5;
 $tanMedium:		#9e8358;
@@ -401,31 +407,37 @@ a {
 
 .cameras {
 	position: fixed;
-	bottom: $chartHeight + $pageMargin;
+	bottom: $chartHeight + $spacing;
 	right: $pageMargin;
 	text-align: right;
-	vertical-align: botom;
+	vertical-align: bottom;
 }
 
 .cameras .camera {
 	display: inline-block;
 	vertical-align: bottom;
 	margin-left: $spacing;
-	box-shadow: $shadow;
 }
 
 .cameras .camera .name {
-	background-color: $blue;
+	background-color: $blueDarker; /* overriden by pageViews.js */
 	color: $white;
-	padding: $spacing;
+	padding: $spacing/2 $spacing $spacing/2 $spacing;
 	text-align: left;
 	font-size: 13pt;
+	box-shadow: $shadow;
+}
+
+.cameras .camera .name i {
+	font-size: 10pt;
+	margin-left: $spacing / 2;
 }
 
 .cameras .camera .image {
 	background-color: $black;
 	width: 400px;
 	height: 225px;
+	box-shadow: $shadow;
 }
 
 .cameras .camera .image img {
@@ -569,11 +581,23 @@ a {
 
 .markericon {
 	img {
-		width: 50px;
-		height: 50px;
-		background-color: $white;
+		width: 40px;
+		height: 40px;
+		background-color: $markerColor;
 		padding: 5px;
 	}
+	.dot {
+		display: inline-block;
+		width: $dot;
+		height: $dot;
+		border-radius: $dot/2;
+		background-color: $markerColor;
+		vertical-align: middle;
+	}
+}
+
+.markericon {
+	opacity: .9;	
 }
 
 .markercontainerL .marker {
@@ -592,14 +616,12 @@ a {
 	font-size: 10pt;
 	line-height: 12pt;
 	margin-right: $spacing/2;
-	opacity: .75;
 }
 
 .markercontainerR .marker i {
 	font-size: 10pt;
 	line-height: 12pt;
 	margin-left: $spacing/2;
-	opacity: .75;
 }
 
 .markerArrow {
@@ -619,12 +641,12 @@ a {
 	display: inline-block;
 	width: 0; 
 	height: 0; 
-	border-bottom: 30px solid transparent;  /* left arrow slant */
-	border-top: 30px solid transparent; /* right arrow slant */
+	border-bottom: 25px solid transparent;  /* left arrow slant */
+	border-top: 25px solid transparent; /* right arrow slant */
 	font-size: 0;
 	line-height: 0;
 	margin-right: 0px;
-	border-right: 30px solid $white; /* bottom, add background color here */
+	border-right: 25px solid $markerColor; /* bottom, add background color here */
 	margin-left: 2px;
 }
 

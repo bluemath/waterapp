@@ -3,6 +3,11 @@ $blue:			#518eaa;
 $blueDarker:	#2f5266;
 $blueDarkest:	#264151;
 */
+/* old #608495
+$blueLighter:	#5BA0BF;
+$blue: 			#518eaa;
+$blueDarker: 	#2f5266;
+*/
 /* even is best */
 /* Fonts */
 @font-face {
@@ -45,7 +50,7 @@ a {
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: #518eaa;
+  background-color: #618aa3;
   display: none; }
 
 #mask {
@@ -55,7 +60,7 @@ a {
   /* so that it doesn't scroll */
   top: 0px;
   left: 0px;
-  background-color: #2f5266;
+  background-color: #436d86;
   opacity: .9;
   display: none; }
 
@@ -181,7 +186,7 @@ a {
   box-shadow: 1px 1px 3px #222; }
 
 .block.blue {
-  background-color: #518eaa;
+  background-color: #618aa3;
   color: #fff; }
 
 .block p {
@@ -316,28 +321,34 @@ a {
 
 .cameras {
   position: fixed;
-  bottom: 468px;
+  bottom: 442px;
   right: 38px;
   text-align: right;
-  vertical-align: botom; }
+  vertical-align: bottom; }
 
 .cameras .camera {
   display: inline-block;
   vertical-align: bottom;
-  margin-left: 12px;
-  box-shadow: 1px 1px 3px #222; }
+  margin-left: 12px; }
 
 .cameras .camera .name {
-  background-color: #518eaa;
+  background-color: #436d86;
+  /* overriden by pageViews.js */
   color: #fff;
-  padding: 12px;
+  padding: 6px 12px 6px 12px;
   text-align: left;
-  font-size: 13pt; }
+  font-size: 13pt;
+  box-shadow: 1px 1px 3px #222; }
+
+.cameras .camera .name i {
+  font-size: 10pt;
+  margin-left: 6px; }
 
 .cameras .camera .image {
   background-color: #222;
   width: 400px;
-  height: 225px; }
+  height: 225px;
+  box-shadow: 1px 1px 3px #222; }
 
 .cameras .camera .image img {
   width: 100%;
@@ -361,8 +372,8 @@ a {
 
 #pagemenu .dropdown span {
   display: block;
-  border-top: 1px solid #5BA0BF;
-  background-color: #518eaa;
+  border-top: 1px solid #6a94b0;
+  background-color: #618aa3;
   padding: 8px 15px;
   margin: 0;
   font-size: 30pt;
@@ -377,14 +388,14 @@ a {
   width: 374px;
   display: none;
   z-index: 4;
-  background-color: #518eaa;
+  background-color: #618aa3;
   color: #fff;
   box-shadow: 1px 1px 3px #222; }
 
 .topic .dropdown span {
   display: block;
-  border-top: 1px solid #5BA0BF;
-  background-color: #518eaa;
+  border-top: 1px solid #6a94b0;
+  background-color: #618aa3;
   padding: 8px 15px;
   margin: 0;
   font-size: 16pt;
@@ -392,7 +403,7 @@ a {
   line-height: 16pt; }
 
 .button {
-  background-color: #2f5266;
+  background-color: #436d86;
   color: #fff;
   cursor: pointer;
   padding: 0;
@@ -407,7 +418,7 @@ a {
 
 .inline.button {
   display: inline-block;
-  background-color: #2f5266;
+  background-color: #436d86;
   margin-right: 12px; }
 
 .big.button {
@@ -453,10 +464,20 @@ a {
   line-height: 20px; }
 
 .markericon img {
-  width: 50px;
-  height: 50px;
-  background-color: #fff;
+  width: 40px;
+  height: 40px;
+  background-color: #555;
   padding: 5px; }
+.markericon .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #555;
+  vertical-align: middle; }
+
+.markericon {
+  opacity: .9; }
 
 .markercontainerL .marker {
   padding-left: 5px; }
@@ -470,14 +491,12 @@ a {
 .markercontainerL .marker i {
   font-size: 10pt;
   line-height: 12pt;
-  margin-right: 6px;
-  opacity: .75; }
+  margin-right: 6px; }
 
 .markercontainerR .marker i {
   font-size: 10pt;
   line-height: 12pt;
-  margin-left: 6px;
-  opacity: .75; }
+  margin-left: 6px; }
 
 .markerArrow {
   vertical-align: middle;
@@ -497,14 +516,14 @@ a {
   display: inline-block;
   width: 0;
   height: 0;
-  border-bottom: 30px solid transparent;
+  border-bottom: 25px solid transparent;
   /* left arrow slant */
-  border-top: 30px solid transparent;
+  border-top: 25px solid transparent;
   /* right arrow slant */
   font-size: 0;
   line-height: 0;
   margin-right: 0px;
-  border-right: 30px solid #fff;
+  border-right: 25px solid #555;
   /* bottom, add background color here */
   margin-left: 2px; }
 

@@ -1,0 +1,8 @@
+## EXPIRES CACHING ##
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/jpg "access plus 1 year"
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresDefault "access"
+</IfModule>
+## EXPIRES CACHING ##

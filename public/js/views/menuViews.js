@@ -80,20 +80,20 @@ var MenuView = Backbone.View.extend({
 	menuClick: function(dropdown, mask) {
 		// Show Menu
 		dropdown.stop().slideToggle(100);
-		if(mask != undefined) mask.stop().fadeToggle(400);
+		if(mask != undefined) mask.stop().fadeToggle(200);
 		
 		// Set Timeout to hide menu
 		clearTimeout(this.timeout);
 		this.timeout = setTimeout(function() {
 			dropdown.stop().slideUp(100);
-			if(mask != undefined) mask.stop().fadeOut(400);
+			if(mask != undefined) mask.stop().fadeOut(200);
 		}, 7000);
 	},
 	
 	closeMenus: function() {
 		this.pageMenu.find(".dropdown").slideUp(100);
 		this.topicMenu.find(".dropdown").slideUp(100);
-		this.mask.fadeOut(400);
+		this.mask.fadeOut(200);
 	}
 	
 });
