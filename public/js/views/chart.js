@@ -146,7 +146,8 @@ function Chart(element, sites, variables) {
 				week: '%b %e',
 				month: '%b %Y',
 				year: '%Y'
-		    }
+		    },
+		    max: Date.now()
         }
     });
 	
@@ -175,11 +176,11 @@ function Chart(element, sites, variables) {
 	}
 	
 	this.removeAll = function() {
+		this.chart.showLoading();
 		var seriesLength = this.chart.series.length;
 		for(var i = seriesLength -1; i > -1; i--) {
 			this.chart.series[i].remove();
 		}
-		this.chart.showLoading();
 	}
 	
 	this.addSeries = function(site, variable, color) {

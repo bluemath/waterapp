@@ -120,7 +120,7 @@ var CameraView = Backbone.View.extend({
 		tz =  tzh * 60 * 60;
 		
 		unix = App.State.get('unixtimestamp');
-		// Adjust for timezone and add a minute (so we hit after...)
+		// Adjust for timezone and add a minute (so we hit after not on)
 		timestamp = unix - tz + 60;
 		
 		for (i in this.cameras) {
@@ -129,37 +129,54 @@ var CameraView = Backbone.View.extend({
 			
 			// Find the image
 			if(index == 0) {
+				
 				// No camera image for this date
 				camera.newtimestamp = null;	
+				
 			} else {
-				// Get the closest previous image...
+				
+				// Get the closest previous photo within half a day
 				index--;
 				camera.newtimestamp = camera.timestamps[index];
 				halfday = 13 * 60 * 60;
+				
+				// Too far away, show no photo
 				if(Math.abs(camera.newtimestamp - timestamp) >= halfday) {
-					// Too far away! Don't show anything...
 					camera.newtimestamp = null;
 				}
 			}
 			
 			// Update the view
 			if(camera.newtimestamp == null) {
+				
+				// No image
 				camera.timestamp = camera.newtimestamp;
 				$('#' + camera.code+ " img").hide();
+				
 			} else if(camera.timestamp != camera.newtimestamp) {
+				
+				// Photo URL
 				camera.timestamp = camera.newtimestamp;
 				date = new Date(camera.timestamp * 1000);
 				year = date.getFullYear();
 				month = ("0" + (date.getMonth() + 1)).slice(-2);
 				src = "/img/cameras/" + camera.code + "/" + year + "/" + month + "/" + camera.timestamp + ".jpg";
+				
+				// Create a dummy <img> to force the browser to load the image (and cache it) in the event
+				// that the image is changed (by scrubbing) before it has a chance to download.
+				// e.g. without this, Chrome aborts downloading if scrubbed away before success.
+				// Could this lead to memory leak / performance issues?
 				$("<img>").attr("src", src);
 
+				// Set actual visible image
 				image = $('#' + camera.code+ " img").attr("src", src).show();
+				
+				// Show disclaimer if the shown image is temporally distant from currently selected time
 				twohours = 2 * 60 * 60;
 				if(Math.abs(camera.newtimestamp - timestamp) >= twohours) {
-					// Show moon
+					// Show message
 				} else {
-					// Hide moon
+					// Hide message
 				}
 			}
 		}
@@ -279,10 +296,7 @@ var DataPageView = Backbone.View.extend({
 			var latitude = p.get('latitude');
 			var longitude = p.get('longitude');
 			var icon = p.get('icon');
-			var div = "<div class='markercontainerL'><div class='markerArrow'></div><div class='marker'>" + name + "</div></div>";
-			
 			var div = "<div class='markericon'><div class='dot'></div><div class='iconArrow'></div><img src=\"" + icon + "\"></div>";
-			
 			this.addToMap(latitude, longitude, $(div), 'center-left');
 		}, this);
 	},
@@ -312,29 +326,6 @@ var DataPageView = Backbone.View.extend({
 		this.chart = new Chart(chartDiv[0], sites, variables);
 	},
 	
-	updateSites: function() {
-
-		var site = this.model.get("selectedsite");
-		
-		var selectedSites = App.State.get("selectedsites");
-		
-		if(App.State.get("currenttopic").get("mode") == "ONE") {
-			// Toggle mode
-			selectedSites.reset(site);
-		} else {
-			// Set of sites mode
-			if(selectedSites.contains(site)) selectedSites.remove(site);
-			else selectedSites.add(site);
-			
-			// Must have at least one site, so add it back if empty
-			if(selectedSites.length == 0) selectedSites.add(site);
-		}
-		
-		this.cameras.loadCameras();
-		
-		this.updateViews();
-	},
-	
 	changeTopic: function() {
 		
 		var topic = App.State.get("currenttopic");
@@ -355,8 +346,29 @@ var DataPageView = Backbone.View.extend({
 		
 		// Center map
 		this.map.recenter();
-		
 		this.updateSites();
+	},
+	
+	updateSites: function() {
+
+		var site = this.model.get("selectedsite");
+		
+		var selectedSites = App.State.get("selectedsites");
+		
+		if(App.State.get("currenttopic").get("mode") == "ONE") {
+			// Toggle mode
+			selectedSites.reset(site);
+		} else {
+			// Set of sites mode
+			if(selectedSites.contains(site)) selectedSites.remove(site);
+			else selectedSites.add(site);
+			
+			// Must have at least one site, so add it back if empty
+			if(selectedSites.length == 0) selectedSites.add(site);
+		}
+		
+		this.updateViews();
+		this.cameras.loadCameras();
 	},
 	
 	updateViews: function() {
@@ -384,9 +396,11 @@ var DataPageView = Backbone.View.extend({
 		});
 		
 		// Send the correct series to the chart
-		var topic = App.State.get("currenttopic");
-		this.chart.update(topic, selectedSites);
-		
+		var that = this;
+		setTimeout(function() {
+			var topic = App.State.get("currenttopic");
+			that.chart.update(topic, selectedSites);			
+		}, 0);
 	}
 	
 });

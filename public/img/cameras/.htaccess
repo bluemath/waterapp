@@ -1,3 +1,5 @@
+## This file is critical to smooth scrubbing of camera feeds in web browser. ##
+## This causes those images to be cached ##
 ## EXPIRES CACHING ##
 <IfModule mod_expires.c>
 ExpiresActive On
