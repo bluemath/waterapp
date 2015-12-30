@@ -419,7 +419,7 @@ a {
 .cameras {
 	position: absolute;
 	bottom: $chartHeight + $spacing;
-	right: $pageMargin;
+	right: 0;
 	text-align: right;
 	vertical-align: bottom;
 }
@@ -430,16 +430,31 @@ a {
 	margin-left: $spacing;
 }
 
-.cameras .camera .name {
+.cameras .camera .bar {
 	background-color: $blueDarker; /* overriden by pageViews.js */
 	color: $white;
-	padding: $spacing/2 $spacing $spacing/2 $spacing;
-	text-align: left;
-	font-size: 13pt;
 	box-shadow: $shadow;
+	text-align: left;
 }
 
-.cameras .camera .name i {
+.cameras .camera .bar .name {
+	display: inline-block;
+	text-align: left;
+	font-size: 13pt;
+	margin: $spacing/2 $spacing $spacing/2 $spacing;
+}
+
+.cameras .camera .bar .note {
+	position: absolute;
+	display: inline-block;
+	right: 0;
+	top: 0;
+	text-align: right;
+	font-size: 13pt;
+	margin: $spacing/2 $spacing $spacing/2 $spacing;
+}
+
+.cameras .camera .bar .name i {
 	font-size: 10pt;
 	margin-left: $spacing / 2;
 }

@@ -77,8 +77,11 @@ var CameraView = Backbone.View.extend({
 		for (i in this.cameras) {
 			camera = this.cameras[i];
 			div = $("<div>").attr("id", camera.code).addClass("camera");
-			div.append($("<div>").addClass("name").html(camera.name + " <i class='fa fa-video-camera'></i>").css('background-color', camera.color));
-			div.append($("<div>").addClass("image").append($("<img>").hide()));
+			bar = $("<div>").addClass("bar").css('background-color', camera.color)
+			bar.append($("<div>").addClass("name").html(camera.name + " <i class='fa fa-video-camera'></i>"));
+			bar.append($("<div>").addClass("note").html("closest daytime photo").hide());
+			div.append(bar);
+			image = div.append($("<div>").addClass("image").append($("<img>").hide()));
 			cameraArea.prepend(div);
 		}
 	},
@@ -121,7 +124,7 @@ var CameraView = Backbone.View.extend({
 		
 		unix = App.State.get('unixtimestamp');
 		// Adjust for timezone and add a minute (so we hit after not on)
-		timestamp = unix - tz + 60;
+		var timestamp = unix - tz + 60;
 		
 		for (i in this.cameras) {
 			camera = this.cameras[i];
@@ -169,15 +172,22 @@ var CameraView = Backbone.View.extend({
 				$("<img>").attr("src", src);
 
 				// Set actual visible image
-				image = $('#' + camera.code+ " img").attr("src", src).show();
+				var image = $('#' + camera.code + " img").attr("src", src).show();
 				
-				// Show disclaimer if the shown image is temporally distant from currently selected time
-				twohours = 2 * 60 * 60;
-				if(Math.abs(camera.newtimestamp - timestamp) >= twohours) {
-					// Show message
-				} else {
-					// Hide message
-				}
+				
+				
+			}
+			
+			var note = $('#' + camera.code + ' .note');
+			
+			// Show disclaimer if the shown image is temporally distant from currently selected time
+			twohours = 2 * 60 * 60;
+			if(Math.abs(camera.newtimestamp - timestamp) >= twohours) {
+				console.log("show");
+				note.show();
+			} else {
+				console.log("hide");
+				note.hide();
 			}
 		}
 	}

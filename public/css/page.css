@@ -331,7 +331,7 @@ a {
 .cameras {
   position: absolute;
   bottom: 442px;
-  right: 38px;
+  right: 0;
   text-align: right;
   vertical-align: bottom; }
 
@@ -340,16 +340,29 @@ a {
   vertical-align: bottom;
   margin-left: 12px; }
 
-.cameras .camera .name {
+.cameras .camera .bar {
   background-color: #436d86;
   /* overriden by pageViews.js */
   color: #fff;
-  padding: 6px 12px 6px 12px;
+  box-shadow: 1px 1px 3px #222;
+  text-align: left; }
+
+.cameras .camera .bar .name {
+  display: inline-block;
   text-align: left;
   font-size: 13pt;
-  box-shadow: 1px 1px 3px #222; }
+  margin: 6px 12px 6px 12px; }
 
-.cameras .camera .name i {
+.cameras .camera .bar .note {
+  position: absolute;
+  display: inline-block;
+  right: 0;
+  top: 0;
+  text-align: right;
+  font-size: 13pt;
+  margin: 6px 12px 6px 12px; }
+
+.cameras .camera .bar .name i {
   font-size: 10pt;
   margin-left: 6px; }
 

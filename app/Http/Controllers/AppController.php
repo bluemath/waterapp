@@ -433,7 +433,7 @@ class AppController extends Controller
 	    return [
 	    	// All Varaibles, one site
 			[ 	'name' => 'Explore the Data',
-				'text' => ["Explore what’s happening in Red Butte Creek’s aquatic system by sliding your finger across the data stream to the right.  Choose a monitoring station from the map to see all the data feeds from that location, or compare data from different locations. You can also look at individual or paired variables to see how they change over time and across stations."],
+				'text' => ["Explore what’s happening in Red Butte Creek’s aquatic system by sliding your finger across the data stream to the right.  Choose a monitoring station from the map to see all the data feeds from that location, or compare data from different locations. You can also look at individual variables to see how they change over time and across stations."],
 				'variables' => ['WaterTemp_EXO', 'ODO', 'pH', 'SpCond', 'TurbMed', 'Stage', 'Level'],
 				'mode' => 'ONE'
 			],
