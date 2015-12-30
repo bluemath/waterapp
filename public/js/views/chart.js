@@ -41,8 +41,11 @@ function Chart(element, sites, variables) {
         	}  
         },
         navigator : {
-            baseSeries : 'WaterTemp_EXO',
-            margin: 40
+            margin: 40,
+            baseSeries: 0,
+            series: {
+	            id: 'daylight'
+            }
         },
         legend : {
             enabled: false,
@@ -147,6 +150,7 @@ function Chart(element, sites, variables) {
 				month: '%b %Y',
 				year: '%Y'
 		    },
+		    min: 1,
 		    max: Date.now()
         }
     });
@@ -159,6 +163,10 @@ function Chart(element, sites, variables) {
 		series = topic.get('variables');
 		mode = topic.get('mode');
 		
+		var sitecode;
+		var variablecode;
+		
+		// Add the series
 		selectedSites.each(function(site) {
 			for(i in series) {
 				s = series[i];
@@ -173,6 +181,7 @@ function Chart(element, sites, variables) {
 				}
 			}
 		}, this);
+		
 	}
 	
 	this.removeAll = function() {
@@ -269,6 +278,15 @@ function Chart(element, sites, variables) {
 				if(chart.get(sitecode+variablecode) != null) {
 					chart.get(sitecode+variablecode).setData(data);
 					chart.hideLoading();
+					console.log(chart.xAxis[0].getExtremes());
+					
+
+					var extremes = chart.xAxis[0].getExtremes();
+					if (isNaN(extremes.min)) {
+						var month = 30 * 24 * 60 * 60 * 1000;
+						chart.xAxis[0].setExtremes(extremes.max-month, extremes.max);
+					}
+
 				}
 			}
 
