@@ -70,7 +70,7 @@ function Chart(element, sites, variables) {
 			}
         },
         rangeSelector : {
-            selected : 1,
+            selected : 2,
             inputEnabled: false,
             buttons: [
             {
@@ -125,7 +125,8 @@ function Chart(element, sites, variables) {
             enabled: false  
         },
         scrollbar: {
-            enabled: false
+            enabled: false,
+            liveRedraw: false
         },
         credits : {
             enabled: false    
