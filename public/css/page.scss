@@ -63,6 +63,11 @@ $dot: 8px; /* even is best */
 	font-weight: 900;
 }
 
+html {
+	min-height: 820px;
+    min-width: 1280px;
+}
+
 body {
 	font-family: 'reykjavikone';
 	-webkit-tap-highlight-color:  rgba(255, 255, 255, 0);  /* Prevent highlight on click in Chrome on Android */
@@ -76,6 +81,10 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    
+    min-height: 820px;
+    min-width: 1280px;
+    position: relative;
 }
 
 a {
@@ -84,7 +93,7 @@ a {
 }
 
 #splash {
-	position: fixed;
+	position: absolute;
 	width: 100%;
 	height: 100%;
 	background-color: $blue;
@@ -94,7 +103,7 @@ a {
 #mask {
 	width: 100%;
 	height: 100%;
-	position: fixed; /* so that it doesn't scroll */
+	position: absolute; /* so that it doesn't scroll */
 	top: 0px;
 	left: 0px;
 	background-color: $blueDarker;
@@ -115,7 +124,7 @@ a {
 
 	width: 100%;
 	height: 100%;
-	position: fixed; /* so that it doesn't scroll */
+	position: absolute; /* so that it doesn't scroll */
 	top: 0px;
 	left: 0px;
 }
@@ -127,7 +136,7 @@ a {
 .spread .image {
 	width: 100%;
 	height: 100%;
-	position: fixed;
+	position: absolute;
 	//background-color: $black;
 	background-repeat: no-repeat;
 	background-position: left center;
@@ -140,7 +149,7 @@ a {
 }
 
 #credits {
-	position: fixed;
+	position: absolute;
 	top: $pageMargin;
 	right: 0px;
 	bottom: auto;
@@ -164,14 +173,14 @@ a {
 }
 
 #pagemenu {
-	position: fixed;
+	position: absolute;
 	left: $pageMargin;
 	top: $pageMargin;
 	width: $menuWidth;
 }
 
 #page .intro {
-	position: fixed;
+	position: absolute;
 	left: $pageMargin;
 	top: $pageMargin * 3;
 	width: $firstColumn;
@@ -189,7 +198,7 @@ a {
 }
 
 .topic {
-	position: fixed;
+	position: absolute;
 	right: $pageMargin;
 	bottom: 0;
 	left: $pageMargin;
@@ -300,19 +309,21 @@ a {
 	margin-right: $spacing;
 	border-width: 6px 6px 0 6px; 
 	border-style: solid;
-	border-color: #ddd;
-	background-color: #ddd;
+	border-color: $white;
+	background-color: $white;
 	box-shadow: $shadowExtra;
 	vertical-align: bottom;
 	width: 130px;
 	overflow-x: hidden;
+	border-radius: 1px;
 }
 
 .thumbnails .polaroid .image {
 	display: inline-block;
-	height: 130px;
-	width: 130px;
-	background-color: #ddd;
+	height: 128px;
+	width: 128px;
+	background-color: #eee;
+	border: 1px solid #eee;
 }
 
 .thumbnails .polaroid .label {
@@ -406,7 +417,7 @@ a {
 }
 
 .cameras {
-	position: fixed;
+	position: absolute;
 	bottom: $chartHeight + $spacing;
 	right: $pageMargin;
 	text-align: right;

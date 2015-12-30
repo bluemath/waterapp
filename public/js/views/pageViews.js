@@ -471,29 +471,23 @@ var PhotosPageView = Backbone.View.extend({
 			var thumb = $("<div>").addClass(photo.get("type"));
 			thumb.append(image).append(text);
 			thumb.css('transition', '.2s ease-out');
-			//deg = Math.random() * 14 - 7;
-			//thumb.css('transform', 'rotate(' + deg + 'deg)');
 			this.thumbnails.append(thumb);
 			
 			// Respond to clicks
 			thumb.click(function() {
 				var a = Math.random() * 10 - 5;
-/*
-				$(".thumbnail").css('transform', 'translateY(10px)');
-				$(this).css('transform', '');
-*/
-				deg = (Math.random() < .5 ? -1 : 1) * ((Math.random() * 3) + 3);
-				//$(this).css('transform', 'rotate(' + deg + 'deg)');
+
+				$(".thumbnails").children().css('transform', 'translateY(5px)');
+				thumb.css('transform', '');
 
 				model.set('currentphoto', photo);
 			});
 			
 			// Accentuate the current
-/*
 			if(model.get('currentphoto') != photo) {
-				thumb.css('transform', 'translateY(10px)');
+				thumb.css('transform', 'translateY(5px)');
 			}
-*/
+
 			
 		}, this);
 		
