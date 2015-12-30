@@ -94,10 +94,16 @@ $(function() {
 				console.log("ROUTE: splash");
 				
 				// As the site was accessed through the splash, return if idle
-				$.idleTimer(App.State.get('inactivity'));
+				$( document ).idleTimer(App.State.get('inactivity'));
 				$( document ).on( "idle.idleTimer", function(event, elem, obj){
 					App.Splash.show();
 					App.Router.navigate("", true);
+				});
+				
+			    // Reload every 5 minutes (if idle)
+				$( document.body ).idleTimer(5*60*1000);
+				$( document.body ).on( "idle.idleTimer", function(event, elem, obj){
+					window.location.reload(true);
 				});
 				
 				// Show the splash
