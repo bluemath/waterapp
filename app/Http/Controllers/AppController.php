@@ -67,7 +67,7 @@ class AppController extends Controller
     public function pages() {
         // Enumerate all the pages
 		// $pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->lr(), $this->pr(), $this->bio()];
-		$pages = [$this->gsl(), $this->gamut(), $this->rbc()]; //, $this->bio()
+		$pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->bio()]; //
 		// Send back as JSON
 		return response()->json($pages);
     }
@@ -508,80 +508,213 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 	    $page['img'] = "/img/bubbles/bio.jpg";
 	    $page['bubblescale'] = .21;
 	    $page['name'] = "Biodiversity";
-	    $page['text'] = ["Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek. Learn about the life in the creek.  Learn about the life in the creek.  Learn about the life in the creek.  Learn about the life in the creek. "];
-	    $page['type'] = "Photos";
+	    $page['text'] = ["Red Butte Canyon is one of the last undisturbed watersheds in the Great Basin thanks to an unusual history of protected status from 1862 to the present. With low human impacts, a perennial stream, and multiple distinct plant communities across its elevational gradient, the canyon provides pristine habitat for a rich diversity of life."];
+	    $page['type'] = "Hover";
 	    $page['topics'] = [
 			[
-				'name' => 'River',
-				'text' => ['Explore the life along Red Butte Creek. Explore the life along Red Butte Creek. Explore the life along Red Butte Creek. Explore the life along Red Butte Creek. Explore the life along Red Butte Creek. Explore the life along Red Butte Creek.'],
-				'default' => '0',
-			    'photos' => [
-				    [
-					 	'type' => 'photo',
-					 	'img' => '/img/bio/bio.jpg',
-					 	'label' => 'The Creek',
-					 	'type' => 'hidden'
-				    ],
-				    [
-					    'img' => '/img/bio/icons/fish.png',
-					    'label' => 'Certain Trout',
-					    'type' => 'icon'
-				    ],
-				    [
-					    'img' => '/img/bio/icons/grass.png',
-					    'label' => 'Particular Grass',
-					    'type' => 'icon'
-				    ],
-				    [
-					    'img' => '/img/bio/icons/flies.png',
-					    'label' => 'Type of Fly',
-					    'type' => 'icon'
-				    ],
-				    [
-					    'img' => '/img/bio/icons/rodent.png',
-					    'label' => 'Breed of Mouse',
-					    'type' => 'icon'
-				    ],
-				    [
-					    'img' => '/img/bio/icons/snakes.png',
-					    'label' => 'Specific Snake',
-					    'type' => 'icon'
-				    ]
-			    ]	
-			],
-		    [
-			    'name' => 'Fish',
-			    'text' => ['Small fish in a big pond.']
-		    ],
-		    [
-			    'name' => 'Birds',
-			    'text' => ['Birds of a feather...']
-		    ],
-		    [
-			    'name' => 'Mammals',
-			    'text' => ['Mammals Mammals Mammals!']
-		    ],
-		    [
-			    'name' => 'Amphibians',
-			    'text' => ["It's not easy being green."]
-		    ],
-		    [
-			    'name' => 'Reptiles',
-			    'text' => ["Snakes. Why'd it have to be snakes?"]
-		    ],
-		    [
-			    'name' => 'Crustaceans',
-			    'text' => ['Crusty?']
-		    ],
-		    [
-			    'name' => 'Insects',
-			    'text' => ['Lots of bugs!']
-		    ],
-		    [
-			    'name' => 'Plants',
-			    'text' => ['Lots of plants.']
-		    ]
-	    ];
+				'background' => '/img/bio/illustration.jpg',
+				'hotspots' => [
+					[
+						'name' => ['Stellar\'s jay'],
+						'subname' => ['Cyanocitta stelleri'],
+						'text' => ['These beautiful blue jays are a common sight in coniferous forests and mountain shrub areas. They sometimes move to lower valleys in winter.'],
+						'coords' => '2664,601,2668,633,2737,639,2745,665,2825,683,2817,631,2869,518,2815,500,2664,601',
+						'img' => '/img/bio/StellersJay.jpg',
+						'attribution' => 'None'
+					],
+					[
+						'name' => ['Coyote'],
+						'subname' => ['Canis latrans'],
+						'text' => ['Coyotes are found in all parts of the United States across a variety of habitats. This coyote was photographed right behind the Museum. Coyotes are highly vocal animals engaging in yipping, barking, whining, and howling. Each type of vocalization delivers a particular message to others in the pack.'],
+						'coords' => '549,749,701,846,854,928,954,914,936,766,1081,715,1049,627,1071,551,1033,541,942,601,760,565,665,516,555,557',
+
+							 	'img' => '/img/bio/Coyote.jpg',
+							 	'attribution' => 'None'
+					],
+					[
+						'name' => ['1'],
+						'subname' => ['()'],
+						'text' => [''],
+						'coords' => '1616,1868,1716,1927',
+
+							 	'img' => '',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Porcupine'],
+						'subname' => ['Erethizon dorsatum'],
+						'text' => ['Porcupines are slow moving herbivores that spend most of their time in trees eating leaves, twigs, and bark. They are equipped with sharp quills that detach when touched, to protect them against predators.'],
+						'coords' => '3179,1384,3179,1306,3108,1268,3102,1121,3213,968,3386,954,3476,1005,3569,1085,3607,1200,3621,1272,3749,1368,3743,1441,3695,1453,3540,1455,3426,1463,3317,1435,3259,1467,3203,1471,3179,1384',
+
+							 	'img' => '/img/bio/Porcupine.jpg',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Mallard duck'],
+						'subname' => ['Anas platyrhynchos'],
+						'text' => ['Mallards are the most abundant duck in Utah. They are less common in winter than in summer, but were there is open water they appear year around.'],
+						'coords' => '1296,962,1366,973,1402,1075,1501,1073,1543,1039,1589,1059,1626,1119,1575,1192,1439,1185,1360,1127,1324,1087,1250,1027,1256,981,1296,962',
+
+							 	'img' => '/img/bio/Mallard.jpg',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Mayfly larvae'],
+						'subname' => ['Baetis sp'],
+						'text' => ['Mayfly larvae may live in streams for two to three years breathing through gills on the sides of their bodies.'],
+						'coords' => '884,1630,1089,1734,1185,1624,1165,1585,1087,1581,1039,1551,878,1561,884,1630',
+
+							 	'img' => '',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Black-chinned hummingbird'],
+						'subname' => ['Archilochus alexandri'],
+						'text' => ['A common summer resident, the black-chinned hummingbird appears in April and may stay through early October&mdash;as long as there are flowers in bloom. '],
+						'coords' => '2773,1139,2809,1204,2881,1188,2922,1137,2948,1085,2869,1081,2805,1103,2773,1139',
+
+							 	'img' => '/img/bio/Hummingbird.jpg',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Black fly'],
+						'subname' => ['Simulium sp'],
+						'text' => ['Sometimes called buffalo gnats. They’re very small and can get in your eyes, ears, mouth, and nose. While they don’t usually bit humans, they do bite horses, cattle, deer, and other wildlife.'],
+						'coords' => '2574,1226,2552,1278,2628,1314,2678,1228,2638,1177,2590,1177,2574,1226',
+
+							 	'img' => '',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Montane vole'],
+						'subname' => ['Microtus montanus'],
+						'text' => ['Living in varied habitats from woods to meadows, montane voles occur across western North America. Montane voles sometimes experience extreme population densities; a boon to owls and other raptors that rely on them as prey.'],
+						'coords' => '3058,1853,3120,1913,3249,1879,3253,1828,3203,1796,3120,1802,3058,1853',
+
+							 	'img' => '/img/bio/Vole.jpg',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Caddisfly larvae'],
+						'subname' => ['Hydropsychidae'],
+						'text' => ['Caddisfly larvae often build cases to protect themselves from predators. Covered with twigs, caddis fly larvae can look like little log cabins. Some caddisfly larvae use grains of sand or tiny stones for their cases, while others use plants.'],
+						'coords' => '1404,1887,1487,1923,1547,1857,1449,1802,1413,1836,1404,1887',
+
+							 	'img' => '',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Black fly larvae'],
+						'subname' => ['Simulium sp'],
+						'text' => ['When black fly eggs hatch, the larvae float downstream with long silky threads trailing behind until they catch on rocks or logs. Tiny black fly larvae attach themselves by the thousands and catch bits of food it floats by.'],
+						'coords' => '2240,1619,2305,1682,2427,1561,2401,1519,2289,1525,2240,1619',
+
+							 	'img' => '',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Bonneville cutthroat trout'],
+						'subname' => ['Oncorhynchus clarki utah'],
+						'text' => ['This species has occupied Red Butte Creek for thousands of years, but their numbers have been dwindling in recent years. They are now considered a “sensitive species.” In 2011, the Utah Division of Fish and Wildlife reintroduced 3,000 Bonneville Cutthroat Trout to lower Red Butte Creek after clean up of two oil spills in the creek.'],
+						'coords' => '1565,1772,1688,1800,1722,1845,1824,1873,1871,1869,1929,1895,1969,1881,1961,1863,2025,1832,2108,1832,2140,1760,2212,1778,2216,1622,2086,1642,2058,1557,1927,1539,1832,1551,1738,1597,1620,1656,1549,1714,1565,1772',
+
+							 	'img' => '',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Water shrew'],
+						'subname' => ['Sorex palustris'],
+						'text' => ['Water shrews live near mountain streams in areas surrounded by heavy vegetation. They are strong swimmers that dive and swim to forage for food, even in the coldest weather. Aquatic insects and their larvae are their primary food, although they sometimes eat small fish, too.'],
+						'coords' => '1216,1561,1234,1658,1356,1774,1409,1756,1376,1563,1226,1535,1216,1561',
+
+							 	'img' => '',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Mule deer'],
+						'subname' => ['Odocoileus heminous'],
+						'text' => ['Large mule-like ears, brownish-grey coloring, and a white rump make mule deer easy to identify. Mule deer diets are highly variable depending on season, region, and elevation.'],
+						'coords' => '1706,993,1989,778,1919,683,1963,563,1909,534,1830,559,1782,603,1778,532,1672,536,1605,567,1527,561,1515,611,1561,663,1617,808,1630,878,1706,993',
+
+							 	'img' => '/img/bio/MuleDeer.jpg',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Spotted sandpiper'],
+						'subname' => ['Actitis macularia'],
+						'text' => ['These sandpipers are summer residents, appearing from late April to late September. They breed along waterways across a wide elevational range.'],
+						'coords' => '2037,1045,2084,1123,2184,1127,2230,1017,2126,989,2058,997,2037,1045',
+
+							 	'img' => '/img/bio/Sandpiper.jpg',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Dipper'],
+						'subname' => ['Cinclus mexicanus'],
+						'text' => ['This species is a common resident all year along mountain streams where the water is swift. They are sometimes spotted along valley streams as well.'],
+						'coords' => '1362,1334,1499,1222,1571,1258,1563,1290,1519,1348,1559,1390,1497,1413,1362,1334',
+
+							 	'img' => '/img/bio/Dipper.jpg',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Rattlesnake'],
+						'subname' => ['various species'],
+						'text' => ['Rattlesnakes are common in the foothills of Salt Lake City. They use venom to quickly kill their prey, and while highly poisonous, they rarely bite unless provoked or threatened. Steer clear when you see one on a trail.'],
+						'coords' => '848,1298,1015,1318,1103,1316,1133,1425,1073,1479,912,1491,782,1535,647,1493,673,1413,848,1298',
+
+							 	'img' => '/img/bio/Rattlesnake.jpg',
+							 	'attribution' => ''	
+					],
+					[
+						'name' => ['Mayfly'],
+						'subname' => ['Baetis sp'],
+						'text' => ['Adult mayflies may only live for twenty-four hours. They find a partner, mate, and lay eggs all in one day. Adult Mayflies often emerge in huge swarms near waterways. Listen closely you may hear the humming sound of thousands of these little insects.'],
+						'coords' => '866,1202,981,1214,1019,1145,940,1073,864,1121,866,1202',
+
+							 	'img' => '',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Caddisfly'],
+						'subname' => ['Hydropsychidae'],
+						'text' => [''],
+						'coords' => '633,1212,709,1256,774,1236,715,1161,633,1133,633,1212',
+
+							 	'img' => '',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Yellow-bellied marmot'],
+						'subname' => ['Marmota flaviventer'],
+						'text' => ['You might hear a marmot before you see one; when a marmot sees a predator, it whistles to warn other marmots of the danger. Marmots spend about 80% of their time inside their burrows, which includes a long hibernation period.'],
+						'coords' => '1252,536,1286,522,1334,541,1372,538,1368,486,1276,408,1222,394,1188,434,1208,500,1252,536',
+
+							 	'img' => '/img/bio/Marmot.jpg',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Black-capped chickadee'],
+						'subname' => ['Parus atricapillus'],
+						'text' => ['Chickadees, with their familiar call, are permanent residents throughout Utah. In winter they occupy woodlands and riparian areas. In summer they move to higher ground where they breed.'],
+						'coords' => '999,892,964,970,993,1033,1015,1073,1075,1077,1121,1045,1198,989,1187,950,1135,981,999,892',
+
+							 	'img' => '/img/bio/Chickadee.jpg',
+							 	'attribution' => ''
+					],
+					[
+						'name' => ['Belted kingfisher'],
+						'subname' => ['Megaceryle alcyon'],
+						'text' => ['As their name implies, these birds rely on fishing for sustenance. They are most common in the summer, but some remain through the winter. Their numbers have diminished in some areas because of nesting site disturbance.'],
+						'coords' => '1607,1334,1792,1382,1899,1346,2041,1479,2134,1441,2066,1236,2126,1185,2045,1153,1836,1198,1698,1258,1607,1334',
+
+							 	'img' => '/img/bio/Kingfisher.jpg',
+							 	'attribution' => ''
+					]
+					
+				]
+			]  
+		];
 	    return $page;
     }
 

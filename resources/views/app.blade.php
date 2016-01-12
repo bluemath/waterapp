@@ -13,6 +13,8 @@
 
 		<script src="{{ URL::asset('js/lib/jquery/jquery-1.11.3.js') }}"></script>
 		<script src="{{ URL::asset('/js/lib/jquery/pep.js') }}"></script>
+		<script src="{{ URL::asset('/js/lib/jquery/cover.js') }}"></script>
+		<script src="{{ URL::asset('/js/lib/jquery/rwdImageMaps.js') }}"></script>
 		<script src="{{ URL::asset('js/lib/jquery-ui/jquery-ui.js') }}"></script>
 		
 		<script src="{{ URL::asset('js/lib/backbone/underscore.js') }}"></script>	
@@ -39,6 +41,7 @@
 		<link rel="stylesheet" href="{{ URL::asset('css/normalize.css') }}" type="text/css" media="screen" charset="utf-8">
 		<link rel="stylesheet" href="{{ URL::asset('css/boilerplate.css') }}" type="text/css" media="screen" charset="utf-8">
 		<link rel="stylesheet" href="{{ URL::asset('css/page.css') }}" type="text/css" media="screen" charset="utf-8">
+		<link rel="stylesheet" href="{{ URL::asset('css/jquery.cover.css') }}" type="text/css" media="screen" charset="utf-8">
 		
 	</head>
 	
@@ -65,6 +68,8 @@
 				<div class="cameras"></div>
 				
 			</div>
+			
+			<div class="attribution"></div>
 
 		</div>
 		

@@ -33,6 +33,9 @@ var PageView = Backbone.View.extend({
 			case "Photos":
 				App.State.pageView = new PhotosPageView({ model: this.currentPageModel });
 				break;
+			case "Hover":
+				App.State.pageView = new HoverPageView({ model: this.currentPageModel });
+				break;
 			default:
 				App.State.set('currentpage', undefined);
 				return this;
@@ -505,4 +508,107 @@ var PhotosPageView = Backbone.View.extend({
 	updatePhoto: function() {
 		this.render();
 	}
+});
+
+var HoverPageView = Backbone.View.extend({
+	initialize: function() {
+		
+		debug("HoverPageView Init");
+		
+		this.listenTo(App.State, 'change:currenttopic', this.changeTopic);
+				
+		// Listen to finger
+		this.listenTo(this.model, 'change:currenthotspot', this.changeHotspot);
+		
+		// Setup the background image holder
+		this.spread = $('.spread');
+		this.background = $("<img>").attr("usemap", "#hotspots");
+		this.spread.empty().append(this.background);
+		this.info = $("<div>").addClass("info");
+		this.info.hide();
+		this.spread.append(this.info);
+		this.template = _.template("<div class='details'><%= text %></div><div class='photo'><img class='coverphoto' src='<%= img %>'></div><div class='tag'><div class='arrow'><span class='name'><%= name %></span><span class='subname'><%= subname %></span></div><div class='end'></div></div>");
+		
+		this.spread.append($("<div class='touch'>").html("<img src='/img/app/touch.png'> Touch an animal to learn more"));
+		
+		this.spread.on("pointermove", {that: this}, this.pointerMove);
+		this.spread.on("pointerdown", {that: this}, this.pointerMove);
+		this.spread.on("pointerup", {that: this}, this.pointerUp);
+		
+		// Disable topic menu
+		$("#topicmenu").hide();
+		
+		// Create hotspot view
+		
+	},
+	render: function() {
+		console.log("RENDER HOVER");
+	},
+	remove: function() {
+		$("#topicmenu").show();	
+	},
+	changeHotspot: function() {
+		// Change View
+		if(this.model.has("currenthotspot")) {
+			var hotspot = this.model.get("currenthotspot");
+			this.info.html(this.template(hotspot));
+			if(hotspot.img != '') {
+				$(".info .coverphoto").cover();
+				$(".info .photo").fadeIn();
+			}
+		}
+	},
+	pointerMove: function(event) {
+		// Move View
+		that = event.data.that;
+		if(that.model.has("currenthotspot")) {
+			that.info.show();
+		} else {
+			that.info.hide();
+		}
+		that.info.css("top", event.clientY);
+		that.info.css("left", event.clientX + 20);
+	},
+	pointerDown: function(event) {
+		// Show view
+		that = event.data.that;
+		if(that.model.has("currenthotspot")) {
+			that.info.show();
+		}
+	},
+	pointerUp: function(event) {
+		// Hide View
+		that = event.data.that;
+		//that.info.hide();
+	},
+	changeTopic: function() {
+
+		var currentTopic = App.State.get("currenttopic");
+		
+		this.map = $("<map>").attr("name", "hotspots");
+		var hotspots = currentTopic.get("hotspots");
+		
+		_.each(hotspots, function(hotspot) {
+			var area = $("<area>").attr("shape", "poly").attr("coords", hotspot.coords);
+			var model = this.model;
+			area.on("pointerover", function() {
+				model.set("currenthotspot", hotspot);
+			});
+			area.on("pointerout", function() {
+				model.set("currenthotspot", null);
+			});
+
+			
+			this.map.append(area);
+		}, this);
+		
+		this.spread.append(this.map);
+		
+		// Set the background
+		this.background.attr("src", currentTopic.get("background"));
+		this.background.cover({backgroundPosition: "top center"});
+		
+		this.background.rwdImageMaps();
+	},
+
 });
