@@ -186,10 +186,8 @@ var CameraView = Backbone.View.extend({
 			// Show disclaimer if the shown image is temporally distant from currently selected time
 			twohours = 2 * 60 * 60;
 			if(Math.abs(camera.newtimestamp - timestamp) >= twohours) {
-				console.log("show");
 				note.show();
 			} else {
-				console.log("hide");
 				note.hide();
 			}
 		}
@@ -255,7 +253,6 @@ var DataPageView = Backbone.View.extend({
 			var div = "";
 			var positioning = "";
 			
-			debug(Math.abs(pLatitude - latitude) + " from the previous marker");
 			
 			// Compute div of marker
 			if(pLatitude != null && Math.abs(pLatitude - latitude) < .002) {
@@ -333,9 +330,7 @@ var DataPageView = Backbone.View.extend({
 		detail.append(chartDiv);
 		
 		sites = this.model.get("sites");
-		console.log(sites);
 		variables = this.model.get("variables");
-		console.log(variables);
 		this.chart = new Chart(chartDiv[0], sites, variables);
 	},
 	
@@ -542,7 +537,6 @@ var HoverPageView = Backbone.View.extend({
 		
 	},
 	render: function() {
-		console.log("RENDER HOVER");
 	},
 	remove: function() {
 		$("#topicmenu").show();	
@@ -606,7 +600,11 @@ var HoverPageView = Backbone.View.extend({
 		
 		// Set the background
 		this.background.attr("src", currentTopic.get("background"));
-		this.background.cover({backgroundPosition: "top center"});
+		this.background.cover({
+			backgroundPosition: "top right",
+			callbacks: { "ratioSwitch" : function() {
+				$(window).trigger('resize'); // Fixes the map on iOS devices
+			}}});
 		
 		this.background.rwdImageMaps();
 	},

@@ -10,11 +10,18 @@ cp.SegmentShape.prototype.draw = function(point2canvas) {
 	return;
 };
 
-cp.CircleShape.prototype.draw = function(flipPoint) {
-	if(this.paper) { // Paper isn't set up until the image is loaded
+cp.CircleShape.prototype.draw = function(flipPoint, awayFromMiddle) {
+	if(this.paperCircle) { // Paper isn't set up until the image is loaded
 		
-		this.paper.position = flipPoint(this.tc);
+		this.paperCircle.position = flipPoint(this.tc);
+
 	}
+	if(this.paperTag) { // Paper isn't set up until the image is loaded
+		
+		this.paperTag.position = awayFromMiddle(flipPoint(this.tc));
+
+	}
+			
 };
 
 //console.clear();
@@ -75,12 +82,16 @@ var Splash = function(container) {
 			for (var id in that.pointers) {
 				that.pointers[id].shape.body.setPos(that.flipPoint(that.pointers[id].position));
 				that.pointers[id].shape.body.setVel(cp.v(0,0));
+						// Tag
+				if (typeof shape.tag != 'undefined') {
+					
+				}
 			}
 			
 			// Only redraw if the simulation isn't asleep.
 			if (that.space.activeShapes.count > 0) {
 				that.space.eachShape(function(shape) {
-					shape.draw(that.flipPoint);
+					shape.draw(that.flipPoint, that.awayFromMiddle);
 				});
 			}
 		}
@@ -90,6 +101,14 @@ var Splash = function(container) {
 
 	this.flipPoint = function(point) {
 		return new Point(point.x, paper.view.viewSize.height - point.y);
+	};
+	
+	this.awayFromMiddle = function(point) {
+		y = paper.view.viewSize.height/2;
+		x = paper.view.viewSize.width/2;
+		newx = point.x + (point.x - x)*.55;
+		newy = point.y + (point.y - y)*.25;
+		return new Point(newx, newy);
 	};
 	
 	this.addBubble = function(scale) {
@@ -122,23 +141,35 @@ var Splash = function(container) {
 			var circleClipped = new Group(circle, this);
 			circleClipped.clipped = true;
 			
-/*
+
 			var label = this.label = new PointText({
 			    point: bubble.position,
 			    content: text,
 			    fillColor: 'white',
 			    fontFamily: 'reykjavikone',
-			    fontSize: Math.floor(bubble.radius / 6),
+			    fontSize: 50,
 				fontWeight: 'normal',
 				justification: 'center',
+/*
 				shadowColor: new Color(.2,.2,.2),
 				shadowBlur: 3,
 				shadowOffset: new Point(1,1)
-			});
 */
+			});
+			
+			var labelback = new Path.Rectangle({
+					point: bubble.position,
+					rectangle: label.bounds.expand(60,10),
+					fillColor: new Color(67/255,109/255,134/255,.80),//'#436d86',
+/*
+					shadowColor: new Color(0,0,0,.5),
+					shadowBlur: 5,
+					shadowOffset: new Point(1,1)
+*/
+				});
 	    
-			//bubble.circle = new Group(circleClipped, label);
 			bubble.circle = circleClipped;
+			bubble.tag = new Group(labelback, label);
 			
 			that._addWithPhysics(bubble, 400, 400);
 		}
@@ -149,10 +180,11 @@ var Splash = function(container) {
 		body = that.space.addBody(new cp.Body(10, cp.momentForCircle(20, 0, bubble.radius, cp.v(0,0))));
 		body.setPos(that.flipPoint(bubble.position));
 	
-		shape = that.space.addShape(new cp.CircleShape(body, bubble.radius + 5, cp.v(0, 10)));
+		shape = that.space.addShape(new cp.CircleShape(body, bubble.radius + 5, cp.v(10, 10)));
 		shape.setElasticity(.3);
 		shape.setFriction(.8);
-		shape.paper = bubble.circle;
+		shape.paperCircle = bubble.circle;
+		shape.paperTag = bubble.tag;
 		shape.poppable = bubble.poppable;
 		shape.callback = bubble.callback;
 		
@@ -189,8 +221,8 @@ var Splash = function(container) {
 		var newRadius = paper.view.viewSize.width * bubble.scale / 2;
 		if (bubble.shape) {
 			bubble.shape.r = newRadius;
-			if(bubble.shape.paper) {
-				bubble.shape.paper.scale(newRadius / bubble.radius);		
+			if(bubble.shape.paperCircle) {
+				bubble.shape.paperCircle.scale(newRadius / bubble.radius);		
 			}
 			
 		}
@@ -283,7 +315,7 @@ var Splash = function(container) {
 	///////////////////
 	
 	for (var i = 0; i <200; i++) {
-		var size = Math.random() * .05 + .03;
+		var size = Math.random() * .06 + .02;
 		this.addBubble(size);
 	}
 
@@ -293,7 +325,7 @@ var Splash = function(container) {
 		that._bubbles.push(dot);
 		setTimeout(function() {
 			that.popDot();
-			}, 100 + Math.random()*1500);
+			}, 100 + Math.random()*1000);
 	}
 	
 	this.popDot();

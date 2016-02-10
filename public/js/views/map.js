@@ -8,12 +8,14 @@ function MapSpread(element, sites, zoom) {
 		source: new ol.source.Stamen({
 			layer: 'terrain-background'
 		}),
+		opacity: 1.0
 	});
 	
 	var linesLayer = new ol.layer.Tile({
 		source: new ol.source.Stamen({
 			layer: 'terrain-lines'
-		})
+		}),
+		opacity: .25
 	});
 	
 	
@@ -63,7 +65,7 @@ function MapSpread(element, sites, zoom) {
 	// Setup map
 	var map = new ol.Map({
 		target: element,
-		layers: [terrainLayer, linesLayer],
+		layers: [terrainLayer, linesLayer], // // Removed for a cleaner image
 		view: new ol.View({
 			center: center,
 			minZoom: zoom,

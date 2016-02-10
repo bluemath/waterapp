@@ -73,7 +73,7 @@ $(function() {
 				
 				App.Collections.Pages.each(function (item) {
 					// Add nav bubble
-					App.Splash.addImageBubble(item.get('bubblescale'), item.get('img'), item.get('name'), function() {
+					App.Splash.addImageBubble(item.get('bubblescale'), item.get('img'), item.get('bubblename'), function() {
 						App.Router.navigate(item.get('id')+"/0", true);
 						App.Splash.hide();
 					});

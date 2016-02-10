@@ -77,7 +77,8 @@ class AppController extends Controller
 	    $page['type'] = "Photos";
 	    $page['id'] = "gsl";
 	    $page['img'] = "/img/bubbles/gsl.jpg";
-	    $page['bubblescale'] = .25;
+	    $page['bubblescale'] = .29;
+	    $page['bubblename'] = "Great Salt Lake Watershed";
 	    $page['name'] = "Explore the Great Salt Lake Watershed";
 	    $page['text'] = [];
 	    $page['text'][] = "The Great Salt Lake watershed is enormous&mdash;it covers nearly 35,000 square miles. Most of its water comes from three watersheds east of the Lake: Bear River, Weber River, and Jordan River watersheds. Each of these watersheds is fed by smaller watersheds. It’s a converging system of drainages all flowing to the Great Salt Lake.";
@@ -197,7 +198,8 @@ class AppController extends Controller
 	    $page = [];
 	    $page['id'] = "gamut";
 	    $page['img'] = "/img/bubbles/gamut.jpg";
-	    $page['bubblescale'] = .22;
+	    $page['bubblescale'] = .21;
+	    $page['bubblename'] = "The Whole GAMUT";
 	    $page['name'] = "The Whole GAMUT";
 	    $page['text'] = ["iUTAH Scientists and technicians have designed and installed a network of aquatic and climate monitoring stations along the Wasatch Front. Built to study water in “<strong>G</strong>radients <strong>A</strong>long <strong>M</strong>ountain-to-<strong>U</strong>rban <strong>T</strong>ransitions” (<strong>GAMUT</strong>) the network measures climate, hydrology, and water quality in three watersheds: Red Butte Creek, Logan River, and Provo River watersheds. Although alike in their primary source of water—winter snow—these three watersheds are very different in terms of human use of the land. GAMUT is providing baseline data to inform research about a wide range of issues related to water quality and quantity along the Wasatch Front."];
 	    $page['type'] = "Photos";
@@ -368,7 +370,8 @@ class AppController extends Controller
 	    $page = [];
 	    $page['id'] = "rbc";
 	    $page['img'] = "/img/bubbles/rbc.jpg";
-	    $page['bubblescale'] = .24;
+	    $page['bubblescale'] = .26;
+	    $page['bubblename'] = "Red Butte Creek";
 	    $page['name'] = "Red Butte Creek";
 	    $page['text'] = ["Red Butte Creek watershed, located in narrow Red Butte Canyon, covers just over 11 square miles. It ranges in elevation from approximately 4900 feet to nearly 7900 feet. Red Butte Canyon is a Research Natural Area (RNA), managed by the U.S. Forest Service to preserve its significant natural ecosystems for scientific education and research. It’s a place where natural processes can be observed and compared to other areas where people regularly impact natural systems. And it’s one of three streams where iUTAH is monitoring aquatic data around the clock."];
 	    $page['type'] = "Data";
@@ -506,7 +509,8 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 		$page = [];
 	    $page['id'] = "bio";
 	    $page['img'] = "/img/bubbles/bio.jpg";
-	    $page['bubblescale'] = .21;
+	    $page['bubblescale'] = .19;
+	    $page['bubblename'] = "Biodiversity";
 	    $page['name'] = "Biodiversity";
 	    $page['text'] = ["Red Butte Canyon is one of the last undisturbed watersheds in the Great Basin thanks to an unusual history of protected status from 1862 to the present. With low human impacts, a perennial stream, and multiple distinct plant communities across its elevational gradient, the canyon provides pristine habitat for a rich diversity of life."];
 	    $page['type'] = "Hover";
@@ -564,7 +568,7 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 						'text' => ['Mayfly larvae may live in streams for two to three years breathing through gills on the sides of their bodies.'],
 						'coords' => '884,1630,1089,1734,1185,1624,1165,1585,1087,1581,1039,1551,878,1561,884,1630',
 
-							 	'img' => '',
+							 	'img' => '/img/bio/MayflyLarva.png',
 							 	'attribution' => ''
 					],
 					[
@@ -582,7 +586,7 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 						'text' => ['Sometimes called buffalo gnats. They’re very small and can get in your eyes, ears, mouth, and nose. While they don’t usually bit humans, they do bite horses, cattle, deer, and other wildlife.'],
 						'coords' => '2574,1226,2552,1278,2628,1314,2678,1228,2638,1177,2590,1177,2574,1226',
 
-							 	'img' => '',
+							 	'img' => '/img/bio/BlackFly.jpg',
 							 	'attribution' => ''
 					],
 					[
@@ -600,7 +604,7 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 						'text' => ['Caddisfly larvae often build cases to protect themselves from predators. Covered with twigs, caddis fly larvae can look like little log cabins. Some caddisfly larvae use grains of sand or tiny stones for their cases, while others use plants.'],
 						'coords' => '1404,1887,1487,1923,1547,1857,1449,1802,1413,1836,1404,1887',
 
-							 	'img' => '',
+							 	'img' => '/img/bio/CaddisflyLarva.jpg',
 							 	'attribution' => ''
 					],
 					[
@@ -609,7 +613,7 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 						'text' => ['When black fly eggs hatch, the larvae float downstream with long silky threads trailing behind until they catch on rocks or logs. Tiny black fly larvae attach themselves by the thousands and catch bits of food it floats by.'],
 						'coords' => '2240,1619,2305,1682,2427,1561,2401,1519,2289,1525,2240,1619',
 
-							 	'img' => '',
+							 	'img' => '/img/bio/BlackFlyLarva.png',
 							 	'attribution' => ''
 					],
 					[
@@ -618,7 +622,7 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 						'text' => ['This species has occupied Red Butte Creek for thousands of years, but their numbers have been dwindling in recent years. They are now considered a “sensitive species.” In 2011, the Utah Division of Fish and Wildlife reintroduced 3,000 Bonneville Cutthroat Trout to lower Red Butte Creek after clean up of two oil spills in the creek.'],
 						'coords' => '1565,1772,1688,1800,1722,1845,1824,1873,1871,1869,1929,1895,1969,1881,1961,1863,2025,1832,2108,1832,2140,1760,2212,1778,2216,1622,2086,1642,2058,1557,1927,1539,1832,1551,1738,1597,1620,1656,1549,1714,1565,1772',
 
-							 	'img' => '',
+							 	'img' => '/img/bio/Trout.jpg',
 							 	'attribution' => ''
 					],
 					[
@@ -627,7 +631,7 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 						'text' => ['Water shrews live near mountain streams in areas surrounded by heavy vegetation. They are strong swimmers that dive and swim to forage for food, even in the coldest weather. Aquatic insects and their larvae are their primary food, although they sometimes eat small fish, too.'],
 						'coords' => '1216,1561,1234,1658,1356,1774,1409,1756,1376,1563,1226,1535,1216,1561',
 
-							 	'img' => '',
+							 	'img' => '/img/bio/Shrew.jpg',
 							 	'attribution' => ''
 					],
 					[
@@ -672,7 +676,7 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 						'text' => ['Adult mayflies may only live for twenty-four hours. They find a partner, mate, and lay eggs all in one day. Adult Mayflies often emerge in huge swarms near waterways. Listen closely you may hear the humming sound of thousands of these little insects.'],
 						'coords' => '866,1202,981,1214,1019,1145,940,1073,864,1121,866,1202',
 
-							 	'img' => '',
+							 	'img' => '/img/bio/Mayfly.jpg',
 							 	'attribution' => ''
 					],
 					[
@@ -681,7 +685,7 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 						'text' => [''],
 						'coords' => '633,1212,709,1256,774,1236,715,1161,633,1133,633,1212',
 
-							 	'img' => '',
+							 	'img' => '/img/bio/Caddisfly.jpg',
 							 	'attribution' => ''
 					],
 					[

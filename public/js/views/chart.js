@@ -278,8 +278,6 @@ function Chart(element, sites, variables) {
 				if(chart.get(sitecode+variablecode) != null) {
 					chart.get(sitecode+variablecode).setData(data);
 					chart.hideLoading();
-					console.log(chart.xAxis[0].getExtremes());
-					
 
 					var extremes = chart.xAxis[0].getExtremes();
 					if (isNaN(extremes.min)) {

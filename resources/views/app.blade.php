@@ -2,9 +2,7 @@
 	
 	<head>
 		
-		<meta name="viewport" content="width=1920, height=1080, user-scalable=no">
-		<meta name="mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="height=1080, user-scalable=no, shrink-to-fit=no">
 
 		<script>
 			// Makes development easier
