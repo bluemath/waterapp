@@ -210,35 +210,35 @@ class AppController extends Controller
 			    'default' => 0,
 			    'photos' => [
 				    [
-					    'img' => '/img/gamut/RB_KF_BA.jpg',
-					    'label' => "Knowlton Fork",
-					    'caption' => 'This is the highest monitoring station on the creek: Knowlton Fork.',
-					    'type' => 'polaroid'
-				    ],
-				    [
-					    'img' => '/img/gamut/RB_ARBR_AA.jpg',
-					    'label' => "Above Red Butte Reservoir",
-					    'caption' => 'Above Red Butte Reservoir',
-					    'type' => 'polaroid'
-				    ],
-				    [
-					    'img' => '/img/gamut/RB_RBG_BA.jpg',
-					    'label' => "Red Butte Gate",
-					    'caption' => 'This is the site near the gate that prevents access to the Red Butte Creek protected area.',
+					    'img' => '/img/gamut/RB_FD_AA.jpg',
+					    'label' => "Foothill Drive",
+					    'caption' => '',
 					    'type' => 'polaroid'
 				    ],
 				    [
 					    'img' => '/img/gamut/RB_CG_BA.jpg',
 					    'label' => "Cottams Grove",
-					    'caption' => 'Cottams Grove.',
+					    'caption' => '',
 					    'type' => 'polaroid'
 				    ],
 				    [
-					    'img' => '/img/gamut/RB_FD_AA.jpg',
-					    'label' => "Foothill Drive",
-					    'caption' => 'Foothill Drive.',
+					    'img' => '/img/gamut/RB_RBG_BA.jpg',
+					    'label' => "Red Butte Gate",
+					    'caption' => '',
 					    'type' => 'polaroid'
-				    ]
+				    ],
+				    [
+					    'img' => '/img/gamut/RB_ARBR_AA.jpg',
+					    'label' => "Above Red Butte Reservoir",
+					    'caption' => '',
+					    'type' => 'polaroid'
+				    ],
+				    [
+					    'img' => '/img/gamut/RB_KF_BA.jpg',
+					    'label' => "Knowlton Fork",
+					    'caption' => '',
+					    'type' => 'polaroid'
+				    ],
 			    ]
 		    ],
 		    [
@@ -377,6 +377,7 @@ class AppController extends Controller
 	    $page['type'] = "Data";
 
 	    $page['sites'] = $this->sites("RB_");
+	    $page['defaultsite'] = 4; // Foothill Drive
 	    $page['variables'] = $this->variables();
 	    $page['topics'] = $this->topics();
 	    $page['poi'] = [
@@ -556,7 +557,7 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 					[
 						'name' => ['Mallard duck'],
 						'subname' => ['Anas platyrhynchos'],
-						'text' => ['Mallards are the most abundant duck in Utah. They are less common in winter than in summer, but were there is open water they appear year around.'],
+						'text' => ['Mallards are the most abundant duck in Utah. They are less common in winter than in summer, but where there is open water they appear year around.'],
 						'coords' => '1296,962,1366,973,1402,1075,1501,1073,1543,1039,1589,1059,1626,1119,1575,1192,1439,1185,1360,1127,1324,1087,1250,1027,1256,981,1296,962',
 
 							 	'img' => '/img/bio/Mallard.jpg',
@@ -583,7 +584,7 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 					[
 						'name' => ['Black fly'],
 						'subname' => ['Simulium sp'],
-						'text' => ['Sometimes called buffalo gnats. They’re very small and can get in your eyes, ears, mouth, and nose. While they don’t usually bit humans, they do bite horses, cattle, deer, and other wildlife.'],
+						'text' => ['Sometimes called buffalo gnats. They’re very small and can get in your eyes, ears, mouth, and nose. While they don’t usually bite humans, they do bite horses, cattle, deer, and other wildlife.'],
 						'coords' => '2574,1226,2552,1278,2628,1314,2678,1228,2638,1177,2590,1177,2574,1226',
 
 							 	'img' => '/img/bio/BlackFly.jpg',
@@ -682,7 +683,7 @@ When stream flow is high, water can overflow into the stream’s floodplain. Thi
 					[
 						'name' => ['Caddisfly'],
 						'subname' => ['Hydropsychidae'],
-						'text' => [''],
+						'text' => ['Caddisflies in the Intermountain West complete their life cycle within a single year. Adults usually emerge in summer, often in mass emergences that help to ensure mating opportunities.'],
 						'coords' => '633,1212,709,1256,774,1236,715,1161,633,1133,633,1212',
 
 							 	'img' => '/img/bio/Caddisfly.jpg',

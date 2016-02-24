@@ -345,7 +345,11 @@ var DataPageView = Backbone.View.extend({
 		if(topic.get('mode') == "ONE") {
 			if(selectedSites.length == 0) {
 				// Default site
-				this.model.set("selectedsite", allSites.first());
+				if(this.model.has("defaultsite")) {
+					this.model.set("selectedsite", allSites.at(this.model.get("defaultsite")));	
+				} else {
+					this.model.set("selectedsite", allSites.first());	
+				}
 			} else {
 				// Most recently selected site
 				selectedSites.reset();
