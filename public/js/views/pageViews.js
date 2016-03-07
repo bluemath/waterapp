@@ -564,8 +564,9 @@ var HoverPageView = Backbone.View.extend({
 		} else {
 			that.info.hide();
 		}
-		that.info.css("top", event.clientY);
-		that.info.css("left", event.clientX + 20);
+		/* update the location of the hover box */
+		that.info.css("top", Math.min(event.clientY, $(document).height()));
+		that.info.css("left", Math.min(event.clientX + 20, $(document).width() - 300));
 	},
 	pointerDown: function(event) {
 		// Show view
