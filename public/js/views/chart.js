@@ -182,6 +182,9 @@ function Chart(element, sites, variables) {
 			}
 		}, this);
 		
+		// Added to prevent chart from being the wrong size after element hide then show
+		chart.reflow();
+		
 	}
 	
 	this.removeAll = function() {

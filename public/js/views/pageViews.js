@@ -289,6 +289,7 @@ var DataPageView = Backbone.View.extend({
 			(function(site) {
 				$("#"+code).click(function() {
 					that.model.set("selectedsite", site);
+					console.log("selectedsite = " + site);
 					that.updateSites();
 				});
 			})(site);
@@ -307,7 +308,25 @@ var DataPageView = Backbone.View.extend({
 			var longitude = p.get('longitude');
 			var icon = p.get('icon');
 			var div = "<div class='markericon'><div class='dot'></div><div class='iconArrow'></div><img src=\"" + icon + "\"></div>";
-			this.addToMap(latitude, longitude, $(div), 'center-left');
+			$div = $(div);
+			this.addToMap(latitude, longitude, $div, 'center-left');
+			
+			// Closure for this as that
+			var that = this;
+			
+			$div.click(function() {
+				
+				// Load image
+				$(".detail .panoramic").empty().append($("<img>").attr("src", p.get('image')));
+				
+				// Swap Chart for Image
+				$(".chart").hide();
+				$(".detail .panoramic").show();
+				
+				App.State.get("selectedsites").reset();
+				that.model.set("selectedsite", null);
+				that.updateSites();
+			});
 		}, this);
 	},
 	
@@ -332,6 +351,10 @@ var DataPageView = Backbone.View.extend({
 		sites = this.model.get("sites");
 		variables = this.model.get("variables");
 		this.chart = new Chart(chartDiv[0], sites, variables);
+		
+		// Setup Image
+		var imageDiv = $("<div>").addClass('panoramic').hide();
+		detail.append(imageDiv);
 	},
 	
 	changeTopic: function() {
@@ -341,19 +364,19 @@ var DataPageView = Backbone.View.extend({
 		var selectedSites = App.State.get("selectedsites");
 		var allSites = this.model.get('sites');
 		
+		// Default site
+		if(selectedSites.length == 0) {
+			if(this.model.has("defaultsite")) {
+				this.model.set("selectedsite", allSites.at(this.model.get("defaultsite")));	
+			} else {
+				this.model.set("selectedsite", allSites.first());	
+			}
+		}
+		
 		// Prevent too many sites from being visible
 		if(topic.get('mode') == "ONE") {
-			if(selectedSites.length == 0) {
-				// Default site
-				if(this.model.has("defaultsite")) {
-					this.model.set("selectedsite", allSites.at(this.model.get("defaultsite")));	
-				} else {
-					this.model.set("selectedsite", allSites.first());	
-				}
-			} else {
-				// Most recently selected site
-				selectedSites.reset();
-			}
+			// Most recently selected site will populate
+			selectedSites.reset();
 		}
 		
 		// Center map
@@ -407,12 +430,18 @@ var DataPageView = Backbone.View.extend({
 			}
 		});
 		
-		// Send the correct series to the chart
-		var that = this;
-		setTimeout(function() {
-			var topic = App.State.get("currenttopic");
-			that.chart.update(topic, selectedSites);			
-		}, 0);
+		// Don't update the chart if selected sites is empty
+		if(selectedSites.length > 0) {
+			// Send the correct series to the chart
+			var that = this;
+			setTimeout(function() {
+				var topic = App.State.get("currenttopic");
+				$(".detail .panoramic").hide();
+				$(".chart").show();
+				that.chart.update(topic, selectedSites);	
+			}, 0);
+		}
+
 	}
 	
 });
@@ -458,7 +487,7 @@ var PhotosPageView = Backbone.View.extend({
 		debug('change topic to ' + currentTopic.get("name"));
 		
 		// Set the topic background
-		this.spread.css("background-image", "url('" + currentTopic.get("background") +"')");
+		this.background.css("background-image", "url('" + currentTopic.get("background") +"')");
 		
 		// Show the default photo
 		var model = this.model;

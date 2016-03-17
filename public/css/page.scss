@@ -32,7 +32,7 @@ $markerColor:	#555;
 // Sizing
 $pageMargin: 38px;
 $spacing: 12px;
-$shadow: 1px 1px 3px $black;
+$shadow: 1px 1px 5px rgba(34,34,34,0.5);
 $shadowExtra: 1px 3px 3px $black;
 $firstColumn: 350px;
 $menuWidth: 650px;
@@ -247,7 +247,7 @@ a {
 	position: absolute;
 	bottom: 0;
 	right: $pageMargin;
-	display: inline-block;
+	display: inline-block; 
 	text-align: right;
 	font-size: 12pt;
 	color: $white;
@@ -384,6 +384,15 @@ a {
 	background-color: $white;
 	color: $black;
 	box-shadow: $shadow;
+}
+
+.detail .panoramic {
+	width: 100%;
+	height: $chartHeight;
+	//background-color: $white;
+	color: $black;
+	box-shadow: $shadow;
+	overflow: hidden;
 }
 
 .thumbnails {

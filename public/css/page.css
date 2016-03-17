@@ -161,7 +161,7 @@ a {
   padding: 12px;
   opacity: .9;
   white-space: normal;
-  box-shadow: 1px 1px 3px #222; }
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5); }
 
 .spread .info .photo {
   display: none;
@@ -170,7 +170,7 @@ a {
   width: 274px;
   height: 200px;
   left: 29px;
-  box-shadow: 1px 1px 3px #222; }
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5); }
 
 .spread .touch {
   position: absolute;
@@ -193,7 +193,7 @@ a {
   color: #fff;
   background-color: #666;
   padding: 3px 9px 3px 9px;
-  box-shadow: 1px 1px 3px #222; }
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5); }
 
 #credits {
   position: absolute;
@@ -203,7 +203,7 @@ a {
   left: auto;
   padding: 7px 10px;
   background-color: #ffffff;
-  box-shadow: 1px 1px 3px #222; }
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5); }
 
 #credits img {
   margin: 5px 0 5px 10px;
@@ -230,7 +230,7 @@ a {
   margin: 0 0 12px 0;
   background-color: #fff;
   color: #222;
-  box-shadow: 1px 1px 3px #222;
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5);
   padding: 0 12px 0 12px; }
 
 #page .intro p {
@@ -257,7 +257,7 @@ a {
   font-size: 14pt;
   background-color: #fff;
   color: #222;
-  box-shadow: 1px 1px 3px #222;
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5);
   padding: 1px 12px 1px 12px; }
 
 .topic .controls .text p {
@@ -275,7 +275,7 @@ a {
 .block.white {
   background-color: #fff;
   color: #222;
-  box-shadow: 1px 1px 3px #222; }
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5); }
 
 .block.blue {
   background-color: #618aa3;
@@ -290,7 +290,14 @@ a {
   height: 430px;
   background-color: #fff;
   color: #222;
-  box-shadow: 1px 1px 3px #222; }
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5); }
+
+.detail .panoramic {
+  width: 100%;
+  height: 430px;
+  color: #222;
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5);
+  overflow: hidden; }
 
 .thumbnails {
   width: 100%;
@@ -325,7 +332,7 @@ a {
   border-style: solid;
   border-color: #fff;
   background-color: #fff;
-  box-shadow: 1px 1px 3px #222;
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5);
   vertical-align: bottom;
   width: 130px;
   overflow-x: hidden;
@@ -355,7 +362,7 @@ a {
   height: 108px;
   border: 4px solid #ddd;
   background-color: #ddd;
-  box-shadow: 1px 1px 3px #222; }
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5); }
 
 .thumbnails .photo .label {
   color: #ddd; }
@@ -432,7 +439,7 @@ a {
   background-color: #436d86;
   /* overriden by pageViews.js */
   color: #fff;
-  box-shadow: 1px 1px 3px #222;
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5);
   text-align: left; }
 
 .cameras .camera .bar .name {
@@ -458,7 +465,7 @@ a {
   background-color: #222;
   width: 400px;
   height: 225px;
-  box-shadow: 1px 1px 3px #222; }
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5); }
 
 .cameras .camera .image img {
   width: 100%;
@@ -478,7 +485,7 @@ a {
   display: none;
   z-index: 4;
   color: #fff;
-  box-shadow: 1px 1px 3px #222; }
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5); }
 
 #pagemenu .dropdown span {
   display: block;
@@ -500,7 +507,7 @@ a {
   z-index: 4;
   background-color: #618aa3;
   color: #fff;
-  box-shadow: 1px 1px 3px #222; }
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5); }
 
 .topic .dropdown span {
   display: block;
@@ -520,7 +527,7 @@ a {
   font-size: 20pt;
   font-weight: normal;
   line-height: 20pt;
-  box-shadow: 1px 1px 3px #222; }
+  box-shadow: 1px 1px 5px rgba(34, 34, 34, 0.5); }
 
 .button span {
   display: inline-block;

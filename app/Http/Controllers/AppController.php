@@ -385,7 +385,8 @@ class AppController extends Controller
 			    "name" => "Natural History Museum of Utah",
 			    "icon" => "img/logos/nhmu.svg",
 			    "latitude" => 40.764131,
-			    "longitude" => -111.82279
+			    "longitude" => -111.82279,
+			    "image" => "img/rbc/outside.jpg"
 		    ]
 	    ];
 	    

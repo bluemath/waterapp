@@ -1,0 +1,32 @@
+.jqisimages div {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.jqisimages .jqisleft {
+  border-right: 6px solid rgba(255, 255, 255, .5);
+}
+
+.jqislabels div {
+  margin: 0px;
+  color: #fff;
+  background-color: #000;
+  position: absolute;
+  padding: 5px 10px;
+}
+
+.jqislabels .jqisright {
+  margin-left: 6px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.jqislabels .jqisleft {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}

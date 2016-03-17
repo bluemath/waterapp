@@ -67,7 +67,7 @@
 				
 			</div>
 			
-			<div class="attribution"></div>
+			<div class="attribution" style="display:none;"></div>
 
 		</div>
 		
