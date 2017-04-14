@@ -241,39 +241,70 @@ class DataController extends Controller
 	    $url = $parsedURL['scheme'] . "://" . $parsedURL['host'] . $parsedURL['path'] . "?" . $parsedURL['query'];
 	
 		// Get the XML
+		
+		// Bug Note: 
+		// The following calls caused the log explosion detected on 4/13/2017.
+		// The logs indicated that "failed to open stream: HTTP request failed!"
+		// Specifically, this is a url that was not working:
+		    // http://data.iutahepscor.org/RedButteCreekWOF/REST/waterml_1_1.svc/datavalues?location=iutah:RB_RBG_BA&amp;variable=iutah:ODO_Sat/methodCode=60/sourceCode=1/qualityControlLevelCode=0&amp;startDate=2017-03-27T04:15:01&amp;endDate=
+		// This was to update RB_RBG_BA's ODO_Sat series
+		// The series hadn't updated successfully since 3/27/2017, 17 days.
+		// I attemped a manual update by accessing this URL, which worked without issue:
+		    // https://iutah.nhmu.utah.edu/sites/RB_RBG_BA/ODO_Sat/update
+        // I then updated all other series for this site using the same method, clicking update at:
+            // https://iutah.nhmu.utah.edu/sites/RB_RBG_BA
+        // All these manual updates worked without issue.
+        // When accessing some of the URLs from the logs directly, I would occasionally get this message from the iutahepscor.com server:
+            // Error Status Code: 'InternalServerError'
+            // Details: The server encountered an error processing the request. Please see the server logs for more details.
+        // It seems that the iutahepscor.com server is erroring out on occasion
+        // this is likely with specific date combinations, as I could change the date in the URL and it would work.
+        // To resolve log generation, I suppressed errors with '@' prepended to simplexml_load_file call, and checked $xml for false state.
+        // This will not resolve communication with iutahepscor.com, but that seems like a problem on the iutahepscor.com end.
 		$this->tepln(function() use (&$xml, $url, $query) {
-			$xml = simplexml_load_file($url);
-			return "downloaded XML with " . count($xml->timeSeries->values->value) . " values from '" . $query['startDate'] . "' until now";
+    		// The @ operator will prevent HTTP errors from being thrown,
+    		// in the event of an HTTP error, the $xml variable will be false.
+			$xml = @simplexml_load_file($url);
+			if(!$xml) {
+    			return "failed to download XML.";
+            } else {
+    			return "downloaded XML with " . count($xml->timeSeries->values->value) . " values from '" . $query['startDate'] . "' until now (checking for HTTP error)";
+			}
 		}, $silent);
 		
-		// Process XML
-		$newdatastring = "";
-		$startDate = $query['startDate'];
-		$this->tepln(function() use (&$newdatastring, $xml, $lastTimestamp) {
-			// Bad data looks like
-			$noValue = $xml->timeSeries->variable->noDataValue;
-			
-			// Iterate through all data, ignoring bad values
-			foreach ($xml->timeSeries->values->value as $value) {
-				// Only add 'valid' values
-				if((string) $value != $noValue) {
-					$time = $value->attributes()->dateTimeUTC;
-					$time = Carbon::parse($time)->timestamp;
-					$value = (string) $value;
-					$newdatastring .= ",[$time,$value]";
-				}
-			}
-			return "processed new values";
-		}, $silent);
-
-		// Save processed data
-		$this->tepln(function() use ($filepath, $newdatastring, $trimcomma) {
-			if($trimcomma) $newdatastring = trim($newdatastring, ',');
-			file_put_contents($filepath, $newdatastring, FILE_APPEND | LOCK_EX);
-			return 'appended to existing data file';
-		}, $silent);
+		if(!$xml) {
+    	    // Didn't get XML, BAIL!
+        } else {
+    		// Process XML
+    		$newdatastring = "";
+    		$startDate = $query['startDate'];
+    		$this->tepln(function() use (&$newdatastring, $xml, $lastTimestamp) {
+    			// Bad data looks like
+    			$noValue = $xml->timeSeries->variable->noDataValue;
+    			
+    			// Iterate through all data, ignoring bad values
+    			foreach ($xml->timeSeries->values->value as $value) {
+    				// Only add 'valid' values
+    				if((string) $value != $noValue) {
+    					$time = $value->attributes()->dateTimeUTC;
+    					$time = Carbon::parse($time)->timestamp;
+    					$value = (string) $value;
+    					$newdatastring .= ",[$time,$value]";
+    				}
+    			}
+    			return "processed new values";
+    		}, $silent);
+    
+    		// Save processed data
+    		$this->tepln(function() use ($filepath, $newdatastring, $trimcomma) {
+    			if($trimcomma) $newdatastring = trim($newdatastring, ',');
+    			file_put_contents($filepath, $newdatastring, FILE_APPEND | LOCK_EX);
+    			return 'appended to existing data file';
+    		}, $silent);
+		}
 	    
 		// Redirect
+		// Leaving this commented lets the updates link from the sites endpoint show results.
 	    //return redirect()->back();
 	    return;
 	}

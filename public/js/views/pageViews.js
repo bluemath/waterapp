@@ -470,10 +470,33 @@ var PhotosPageView = Backbone.View.extend({
 	render: function() {
 		var currentPhoto = this.model.get("currentphoto");
 		
+		this.background.empty();
+		
 		// Set the splash photo
 		if(currentPhoto != null) {
 			this.background.css("background-image", "url('" + currentPhoto.get("img") + "')");	
+			
+			// Setup press and hold linking
+			if(currentPhoto.has("linktopic")) {
+				topicindex = currentPhoto.get("linktopic");
+				console.log(topicindex);
+				topics = this.model.get("topics");
+				console.log(topics);
+				topic = this.model.get("topics").at(topicindex);
+				console.log(topic);
+				this.background.pressAndHold({
+					callback: function() {
+						var url = App.State.get("currentpage").get("id") + "/" + topicindex;
+						App.Router.navigate(url);
+						App.State.set("currenttopic", topic);
+					}, 
+					color: "#fff"
+				});
+				
+			}
 		}
+		
+
 		
 		// Update the highlighted thumbnail
 		

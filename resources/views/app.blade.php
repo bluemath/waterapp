@@ -35,6 +35,9 @@
 		<script src="{{ URL::asset('js/lib/chipmunk/cp.js') }}"></script>
 		<script src="{{ URL::asset('js/views/splash.js') }}"></script>
 		
+		<script src="{{ URL::asset('js/views/imageslider.js') }}"></script>
+		<script src="{{ URL::asset('js/views/holdandpress.js') }}"></script>
+		
 		<link rel="stylesheet" href="{{ URL::asset('css/font-awesome/css/font-awesome.css') }}">
 		<link rel="stylesheet" href="{{ URL::asset('css/normalize.css') }}" type="text/css" media="screen" charset="utf-8">
 		<link rel="stylesheet" href="{{ URL::asset('css/boilerplate.css') }}" type="text/css" media="screen" charset="utf-8">

@@ -1,7 +1,7 @@
 <?php
 
 // Pages
-Route::get('/', 'AppController@app'); // used to go to @comingsoon as a temp page
+Route::get('/', 'AppController@app'); // used to go to @comingsoon as a temp page, set to @app for normal use
 Route::get('test', 'AppController@test');
 Route::get('app', 'AppController@app');
 

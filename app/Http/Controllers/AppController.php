@@ -92,7 +92,8 @@ class AppController extends Controller
 					    'img' => '/img/gsl/1Watershed_0_GSL_v11_Roads.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'hidden'
+					    'type' => 'hidden',
+					    'linktopic' => 2
 				    ]
 				]
 		    ],
@@ -118,7 +119,8 @@ class AppController extends Controller
 					    'img' => '/img/gsl/1Watershed_1c_Jordan_v12_Roads.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'hidden'
+					    'type' => 'hidden',
+					    'linktopic' => 3
 				    ]
 				]
 		    ],
@@ -131,7 +133,8 @@ class AppController extends Controller
 					    'img' => '/img/gsl/1Watershed_2_SLValley_v12_LUCC.png',
 					    'label' => "",
 					    'caption' => '',
-					    'type' => 'hidden'
+					    'type' => 'hidden',
+					    'linktopic' => 4
 				    ],
 				    [
 					    'img' => '/img/gsl/1Watershed_2_SLValley_v12_MajorRoads.png',
