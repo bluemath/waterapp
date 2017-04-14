@@ -18,7 +18,8 @@ class Cameras {
 		
 		$base = public_path() . '/img/cameras';
 		
-		$sites = array_diff(scandir($base), array('..', '.', '.htaccess'));
+		// Remove items from directory listing
+		$sites = array_diff(scandir($base), array('..', '.', '.htaccess', 'lost+found'));
 		
 		foreach ($sites as $site) {
 			
