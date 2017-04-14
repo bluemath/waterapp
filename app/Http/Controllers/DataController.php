@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use DB;
 use Cache;
 use App\Http\Requests;
@@ -266,6 +267,8 @@ class DataController extends Controller
     		// in the event of an HTTP error, the $xml variable will be false.
 			$xml = @simplexml_load_file($url);
 			if(!$xml) {
+    			// Still push an error to the log, but make it a one liner:
+    			Log::info('DataController: Failed to get $url');
     			return "failed to download XML.";
             } else {
     			return "downloaded XML with " . count($xml->timeSeries->values->value) . " values from '" . $query['startDate'] . "' until now (checking for HTTP error)";
