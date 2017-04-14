@@ -268,7 +268,7 @@ class DataController extends Controller
 			$xml = @simplexml_load_file($url);
 			if(!$xml) {
     			// Still push an error to the log, but make it a one liner:
-    			Log::info('DataController: Failed to get $url');
+    			Log::info("DataController: Failed to get $url");
     			return "failed to download XML.";
             } else {
     			return "downloaded XML with " . count($xml->timeSeries->values->value) . " values from '" . $query['startDate'] . "' until now (checking for HTTP error)";
