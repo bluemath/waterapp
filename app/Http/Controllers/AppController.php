@@ -67,7 +67,11 @@ class AppController extends Controller
     public function pages() {
         // Enumerate all the pages
 		// $pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->lr(), $this->pr(), $this->bio()];
-		$pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->bio()]; //
+		
+		// Switch between these two to show or hide the GAMUT section.
+		// $pages = [$this->gsl(), $this->gamut(), $this->rbc(), $this->bio()]; //Show GAMUT
+		$pages = [$this->gsl(), $this->rbc(), $this->bio()]; //Hide GAMUT
+		
 		// Send back as JSON
 		return response()->json($pages);
     }
@@ -440,13 +444,17 @@ class AppController extends Controller
     private function topics() {
 	    return [
 	    	// All Varaibles, one site
+	    	// We decided to hide this.
+	    	/*
 			[ 	'name' => 'Explore the Data',
 				'text' => ["Explore what’s happening in Red Butte Creek’s aquatic system by sliding your finger across the data stream to the right.  Choose a monitoring station from the map to see all the data feeds from that location, or compare data from different locations. You can also look at individual variables to see how they change over time and across stations."],
 				'variables' => ['WaterTemp_EXO', 'ODO', 'pH', 'SpCond', 'TurbMed', 'Stage', 'Level'],
 				'mode' => 'ONE'
 			],
+			*/
 			
 			// Curated pairs
+			// These were an experiment in showing two data series and expalining their reslationship. We cut it out.
 /*
 			[
 				'name' => 'Dissolved Oxygen and Temperature',
